@@ -58,7 +58,7 @@ public class Controleur extends HttpServlet {
          * avant un forward, comme ici)
          * et paramètre (= chaîne représentant des données de formulaire envoyées par le client) */
         /* Enfin on transfère la requête avec cet attribut supplémentaire vers la vue qui convient */
-        request.getRequestDispatcher("/index.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
     }
 
 
@@ -72,8 +72,29 @@ public class Controleur extends HttpServlet {
     public void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
-        actionAfficher(request, response);
+         request.setCharacterEncoding("UTF-8");
+        String action = request.getParameter("action");
+        if (action == null) {
+            invalidParameters(request, response);
+            return;
+        }
+        try {
+            if (action.equals("newGame")){
+                actionNewGame(request, response) ; 
+            }
+            actionAfficher(request, response);
+        } catch (DAOException e) {
+            erreurBD(request, response, e);
+        }
+        
 
+    }
+    
+    
+    private void actionNewGame(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        request.getRequestDispatcher("/WEB-INF/newPartie.jsp").forward(request, response);
     }
     
     

@@ -23,6 +23,7 @@
           <li> Proportion initiale des Loups-Garous :  <input type="text" name="werewolfNum" value="1" size="2"/>/<input type="text" name="werewolfDenum" value="3" size="2"/></li>
         </ul>
         <input type="submit" name="Creer une nouvelle partie" />
+        <input type="hidden" name="action" value="newGame" />
       </form>
     </body>
 </html>
