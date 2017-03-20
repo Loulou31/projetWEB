@@ -58,7 +58,7 @@ public class Controleur extends HttpServlet {
          * avant un forward, comme ici)
          * et paramètre (= chaîne représentant des données de formulaire envoyées par le client) */
         /* Enfin on transfère la requête avec cet attribut supplémentaire vers la vue qui convient */
-        request.getRequestDispatcher("/index.html").forward(request, response);
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 
 
