@@ -1,4 +1,4 @@
-
+package fr.ensimag.loupg.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,7 +17,7 @@ import javax.sql.DataSource;
  */
 @WebServlet(urlPatterns = {"/add_player"})
 public class AddPlayer extends HttpServlet {
-    @Resource(name="jdbc/bibliotheque")
+    @Resource(name="jdbc/loupGarou")
     private DataSource ds;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -81,7 +81,7 @@ public class AddPlayer extends HttpServlet {
             out.println("<meta charset=\"UTF-8\">");
             out.println("</head>");
             out.println("<body>");
-            out.println("<div> Bienvenue " + request.getParameter("Nom") + " " + request.getParameter("Prenom"));
+            out.println("<div> Bienvenue " + request.getParameter("Pseudo"));
             out.print(". Vous habitez");
             if(request.getParameter("residence").equals("Autre Ville")){
                 out.print(" loin");
