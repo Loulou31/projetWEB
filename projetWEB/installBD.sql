@@ -24,3 +24,7 @@ CREATE TABLE JOUEUR (
     IdPartie int 
 ) ; 
 
+CREATE TABLE MEMBRE (
+    login varchar(10) NOT NULL PRIMARY KEY,
+    password varchar(10) NOT NULL
+);
