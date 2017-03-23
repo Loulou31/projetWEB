@@ -2,6 +2,7 @@
 package controleur;
 
 import dao.DAOException;
+import dao.PartieDAO;
 import java.io.*;
 import java.util.List;
 import javax.annotation.Resource;
@@ -9,6 +10,8 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
+import modele.Partie;
+
 
 /**
  * Le contrôleur de l'application.
@@ -40,13 +43,30 @@ public class Controleur extends HttpServlet {
             throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
-        actionAfficher(request, response);
+        PartieDAO partieDAO = new PartieDAO(ds);
+
+        try {
+            if (action == null){
+                actionAfficher(request, response) ; 
+            } else if (action.equals("choseGame")){
+                actionChoseGame(request, response, partieDAO) ; 
+            } else if (action.equals("newGame")){
+                actionNewGame(request, response) ; 
+            } else if (action.equals("getPartie")){
+                actionGetPartie(request, response, partieDAO) ; 
+            } else {
+                invalidParameters(request, response) ; 
+            }
+        } catch (DAOException e) {
+            erreurBD(request, response, e);
+        }
+        
 
     }
 
     /**
      * 
-     * Affiche la page d’accueil avec la liste de tous les ouvrages. 
+     * Affiche la page d’accueil. 
      */
     
     private void actionAfficher(HttpServletRequest request, 
@@ -79,15 +99,31 @@ public class Controleur extends HttpServlet {
             return;
         }
         try {
-            if (action.equals("newGame")){
-                actionNewGame(request, response) ; 
-            }
             actionAfficher(request, response);
         } catch (DAOException e) {
             erreurBD(request, response, e);
         }
         
 
+    }
+    
+    private void actionGetPartie(HttpServletRequest request, 
+            HttpServletResponse response, 
+            PartieDAO partieDAO) throws ServletException, IOException {
+        Partie partie = partieDAO.getPartie(Integer.parseInt(request.getParameter("id"))) ; 
+        request.setAttribute("partie", partie);
+        String action = request.getParameter("view") ; 
+        if (action.equals("rejoindre")){
+            request.getRequestDispatcher("rejoindre.jsp").forward(request, response);
+        }
+    }
+    
+    private void actionChoseGame(HttpServletRequest request,
+            HttpServletResponse response, PartieDAO partieDAO)
+                throws IOException, ServletException {
+        List<Partie> parties = partieDAO.getListeParties();
+        request.setAttribute("parties", parties);
+        request.getRequestDispatcher("/WEB-INF/choseGame.jsp").forward(request, response);
     }
     
     

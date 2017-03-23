@@ -1,3 +1,9 @@
+body
+{
+    color:black;
+    background-color:grey;
+}
+
 #menu
 {
         border-bottom : 1px solid #9EA0A1;
@@ -30,3 +36,5 @@
     margin : 1px 2px 0 2px;  /* Pour IE  */
     border : 1px solid #9EA0A1;
 }
+
+
