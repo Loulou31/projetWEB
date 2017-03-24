@@ -21,7 +21,7 @@ public class Membre {
         return pseudo;
     }
     
-    public Partie gePartie(){
+    public Partie getPartie(){
         return(this.partie);
     }
 
