@@ -15,4 +15,8 @@ public class LoupGarou extends Villageois{
         super(pouvoir, vivant);
     }
     
+    @Override
+    public Boolean accesRepaireLoup(){
+        return true;
+    }
 }

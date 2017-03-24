@@ -15,4 +15,8 @@ public class Humain extends Villageois{
         super(pouvoir, vivant);
     }
     
+    @Override
+    public Boolean accesRepaireLoup(){
+        return false;
+    }
 }
