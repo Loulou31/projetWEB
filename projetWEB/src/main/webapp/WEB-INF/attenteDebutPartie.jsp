@@ -13,6 +13,6 @@
     </head>
     <body>
         <h1>Attendez les derniers joueurs ou le début de la partie ! </h1>
-        <a href="controleur?index">Retour vers l'écran d'accueil</a>
+<!--        <a href="controleur?index">Retour vers l'écran d'accueil</a>-->
     </body>
 </html>

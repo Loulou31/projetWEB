@@ -106,7 +106,7 @@ public class Controleur extends HttpServlet {
         request.setAttribute("partie", partie);
         String view = request.getParameter("view");
         if (view.equals("rejoindre")) {
-            if (!partie.enAttente()){
+            if (!partie.enAttente(partieDAO)){
                 request.getRequestDispatcher("rejoindre.jsp").forward(request, response);
             }else{
                 request.getRequestDispatcher("attenteDebutPartie.jsp").forward(request, response);

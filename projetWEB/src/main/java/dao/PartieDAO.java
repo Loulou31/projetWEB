@@ -112,5 +112,9 @@ public class PartieDAO extends AbstractDatabaseDAO {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
     }
+    //Je sais pas si tu l'avais implémentée, elle était pas sur le git en tous cas
+    public int getNbJoueurs(int id){
+        return 0;
+    }
     
 }
