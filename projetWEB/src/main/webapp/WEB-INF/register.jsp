@@ -14,10 +14,11 @@ and open the template in the editor.
     </head>
     <body>
         <h1>Page d'inscription:</h1>
-        <form method="POST" action="add_player" accept-charset="utf-8">
+        <form method="POST" action="controleur" accept-charset="utf-8">
            Pseudo: <input type="text" name="login" value="" /><br/>
            Mot de passe: <input type="password" name="password" value="" /><br/>
            <input type="submit" value="CrÃ©er" name="Create" /> 
+           <input type="hidden" name="action" value="inscription" />
         </form>
     </body>
 </html>

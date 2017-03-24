@@ -1,4 +1,3 @@
-
 package controleur;
 
 import dao.DAOException;
@@ -13,7 +12,6 @@ import javax.servlet.http.*;
 import javax.sql.DataSource;
 import modele.Partie;
 
-
 /**
  * Le contrôleur de l'application.
  */
@@ -26,18 +24,19 @@ public class Controleur extends HttpServlet {
     /* pages d’erreurs */
     private void invalidParameters(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/controleurErreur.jsp").forward(request, response);        
+        request.getRequestDispatcher("/WEB-INF/controleurErreur.jsp").forward(request, response);
     }
 
     private void erreurBD(HttpServletRequest request,
-                HttpServletResponse response, DAOException e)
+            HttpServletResponse response, DAOException e)
             throws ServletException, IOException {
         request.setAttribute("erreurMessage", e.getMessage());
         request.getRequestDispatcher("/WEB-INF/bdErreur.jsp").forward(request, response);
     }
-  
+
     /**
-     * Actions possibles en GET : afficher (correspond à l’absence du param), getOuvrage.
+     * Actions possibles en GET : afficher (correspond à l’absence du param),
+     * getOuvrage.
      */
     public void doGet(HttpServletRequest request,
             HttpServletResponse response)
@@ -47,113 +46,121 @@ public class Controleur extends HttpServlet {
         PartieDAO partieDAO = new PartieDAO(ds);
         //MembreDAO membreDAO = new MembreDAO(ds);
         try {
-            if (action == null){
-                actionAfficher(request, response) ; 
-            } else if (action.equals("choseGame")){
-                actionChoseGame(request, response, partieDAO) ; 
-            } else if (action.equals("newGame")){
-                actionNewGame(request, response) ; 
-            } else if (action.equals("getPartie")){
-                actionGetPartie(request, response, partieDAO) ;
-            } else if (action.equals("connexion")){
-                actionLogin(request,response);
+            if (action == null) {
+                actionAfficher(request, response);
+            } else if (action.equals("choseGame")) {
+                actionChoseGame(request, response, partieDAO);
+            } else if (action.equals("newGame")) {
+                actionNewGame(request, response);
+            } else if (action.equals("getPartie")) {
+                actionGetPartie(request, response, partieDAO);
+            } else if (action.equals("connexion")) {
+                actionLogin(request, response);
+            } else if (action.equals("inscription")) {
+                request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
+            } else if (action.equals("logout")) {
+                request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
             } else {
-                invalidParameters(request, response) ; 
+                invalidParameters(request, response);
             }
         } catch (DAOException e) {
             erreurBD(request, response, e);
         }
-        
 
     }
 
     /**
-     * 
-     * Affiche la page d’accueil. 
+     *
+     * Affiche la page d’accueil.
      */
-    
-    private void actionAfficher(HttpServletRequest request, 
+    private void actionAfficher(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        
+
         /* On interroge la base de données pour obtenir la liste des ouvrages */
-        /* On ajoute cette liste à la requête en tant qu’attribut afin de la transférer à la vue
+ /* On ajoute cette liste à la requête en tant qu’attribut afin de la transférer à la vue
          * Rem. : ne pas confondre attribut (= objet ajouté à la requête par le programme
          * avant un forward, comme ici)
          * et paramètre (= chaîne représentant des données de formulaire envoyées par le client) */
-        /* Enfin on transfère la requête avec cet attribut supplémentaire vers la vue qui convient */
+ /* Enfin on transfère la requête avec cet attribut supplémentaire vers la vue qui convient */
         request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
     }
 
-    private void actionLogin(HttpServletRequest request, 
-            HttpServletResponse response) throws ServletException, IOException{
+    private void actionLogin(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
-    
-    
-    private void actionGetPartie(HttpServletRequest request, 
-            HttpServletResponse response, 
+
+    private void actionGetPartie(HttpServletRequest request,
+            HttpServletResponse response,
             PartieDAO partieDAO) throws ServletException, IOException {
-        Partie partie = partieDAO.getPartie(Integer.parseInt(request.getParameter("id"))) ; 
+        Partie partie = partieDAO.getPartie(Integer.parseInt(request.getParameter("id")));
         request.setAttribute("partie", partie);
-        String action = request.getParameter("view") ; 
-        if (action.equals("rejoindre")){
+        String action = request.getParameter("view");
+        if (action.equals("rejoindre")) {
             request.getRequestDispatcher("rejoindre.jsp").forward(request, response);
         }
     }
-    
+
     private void actionChoseGame(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
-                throws IOException, ServletException {
+            throws IOException, ServletException {
         List<Partie> parties = partieDAO.getListeParties();
         request.setAttribute("parties", parties);
         request.getRequestDispatcher("/WEB-INF/choseGame.jsp").forward(request, response);
     }
-    
-    
+
     private void actionNewGame(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
         request.getRequestDispatcher("/WEB-INF/newPartie.jsp").forward(request, response);
     }
-    
-    /**
-     * Actions possibles en POST : ajouter, supprimer, modifier.
-     * Une fois l’action demandée effectuée, on retourne à la page
-     * d’accueil avec actionAfficher(...)
-     */
 
+    /**
+     * Actions possibles en POST : ajouter, supprimer, modifier. Une fois
+     * l’action demandée effectuée, on retourne à la page d’accueil avec
+     * actionAfficher(...)
+     */
     public void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
-         request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         MembreDAO membreDAO = new MembreDAO(ds);
         if (action == null) {
             invalidParameters(request, response);
             return;
         }
-        
+
         try {
-            if (action.equals("login")){
+            if (action.equals("login")) {
                 actionConnexionMembre(request, response, membreDAO);
+            } else if (action.equals("inscription")) {
+                actionInscription(request, response, membreDAO);
             }
         } catch (DAOException e) {
             erreurBD(request, response, e);
         }
-        
 
     }
 
+    private void actionInscription(HttpServletRequest request,
+            HttpServletResponse response, MembreDAO membreDAO)
+            throws IOException, ServletException {
+        String pseudo = request.getParameter("login");
+        String password = request.getParameter("password");
+        membreDAO.ajouterMembre(pseudo, password);
+        request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
+    }
 
     private void actionConnexionMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
-        if (membreDAO.idCorrect(request.getParameter("login"), request.getParameter("password"))){
+        if (membreDAO.idCorrect(request.getParameter("login"), request.getParameter("password"))) {
             HttpSession session = request.getSession();
             session.setAttribute("utilisateur", request.getParameter("login"));
+            request.getRequestDispatcher("/WEB-INF/connexionFaite.jsp").forward(request, response);
         }
-        
+
     }
-    
-    
+
 }

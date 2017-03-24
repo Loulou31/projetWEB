@@ -13,7 +13,7 @@
           <li> Login : <input type="text" name="login"/></li>
           <li> Mot de passe : <input type="password" name="password"/></li>
         </ul>
-        <input type="submit" name="Login" />
+        <input type="submit" value="Login" />
         <input type="hidden" name="action" value="login" />
       </form>
     </body>

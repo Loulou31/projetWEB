@@ -3,9 +3,6 @@
  * Created: Mar 20, 2017
  */
 
-DROP TABLE PARTIE ; 
-DROP TABLE JOUEUR ; 
-DROP TABLE MEMBRE ; 
 
 
 CREATE SEQUENCE id_seq ; 
@@ -40,3 +37,6 @@ VALUES (5, 1, 1, 8, 0.2, 0.5) ;
 
 INSERT INTO PARTIE (NbJoueurs, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
 VALUES (6, 1, 1, 8, 0.2, 0.5) ; 
+
+ 
+SELECT * FROM MEMBRE;
