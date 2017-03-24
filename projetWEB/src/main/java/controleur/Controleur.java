@@ -43,6 +43,7 @@ public class Controleur extends HttpServlet {
             throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
+        String view = request.getParameter("view");
         PartieDAO partieDAO = new PartieDAO(ds);
         //MembreDAO membreDAO = new MembreDAO(ds);
         try {
@@ -60,6 +61,8 @@ public class Controleur extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
             } else if (action.equals("logout")) {
                 request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
+            } else if (action.equals("attenteDebut")) {
+                request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
             } else {
                 invalidParameters(request, response);
             }
@@ -179,6 +182,7 @@ public class Controleur extends HttpServlet {
                                 Integer.parseInt(request.getParameter("begin")),
                                 Float.parseFloat(request.getParameter("power")),
                                 Float.parseFloat(request.getParameter("werewolf")));
+        request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
     }
 
 }

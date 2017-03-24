@@ -9,7 +9,7 @@
     <body>
         <h1>Creation d'une nouvelle partie</h1>
         <p> Veuillez saisir les parametres de la nouvelle partie </p>
-        <form method="post" action="setGame" accept-charset="UTF-8">
+        <form action="controleur" method="post" accept-charset="UTF-8">
         <ul>
           <li> Nombre de participants entre  
             <SELECT name="JMin" size="1">
@@ -31,7 +31,8 @@
           <li> Proportion initiale des Loups-Garous :  <input type="text" name="werewolf" value="0.3" size="2"/></li>
         </ul>
         <input type="submit" value="Creer une nouvelle partie" />
-        <input type="hidden" name="action" value="addGame" />
+        <input type="hidden" name="action" value="addGame"/>
+        
       </form>
     </body>
 </html>

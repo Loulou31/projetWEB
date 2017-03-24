@@ -3,11 +3,20 @@
  * Created: Mar 20, 2017
  */
 
+DROP TABLE MEMBRE ; 
+DROP TABLE JOUEUR ; 
+DROP TABLE PARTIE ; 
 
 CREATE SEQUENCE id_seq ; 
 
+CREATE TABLE MEMBRE (
+    login varchar(10) NOT NULL PRIMARY KEY,
+    password varchar(10) NOT NULL
+);
+
+
 CREATE TABLE JOUEUR (
-    login varchar(10) NOT NULL, 
+    login varchar(10) NOT NULL , 
     Rôle varchar(10) , 
     Statut int CONSTRAINT StatPos CHECK (Statut = 0 OR Statut = 1), 
     Pouvoir varchar(10),
@@ -15,10 +24,6 @@ CREATE TABLE JOUEUR (
     CONSTRAINT loginForeign FOREIGN KEY (login) REFERENCES MEMBRE(login)
 ) ; 
 
-CREATE TABLE MEMBRE (
-    login varchar(10) NOT NULL PRIMARY KEY,
-    password varchar(10) NOT NULL
-);
 
 
 CREATE TABLE PARTIE (
@@ -29,7 +34,7 @@ CREATE TABLE PARTIE (
     DureeJour int CONSTRAINT DureeJPos CHECK (DureeJour > 0),
     DureeNuit int CONSTRAINT DureeNPos CHECK (DureeNuit > 0), 
     HeureDebut int CONSTRAINT DebutPos CHECK (HeureDebut > 0),
-    ProbaPouvoir float CONSTRAINT ProbaPos CHECK (ProbaPouvoir > 0.0),
+    ProbaPouvoir float CONSTRAINT ProbaPos CHECK (ProbaPouvoir >= 0.0 AND ProbaPouvoir <= 1.0 ),
     ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0), 
     CONSTRAINT creatorForeign FOREIGN KEY (login) REFERENCES MEMBRE(login)
 ) ; 
