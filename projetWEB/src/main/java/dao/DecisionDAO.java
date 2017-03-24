@@ -21,11 +21,11 @@ public class DecisionDAO extends AbstractDatabaseDAO{
     
     //A décommenter 
     
-//    public List<Decision> getListDecisionHumains(){
+//    public List<Decision> getListDecisionHumains(int idPartie){
 //        //Renvoie la liste des decision pour les humains
 //    }
 //    
-//    public List<Decision> getListDecisionLoupGarous(){
+//    public List<Decision> getListDecisionLoupGarous(int idPartie){
 //        //Renvoie la liste des decision pour les loup-garous
 //    }
 }
