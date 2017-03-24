@@ -21,5 +21,6 @@
         <input type="submit" name="Login" />
         <input type="hidden" name="action" value="login" />
       </form>
+      <a href="controleur?action=inscription">----> Vous n'êtes pas inscrit ? Inscrivez-vous ici <----</a>
     </body>
 </html>

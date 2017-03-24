@@ -104,9 +104,13 @@ public class Controleur extends HttpServlet {
             PartieDAO partieDAO) throws ServletException, IOException {
         Partie partie = partieDAO.getPartie(Integer.parseInt(request.getParameter("id")));
         request.setAttribute("partie", partie);
-        String action = request.getParameter("view");
-        if (action.equals("rejoindre")) {
-            request.getRequestDispatcher("rejoindre.jsp").forward(request, response);
+        String view = request.getParameter("view");
+        if (view.equals("rejoindre")) {
+            if (!partie.enAttente()){
+                request.getRequestDispatcher("rejoindre.jsp").forward(request, response);
+            }else{
+                request.getRequestDispatcher("attenteDebutPartie.jsp").forward(request, response);
+            }
         }
     }
 
