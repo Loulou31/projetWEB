@@ -49,12 +49,7 @@ CREATE TABLE DECISION (
     login_expeditaire varchar(10) NOT NULL, 
     login_joueur_concerne varchar(10) NOT NULL, 
     est_valide int CONSTRAINT EtatValide CHECK (est_valide = 0 OR est_valide = 1), 
-    date_envoi date,
-    CONSTRAINT login_joueurForeign FOREIGN KEY 
-        (login_joueur_concerne) REFERENCES JOUEUR(login), 
-    CONSTRAINT login_expForeign FOREIGN KEY 
-        (login_expeditaire) REFERENCES JOUEUR(login),
-    PRIMARY KEY(login_expeditaire, date_envoi)
+    date_envoi date
 );
 
 CREATE TABLE PARTIE (
@@ -79,7 +74,7 @@ VALUES (5, 10, 1, 1, 8, 0.2, 0.5) ;
 INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
 VALUES (10, 20, 1, 1, 8, 0.2, 0.5) ; 
 
-INSERT INTO DECISION VALUES ('bagouc', 0);
+INSERT INTO DECISION VALUES ('bagouc', 'loulou', 0, SYSDATE);
 
 SELECT * FROM MESSAGE_SALLE_DISCUSSION;
 SELECT * FROM MESSAGE_REPAIRE;
