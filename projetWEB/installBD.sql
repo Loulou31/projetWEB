@@ -42,3 +42,6 @@ VALUES (5, 10, 1, 1, 8, 0.2, 0.5) ;
 
 INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
 VALUES (10, 20, 1, 1, 8, 0.2, 0.5) ; 
+
+ 
+SELECT * FROM MEMBRE;

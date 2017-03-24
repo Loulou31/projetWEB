@@ -10,10 +10,8 @@
     <body>
         <div id="menu">
             <ul id="onglets">
-                <li><a href="inscription.html">Inscription</a></li>
+                <li><a href="controleur?action=inscription">Inscription</a></li>
                 <li><a href="controleur?action=connexion">Connexion</a></li>
-                <li><a href="logout">Déconnexion</a></li>
-                <li><a href="controleur?action=choseGame">Jouer</a></li>
             </ul>
         </div>
     </body>
