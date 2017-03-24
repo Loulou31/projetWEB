@@ -11,6 +11,7 @@ package modele;
  */
 public class Partie {
     private int idPartie ; 
+    private String createur ; 
     private int nbJoueurs ; 
     private int dureeJour ; 
     private int dureeNuit ;
@@ -19,6 +20,7 @@ public class Partie {
     private float proportionLG ; 
 
     public Partie(int idPartie, 
+                  String createur,
                   int nbJoueurs, 
                   int dureeJour, 
                   int dureeNuit, 
@@ -26,6 +28,7 @@ public class Partie {
                   float probaPouvoir, 
                   float proportionLG) {
         this.idPartie = idPartie;
+        this.createur = createur ; 
         this.nbJoueurs = nbJoueurs;
         this.dureeJour = dureeJour;
         this.dureeNuit = dureeNuit;

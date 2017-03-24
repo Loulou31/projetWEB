@@ -33,6 +33,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
             while (rs.next()) {
                 Partie partie =
                     new Partie(rs.getInt("IdPartie"), 
+                               rs.getString("login"),
                                rs.getInt("NbJoueurs"),
                                rs.getInt("DureeJour"),
                                rs.getInt("DureeNuit"),
@@ -49,6 +50,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
     
     
     public void ajouterPartie(int nbJoueurs, 
+                              String createur,
                               int dureeJour,
                               int dureeNuit, 
                               int heureDebut, 
@@ -57,14 +59,15 @@ public class PartieDAO extends AbstractDatabaseDAO {
         try (
 	     Connection conn = getConn();
 	     PreparedStatement st = conn.prepareStatement
-	       ("INSERT INTO PARTIE (NbJoueur, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG) VALUES (?, ?, ?, ?, ?, ?)");
+	       ("INSERT INTO PARTIE (login, NbJoueur, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG) VALUES (?, ?, ?, ?, ?, ?)");
 	     ) {
-            st.setInt(1, nbJoueurs);
-            st.setInt(2, dureeJour);
-            st.setInt(3, dureeNuit);
-            st.setInt(4, heureDebut);
-            st.setFloat(5, probaPouvoir);
-            st.setFloat(6, proportionLG);
+            st.setString(1, createur) ;
+            st.setInt(2, nbJoueurs);
+            st.setInt(3, dureeJour);
+            st.setInt(4, dureeNuit);
+            st.setInt(5, heureDebut);
+            st.setFloat(6, probaPouvoir);
+            st.setFloat(7, proportionLG);
             
             st.executeUpdate();
         } catch (SQLException e) {
@@ -80,7 +83,8 @@ public class PartieDAO extends AbstractDatabaseDAO {
         st.setInt(1, id);
         ResultSet rs = st.executeQuery();
         rs.next() ; 
-        partie = new Partie(rs.getInt("IdPartie"), 
+        partie = new Partie(rs.getInt("IdPartie"),
+                               rs.getString("login"),
                                rs.getInt("NbJoueurs"),
                                rs.getInt("DureeJour"),
                                rs.getInt("DureeNuit"),
