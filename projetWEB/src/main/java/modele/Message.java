@@ -11,17 +11,18 @@ import java.util.Date;
  * @author gaunetc
  */
 public class Message {
-    private Villageois expediteur;
+    private String expediteur;
     private String contenu;
     private Date date;
 
-    public Message(Villageois expediteur, String contenu) {
+    public Message(String expediteur, String contenu) {
         this.expediteur = expediteur;
         this.contenu = contenu;
         this.date = new Date();
     }
+        
 
-    public Villageois getExpediteur() {
+    public String getExpediteur() {
         return expediteur;
     }
 
