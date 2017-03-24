@@ -2,6 +2,7 @@
 package controleur;
 
 import dao.DAOException;
+import dao.MembreDAO;
 import dao.PartieDAO;
 import java.io.*;
 import java.util.List;
@@ -44,7 +45,7 @@ public class Controleur extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         PartieDAO partieDAO = new PartieDAO(ds);
-
+        //MembreDAO membreDAO = new MembreDAO(ds);
         try {
             if (action == null){
                 actionAfficher(request, response) ; 
@@ -53,7 +54,9 @@ public class Controleur extends HttpServlet {
             } else if (action.equals("newGame")){
                 actionNewGame(request, response) ; 
             } else if (action.equals("getPartie")){
-                actionGetPartie(request, response, partieDAO) ; 
+                actionGetPartie(request, response, partieDAO) ;
+            } else if (action.equals("connexion")){
+                actionLogin(request,response);
             } else {
                 invalidParameters(request, response) ; 
             }
@@ -81,31 +84,11 @@ public class Controleur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
     }
 
-
-    
-    /**
-     * Actions possibles en POST : ajouter, supprimer, modifier.
-     * Une fois l’action demandée effectuée, on retourne à la page
-     * d’accueil avec actionAfficher(...)
-     */
-
-    public void doPost(HttpServletRequest request,
-            HttpServletResponse response)
-            throws IOException, ServletException {
-         request.setCharacterEncoding("UTF-8");
-        String action = request.getParameter("action");
-        if (action == null) {
-            invalidParameters(request, response);
-            return;
-        }
-        try {
-            actionAfficher(request, response);
-        } catch (DAOException e) {
-            erreurBD(request, response, e);
-        }
-        
-
+    private void actionLogin(HttpServletRequest request, 
+            HttpServletResponse response) throws ServletException, IOException{
+        request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
+    
     
     private void actionGetPartie(HttpServletRequest request, 
             HttpServletResponse response, 
@@ -131,6 +114,45 @@ public class Controleur extends HttpServlet {
             HttpServletResponse response)
             throws IOException, ServletException {
         request.getRequestDispatcher("/WEB-INF/newPartie.jsp").forward(request, response);
+    }
+    
+    /**
+     * Actions possibles en POST : ajouter, supprimer, modifier.
+     * Une fois l’action demandée effectuée, on retourne à la page
+     * d’accueil avec actionAfficher(...)
+     */
+
+    public void doPost(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+         request.setCharacterEncoding("UTF-8");
+        String action = request.getParameter("action");
+        MembreDAO membreDAO = new MembreDAO(ds);
+        if (action == null) {
+            invalidParameters(request, response);
+            return;
+        }
+        
+        try {
+            if (action.equals("login")){
+                actionConnexionMembre(request, response, membreDAO);
+            }
+        } catch (DAOException e) {
+            erreurBD(request, response, e);
+        }
+        
+
+    }
+
+
+    private void actionConnexionMembre(HttpServletRequest request,
+            HttpServletResponse response, MembreDAO membreDAO)
+            throws IOException, ServletException {
+        if (membreDAO.idCorrect(request.getParameter("login"), request.getParameter("password"))){
+            HttpSession session = request.getSession();
+            session.setAttribute("utilisateur", request.getParameter("login"));
+        }
+        
     }
     
     

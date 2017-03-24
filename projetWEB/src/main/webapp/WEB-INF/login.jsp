@@ -8,12 +8,13 @@
     </head>
     <body>
       <h1>Connexion</h1>
-      <form method="post" action="checkuser" accept-charset="UTF-8">
+      <form action="controleur" method="post" accept-charset="UTF-8">
         <ul>
           <li> Login : <input type="text" name="login"/></li>
           <li> Mot de passe : <input type="password" name="password"/></li>
         </ul>
         <input type="submit" name="Login" />
+        <input type="hidden" name="action" value="login" />
       </form>
     </body>
 </html>
