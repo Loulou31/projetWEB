@@ -34,7 +34,8 @@ public class PartieDAO extends AbstractDatabaseDAO {
                 Partie partie =
                     new Partie(rs.getInt("IdPartie"), 
                                rs.getString("login"),
-                               rs.getInt("NbJoueurs"),
+                               rs.getInt("NbJoueursMin"),
+                               rs.getInt("NbJoueursMax"),
                                rs.getInt("DureeJour"),
                                rs.getInt("DureeNuit"),
                                rs.getInt("HeureDebut"), 
@@ -49,7 +50,8 @@ public class PartieDAO extends AbstractDatabaseDAO {
     }
     
     
-    public void ajouterPartie(int nbJoueurs, 
+    public void ajouterPartie(int nbJoueursMin,
+                              int nbJoueursMax,
                               String createur,
                               int dureeJour,
                               int dureeNuit, 
@@ -59,19 +61,20 @@ public class PartieDAO extends AbstractDatabaseDAO {
         try (
 	     Connection conn = getConn();
 	     PreparedStatement st = conn.prepareStatement
-	       ("INSERT INTO PARTIE (login, NbJoueur, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG) VALUES (?, ?, ?, ?, ?, ?)");
+	       ("INSERT INTO PARTIE (login, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 	     ) {
             st.setString(1, createur) ;
-            st.setInt(2, nbJoueurs);
-            st.setInt(3, dureeJour);
-            st.setInt(4, dureeNuit);
-            st.setInt(5, heureDebut);
-            st.setFloat(6, probaPouvoir);
-            st.setFloat(7, proportionLG);
+            st.setInt(2, nbJoueursMin);
+            st.setInt(3, nbJoueursMax);
+            st.setInt(4, dureeJour);
+            st.setInt(5, dureeNuit);
+            st.setInt(6, heureDebut);
+            st.setFloat(7, probaPouvoir);
+            st.setFloat(8, proportionLG);
             
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
+            throw new DAOException("Erreur BD ajouter Partie" + e.getMessage(), e);
         }
     }
     
@@ -85,7 +88,8 @@ public class PartieDAO extends AbstractDatabaseDAO {
         rs.next() ; 
         partie = new Partie(rs.getInt("IdPartie"),
                                rs.getString("login"),
-                               rs.getInt("NbJoueurs"),
+                               rs.getInt("NbJoueursMin"),
+                               rs.getInt("NbJoueursMax"),
                                rs.getInt("DureeJour"),
                                rs.getInt("DureeNuit"),
                                rs.getInt("HeureDebut"), 
