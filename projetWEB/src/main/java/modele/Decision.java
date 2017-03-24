@@ -12,17 +12,17 @@ import java.util.HashSet;
  * @author gaunetc
  */
 public class Decision {
-    private Villageois joueurConcerne;
+    private String joueurConcerne;
     private boolean etat;
-    private HashSet<Villageois> votants;
+    private HashSet<String> votants;
 
-    public Decision(Villageois joueurConcerne, HashSet<Villageois> votants) {
+    public Decision(String joueurConcerne, HashSet<String> votants) {
         this.joueurConcerne = joueurConcerne;
         this.votants = votants;
         this.etat = false;
     }
 
-    public Villageois getJoueurConcerne() {
+    public String getJoueurConcerne() {
         return joueurConcerne;
     }
 
@@ -30,11 +30,11 @@ public class Decision {
         return etat;
     }
 
-    public HashSet<Villageois> getVotants() {
+    public HashSet<String> getVotants() {
         return votants;
     }
     
-    public void addVotants (Villageois votant){
+    public void addVotants (String votant){
         votants.add(votant);
     }
 
