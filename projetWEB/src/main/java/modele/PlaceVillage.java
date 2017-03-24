@@ -5,10 +5,16 @@
  */
 package modele;
 
+import java.util.HashSet;
+
 /**
  *
  * @author gaunetc
  */
-public class Utilisateur {
+public class PlaceVillage extends SalleDiscussion{
+
+    public PlaceVillage(HashSet<Decision> decisions, HashSet<Message> messages) {
+        super(decisions, messages);
+    }
     
 }
