@@ -4,18 +4,7 @@
  */
 
 
-
 CREATE SEQUENCE id_seq ; 
-
-CREATE TABLE PARTIE (
-    IdPartie number(3) DEFAULT id_seq.nextval PRIMARY KEY , 
-    NbJoueurs int CONSTRAINT NbJouPos CHECK (NbJoueurs > 0) , 
-    DureeJour int CONSTRAINT DureeJPos CHECK (DureeJour > 0),
-    DureeNuit int CONSTRAINT DureeNPos CHECK (DureeNuit > 0), 
-    HeureDebut int CONSTRAINT DebutPos CHECK (HeureDebut > 0),
-    ProbaPouvoir float CONSTRAINT ProbaPos CHECK (ProbaPouvoir > 0.0),
-    ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0)
-) ; 
 
 CREATE TABLE JOUEUR (
     login varchar(10) NOT NULL, 
@@ -32,11 +21,27 @@ CREATE TABLE MEMBRE (
 );
 
 
-INSERT INTO PARTIE (NbJoueurs, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
-VALUES (5, 1, 1, 8, 0.2, 0.5) ; 
+CREATE TABLE PARTIE (
+    IdPartie number(3) DEFAULT id_seq.nextval PRIMARY KEY , 
+    login varchar(10) , 
+    NbJoueursMin int CONSTRAINT NbJouPos CHECK (NbJoueursMin > 0) , 
+    NbJoueursMax int CONSTRAINT NbJouMaxPos CHECK (NbJoueursMax > 0) , 
+    DureeJour int CONSTRAINT DureeJPos CHECK (DureeJour > 0),
+    DureeNuit int CONSTRAINT DureeNPos CHECK (DureeNuit > 0), 
+    HeureDebut int CONSTRAINT DebutPos CHECK (HeureDebut > 0),
+    ProbaPouvoir float CONSTRAINT ProbaPos CHECK (ProbaPouvoir > 0.0),
+    ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0), 
+    CONSTRAINT creatorForeign FOREIGN KEY (login) REFERENCES MEMBRE(login)
+) ; 
 
-INSERT INTO PARTIE (NbJoueurs, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
-VALUES (6, 1, 1, 8, 0.2, 0.5) ; 
+
+
+
+INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
+VALUES (5, 10, 1, 1, 8, 0.2, 0.5) ; 
+
+INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
+VALUES (10, 20, 1, 1, 8, 0.2, 0.5) ; 
 
  
 SELECT * FROM MEMBRE;

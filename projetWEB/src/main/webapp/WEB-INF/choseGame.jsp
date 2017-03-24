@@ -22,7 +22,8 @@
         <table>
             <tr>
                 <th>Numéro  </th>
-                <th>Nombre de joueurs attendus  </th>
+                <th>Nombre Players entre  </th>
+                <th>et  </th>
                 <th>Heure de début  </th>
                 <th>Probabilité pouvoirs  </th>
                 <th>Proportion de LG  </th>
@@ -31,7 +32,8 @@
         <c:forEach items="${parties}" var="partie">
                 <tr>
                     <td>${partie.idPartie}</td>
-                    <td>${partie.nbJoueurs}</td>
+                    <td>${partie.nbJoueursMin}</td>
+                    <td>${partie.nbJoueursMax}</td>
                     <td>${partie.heureDebut}</td>
                     <td>${partie.probaPouvoir}</td>
                     <td>${partie.proportionLG}</td>

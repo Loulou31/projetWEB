@@ -138,18 +138,23 @@ public class Controleur extends HttpServlet {
             throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
-        MembreDAO membreDAO = new MembreDAO(ds);
+        
         if (action == null) {
             invalidParameters(request, response);
             return;
         }
+        MembreDAO membreDAO = new MembreDAO(ds);
+        PartieDAO partieDAO = new PartieDAO(ds) ; 
 
         try {
             if (action.equals("login")) {
                 actionConnexionMembre(request, response, membreDAO);
             }else if (action.equals("register")){
                 actionAjoutMembre(request, response, membreDAO);
-            }
+
+            } else if (action.equals("addGame")){
+                actionAddGame(request, response, partieDAO) ; 
+            } 
         } catch (DAOException e) {
             erreurBD(request, response, e);
         }
@@ -190,4 +195,18 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/failRegister.jsp").forward(request, response);
         }
     }
+    
+    private void actionAddGame(HttpServletRequest request,
+            HttpServletResponse response, PartieDAO partieDAO)
+            throws IOException, ServletException {
+        partieDAO.ajouterPartie(Integer.parseInt(request.getParameter("JMin")), 
+                                Integer.parseInt(request.getParameter("JMax")), 
+                                "louise", 
+                                Integer.parseInt(request.getParameter("day")),
+                                Integer.parseInt(request.getParameter("night")),
+                                Integer.parseInt(request.getParameter("begin")),
+                                Float.parseFloat(request.getParameter("power")),
+                                Float.parseFloat(request.getParameter("werewolf")));
+    }
+
 }
