@@ -43,6 +43,7 @@ public class Controleur extends HttpServlet {
             throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
+        String view = request.getParameter("view");
         PartieDAO partieDAO = new PartieDAO(ds);
         //MembreDAO membreDAO = new MembreDAO(ds);
         try {
@@ -59,7 +60,7 @@ public class Controleur extends HttpServlet {
             } else if (action.equals("connexion")){
                 actionLogin(request,response);
             } else if (action.equals("inscription")){
-                actionInscription(request,response);
+                request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
             } else if (action.equals("deconnexion")){
                 actionDeconnexion(request, response);
             } else {
@@ -96,11 +97,6 @@ public class Controleur extends HttpServlet {
             HttpSession session = request.getSession();
             session.invalidate();
             request.getRequestDispatcher("/WEB-INF/logout.jsp").forward(request, response);
-    }
-    
-    private void actionInscription(HttpServletRequest request, 
-            HttpServletResponse response) throws ServletException, IOException{
-        request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
     }
     
     private void actionGetPartie(HttpServletRequest request,
@@ -151,24 +147,15 @@ public class Controleur extends HttpServlet {
                 actionConnexionMembre(request, response, membreDAO);
             }else if (action.equals("register")){
                 actionAjoutMembre(request, response, membreDAO);
-
             } else if (action.equals("addGame")){
                 actionAddGame(request, response, partieDAO) ; 
-            } 
+            }
         } catch (DAOException e) {
             erreurBD(request, response, e);
         }
 
     }
 
-    private void actionInscription(HttpServletRequest request,
-            HttpServletResponse response, MembreDAO membreDAO)
-            throws IOException, ServletException {
-        String pseudo = request.getParameter("login");
-        String password = request.getParameter("password");
-        membreDAO.ajouterMembre(pseudo, password);
-        request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
-    }
 
     private void actionConnexionMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
@@ -207,6 +194,7 @@ public class Controleur extends HttpServlet {
                                 Integer.parseInt(request.getParameter("begin")),
                                 Float.parseFloat(request.getParameter("power")),
                                 Float.parseFloat(request.getParameter("werewolf")));
+        request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
     }
 
 }
