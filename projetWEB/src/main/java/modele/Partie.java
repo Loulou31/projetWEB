@@ -11,7 +11,9 @@ package modele;
  */
 public class Partie {
     private int idPartie ; 
-    private int nbJoueurs ; 
+    private String createur ; 
+    private int nbJoueursMin ; 
+    private int nbJoueursMax ; 
     private int dureeJour ; 
     private int dureeNuit ;
     private int heureDebut ; 
@@ -19,14 +21,18 @@ public class Partie {
     private float proportionLG ; 
 
     public Partie(int idPartie, 
-                  int nbJoueurs, 
+                  String createur,
+                  int nbJoueursMin, 
+                  int nbJoueursMax, 
                   int dureeJour, 
                   int dureeNuit, 
                   int heureDebut, 
                   float probaPouvoir, 
                   float proportionLG) {
         this.idPartie = idPartie;
-        this.nbJoueurs = nbJoueurs;
+        this.createur = createur ; 
+        this.nbJoueursMin = nbJoueursMin;
+        this.nbJoueursMax = nbJoueursMax;
         this.dureeJour = dureeJour;
         this.dureeNuit = dureeNuit;
         this.heureDebut = heureDebut;
@@ -38,8 +44,16 @@ public class Partie {
         return idPartie;
     }
 
-    public int getNbJoueurs() {
-        return nbJoueurs;
+    public String getCreateur() {
+        return createur;
+    }
+
+    public int getNbJoueursMin() {
+        return nbJoueursMin;
+    }
+
+    public int getNbJoueursMax() {
+        return nbJoueursMax;
     }
 
     public int getDureeJour() {
@@ -64,8 +78,10 @@ public class Partie {
 
     @Override
     public String toString() {
-        return "Partie{" + "idPartie=" + idPartie + ", nbJoueurs=" + nbJoueurs + ", dureeJour=" + dureeJour + ", dureeNuit=" + dureeNuit + ", heureDebut=" + heureDebut + ", probaPouvoir=" + probaPouvoir + ", proportionLG=" + proportionLG + '}';
+        return "Partie{" + "idPartie=" + idPartie + ", createur=" + createur + ", nbJoueursMin=" + nbJoueursMin + ", nbJoueursMax=" + nbJoueursMax + ", dureeJour=" + dureeJour + ", dureeNuit=" + dureeNuit + ", heureDebut=" + heureDebut + ", probaPouvoir=" + probaPouvoir + ", proportionLG=" + proportionLG + '}';
     }
+
+    
     
     
     
