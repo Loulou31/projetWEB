@@ -11,8 +11,8 @@ package modele;
  */
 public class Humain extends Villageois{
 
-    public Humain(boolean vivant, Pouvoir pouvoir) {
-        super(pouvoir, vivant);
+    public Humain(String pseudo) {
+        super(pseudo);
     }
     
     @Override

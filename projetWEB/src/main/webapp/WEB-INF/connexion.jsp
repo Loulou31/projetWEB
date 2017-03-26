@@ -2,10 +2,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <html>
     <head>
-        <meta charset="UTF-8" />
+        <meta content="text/html ; charset=UTF-8">
+        <link rel="stylesheet" href="designWEB.css" />
         <title>Start Page</title>
-        <link rel="stylesheet" type="text/css" href="design.css" />
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+       
+       
     </head>
     <body>
         <div id="menu">

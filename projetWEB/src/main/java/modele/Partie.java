@@ -102,6 +102,7 @@ public class Partie {
         }
     }
 
+
     @Override
     public String toString() {
         return "Partie{" + "idPartie=" + idPartie + ", createur=" + createur + ", nbJoueursMin=" + nbJoueursMin + ", nbJoueursMax=" + nbJoueursMax + ", dureeJour=" + dureeJour + ", dureeNuit=" + dureeNuit + ", heureDebut=" + heureDebut + ", probaPouvoir=" + probaPouvoir + ", proportionLG=" + proportionLG + '}';

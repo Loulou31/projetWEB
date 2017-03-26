@@ -63,6 +63,8 @@ public class Controleur extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
             } else if (action.equals("deconnexion")){
                 actionDeconnexion(request, response);
+            } else if (action.equals("addPlayer")){
+                
             } else {
                 invalidParameters(request, response);
             }
@@ -106,11 +108,7 @@ public class Controleur extends HttpServlet {
         request.setAttribute("partie", partie);
         String view = request.getParameter("view");
         if (view.equals("rejoindre")) {
-            if (!partie.enAttente(partieDAO)){
-                request.getRequestDispatcher("rejoindre.jsp").forward(request, response);
-            }else{
-                request.getRequestDispatcher("attenteDebutPartie.jsp").forward(request, response);
-            }
+            actionAddPlayer(request, response, partieDAO) ; 
         }
     }
 
@@ -128,6 +126,15 @@ public class Controleur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/newPartie.jsp").forward(request, response);
     }
 
+    private void actionAddPlayer(HttpServletRequest request,
+            HttpServletResponse response, PartieDAO partieDAO)
+            throws IOException, ServletException{
+        request.setAttribute("login", request.getSession().getAttribute("login"));
+        Partie partie = partieDAO.getPartie(Integer.parseInt(request.getParameter("id")));
+        request.setAttribute("partie", partie) ;
+        // Ajouter id partie à l'utilisateur
+        request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
+    }
     /**
      * Actions possibles en POST : ajouter, supprimer, modifier. Une fois
      * l’action demandée effectuée, on retourne à la page d’accueil avec

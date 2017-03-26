@@ -5,6 +5,8 @@
  */
 package dao;
 
+import java.sql.* ; 
+import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Villageois;
@@ -19,9 +21,19 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
         super(ds);
     }
     
-//    public List<Villageois> getListVillageois(int idPartie){
-//        
-//    }
+    public List<Villageois> getListVillageois(int idPartie){
+        List<Villageois> result = new ArrayList<Villageois>() ;
+        try(
+                Connection conn = getConn();
+                Statement st = conn.createStatement() ; 
+                 ) {
+                ResultSet rs = st.executeQuery("SELECT Pseudo FROM JOUEUR") ; 
+                // Pas possible d'instancier un villageois car abstract
+            }  catch (SQLException e) {
+                    throw new DAOException("Erreur BD " + e.getMessage(), e);
+            }
+        return result ; 
+    }
     
 //    public Villageois getVillageois(String pseudo){
 //        
