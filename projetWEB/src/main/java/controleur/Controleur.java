@@ -20,7 +20,8 @@ public class Controleur extends HttpServlet {
 
     @Resource(name = "jdbc/loupGarou")
     private DataSource ds;
-
+    
+   
     /* pages d’erreurs */
     private void invalidParameters(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {

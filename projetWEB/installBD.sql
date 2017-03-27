@@ -114,6 +114,9 @@ INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut
 VALUES (5, 10, 1, 1, 8, 0.2, 0.5) ; 
 
 INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
+VALUES (2, 2, 1, 1, 8, 0.2, 0.5) ; 
+
+INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
 VALUES (10, 20, 1, 1, 8, 0.2, 0.5) ; 
 
 INSERT INTO DECISION_HUMAIN VALUES (1, 321, 'bagouc', 'loulou', 0, SYSDATE, 1 , null, null , null , null , null ,
