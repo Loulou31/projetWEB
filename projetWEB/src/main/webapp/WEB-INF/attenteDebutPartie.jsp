@@ -4,6 +4,7 @@
     Author     : nicolasl
 --%>
 
+<%@page import="modele.Temps"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,6 +14,10 @@
         <title>Attente Début</title>
     </head>
     <body>
+        <%  Temps temps = new Temps();
+            %>
+        <p><%=temps.getTemps()%></p>
+        
         <h1 id="header">Attendez les derniers joueurs ou le début de la partie ! </h1>
         <a href="controleur?action=index">Quitter la partie</a>
     </body>

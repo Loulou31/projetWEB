@@ -82,6 +82,7 @@ public class Controleur extends HttpServlet {
     
     private void actionAccueil(HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
+        response.setIntHeader("Refresh",1);
         request.getRequestDispatcher("/WEB-INF/connexion.jsp").forward(request, response);
     }
     
@@ -134,8 +135,16 @@ public class Controleur extends HttpServlet {
         Partie partie = partieDAO.getPartie(Integer.parseInt(request.getParameter("id")));
         request.setAttribute("partie", partie) ;
         // Ajouter id partie à l'utilisateur
+        actionWaitGame(request, response);
+    }
+    
+    private void actionWaitGame(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException{
+        response.setIntHeader("Refresh",1);
         request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
     }
+    
     /**
      * Actions possibles en POST : ajouter, supprimer, modifier. Une fois
      * l’action demandée effectuée, on retourne à la page d’accueil avec
