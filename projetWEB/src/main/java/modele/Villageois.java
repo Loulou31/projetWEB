@@ -12,7 +12,7 @@ package modele;
 public abstract class Villageois {
     
     protected String pseudo;
-    protected String role ; 
+    protected int role ; 
     protected Boolean vivant;
     protected Pouvoir pouvoir;
     protected int partie ; 
@@ -20,7 +20,7 @@ public abstract class Villageois {
 
     public Villageois(String pseudo) {
         this.pseudo = pseudo;
-        this.role = null ; 
+        this.role = 0 ; 
         this.vivant = true ;
         this.pouvoir = null ;
         this.partie = 0 ; 
@@ -38,7 +38,7 @@ public abstract class Villageois {
         return pseudo;
     }
 
-    public String getRole() {
+    public int getRole() {
         return role;
     }
 
@@ -46,7 +46,7 @@ public abstract class Villageois {
         return partie;
     }
 
-    public void setRole(String role) {
+    public void setRole(int role) {
         this.role = role;
     }
 
