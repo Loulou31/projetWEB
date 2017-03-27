@@ -21,7 +21,7 @@ CREATE TABLE MEMBRE (
 
 CREATE TABLE JOUEUR (
     login varchar(10) NOT NULL , 
-    Rôle varchar(10) , 
+    rolePartie int CONSTRAINT roleCheck (rolePartie >= 0 AND rolePartie < 3)  , 
     Statut int CONSTRAINT StatPos CHECK (Statut = 0 OR Statut = 1), 
     Pouvoir varchar(10),
     IdPartie int, 
