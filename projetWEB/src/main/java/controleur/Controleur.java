@@ -119,6 +119,8 @@ public class Controleur extends HttpServlet {
             throws IOException, ServletException {
         List<Partie> parties = partieDAO.getListeParties();
         request.setAttribute("parties", parties);
+        HttpSession session = request.getSession();
+        session.getAttribute("membre");
         request.getRequestDispatcher("/WEB-INF/choseGame.jsp").forward(request, response);
     }
 
