@@ -3,6 +3,7 @@ package controleur;
 import dao.DAOException;
 import dao.MembreDAO;
 import dao.PartieDAO;
+import dao.VillageoisDAO;
 import java.io.*;
 import java.util.List;
 import javax.annotation.Resource;
@@ -11,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
 import modele.Partie;
+import modele.Villageois;
 
 /**
  * Le contrôleur de l'application.
@@ -131,10 +133,12 @@ public class Controleur extends HttpServlet {
     private void actionAddPlayer(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException{
-        request.setAttribute("login", request.getSession().getAttribute("login"));
-        Partie partie = partieDAO.getPartie(Integer.parseInt(request.getParameter("id")));
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
+        String login = request.getSession().getAttribute("membre").toString() ;
+        int idPartie = Integer.parseInt(request.getParameter("id")) ; 
+        Partie partie = partieDAO.getPartie(idPartie);
         request.setAttribute("partie", partie) ;
-        // Ajouter id partie à l'utilisateur
+        villageoisDAO.addPlayer(login, idPartie) ;
         actionWaitGame(request, response);
     }
     
@@ -195,7 +199,6 @@ public class Controleur extends HttpServlet {
     private void actionAjoutMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
-        HttpSession session = request.getSession();
         if (!membreDAO.idCorrect(request.getParameter("pseudo"), request.getParameter("password"))){
             membreDAO.ajouterMembre(request.getParameter("login"), request.getParameter("password"));
             request.getRequestDispatcher("/WEB-INF/connexion.jsp").forward(request, response);

@@ -9,28 +9,38 @@ package modele;
  *
  * @author gaunetc
  */
-public abstract class Villageois {
+public class Villageois {
     
     protected String pseudo;
     protected int role ; 
-    protected Boolean vivant;
-    protected Pouvoir pouvoir;
+    protected int vivant;
+    protected String pouvoir;
     protected int partie ; 
     
 
     public Villageois(String pseudo) {
         this.pseudo = pseudo;
         this.role = 0 ; 
-        this.vivant = true ;
+        this.vivant = 1 ;
         this.pouvoir = null ;
         this.partie = 0 ; 
     }
 
-    public Pouvoir getPouvoir() {
+    public Villageois(String pseudo, int role, int vivant, String pouvoir, int partie) {
+        this.pseudo = pseudo;
+        this.role = role;
+        this.vivant = vivant;
+        this.pouvoir = pouvoir;
+        this.partie = partie;
+    }
+    
+    
+
+    public String getPouvoir() {
         return pouvoir;
     }
 
-    public Boolean getVivant() {
+    public int getVivant() {
         return vivant;
     }
 
@@ -50,7 +60,7 @@ public abstract class Villageois {
         this.role = role;
     }
 
-    public void setPouvoir(Pouvoir pouvoir) {
+    public void setPouvoir(String pouvoir) {
         this.pouvoir = pouvoir;
     }
 
@@ -58,11 +68,15 @@ public abstract class Villageois {
         this.partie = partie;
     }
     
-        public void setVivant(Boolean vivant) {
+        public void setVivant(int vivant) {
         this.vivant = vivant;
     }
         
-    public abstract Boolean accesRepaireLoup();
+    public Boolean accesRepaireLoup() {
+        return (this.role == 1) ; 
+    }
+    
+    
     
     @Override
     public String toString() {
