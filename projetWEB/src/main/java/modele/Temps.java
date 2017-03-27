@@ -21,12 +21,24 @@ public final class Temps {
         int min = cal.MINUTE;
         int sec = cal.SECOND;
         
-        return "L'heure d'arrivée sur la page est : "
+        return "L'heure est : "
                 + new DecimalFormat("00").format(cal.get(heure))
                 + ":"
                 + new DecimalFormat("00").format(cal.get(min))
                 + ":"
                 + new DecimalFormat("00").format(cal.get(sec));
+    }
+    
+    public static GregorianCalendar longToCal(long date){
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTimeInMillis(date);
+        return cal;
+    } 
+    
+    public static long calToLong(int heures, int minutes){
+        GregorianCalendar cal = new GregorianCalendar();
+        GregorianCalendar cal2 = new GregorianCalendar(cal.get(cal.YEAR), cal.get(cal.MONTH), cal.get(cal.DAY_OF_MONTH), heures, minutes);
+        return cal2.getTimeInMillis();
     }
     
 }

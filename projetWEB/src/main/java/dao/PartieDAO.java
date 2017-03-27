@@ -117,4 +117,16 @@ public class PartieDAO extends AbstractDatabaseDAO {
         return 0;
     }
     
+    public int getDateDebut(int id){
+        try(Connection conn = getConn()){
+        PreparedStatement st = conn.prepareStatement
+         ("SELECT FROM PARTIE WHERE IdPartie = ?");
+        st.setInt(1, id);
+        st.executeUpdate();
+        } catch(SQLException e){
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return 1;
+    }
+    
 }

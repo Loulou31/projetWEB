@@ -101,7 +101,7 @@ CREATE TABLE PARTIE (
     NbJoueursMax int CONSTRAINT NbJouMaxPos CHECK (NbJoueursMax > 0) , 
     DureeJour int CONSTRAINT DureeJPos CHECK (DureeJour > 0),
     DureeNuit int CONSTRAINT DureeNPos CHECK (DureeNuit > 0), 
-    HeureDebut int CONSTRAINT DebutPos CHECK (HeureDebut > 0),
+    HeureDebut bigint CONSTRAINT DebutPos CHECK (HeureDebut > 0),
     ProbaPouvoir float CONSTRAINT ProbaPos CHECK (ProbaPouvoir >= 0.0 AND ProbaPouvoir <= 1.0 ),
     ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0), 
     CONSTRAINT creatorForeign FOREIGN KEY (login) REFERENCES MEMBRE(login)
