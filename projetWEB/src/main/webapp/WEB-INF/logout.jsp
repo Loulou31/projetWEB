@@ -13,6 +13,6 @@
     </head>
     <body>
         <h1>En espérant vous revoir très vite !</h1>
-        <li><a href="controleur?">Retour vers l'écran de connexion</a></li>
+        <a href="controleur?">Retour vers l'écran de connexion</a>
     </body>
 </html>

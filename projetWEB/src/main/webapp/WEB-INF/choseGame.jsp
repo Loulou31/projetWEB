@@ -10,6 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="designWEB.css" />
         <title>Choisir une partie</title>
     </head>
     <body>
@@ -20,7 +21,7 @@
         <h2> Parties en attente de joueurs </h2>
         <tr>
         <table>
-            <tr>
+            <tr class="bloc-variable">
                 <th>Numéro  </th>
                 <th>Nombre Players entre  </th>
                 <th>et  </th>

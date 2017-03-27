@@ -1,0 +1,70 @@
+body
+{
+	margin: 10px 0 ;
+	padding: 0 ;
+	text-align: center ;
+	font: 0.3em "Trebuchet MS", helvetica, sans-serif ;
+	background: #dea ;
+}
+
+/*
+
+#menu
+{
+        border-bottom : 1px solid #9EA0A1;
+        padding-bottom : 53px;
+}
+
+#conteneur
+{
+	width: 770px ;
+	margin: 0 auto ;
+	text-align: left ;
+	border: 2px solid #ab4 ;
+	background: #fff ;
+}
+
+
+#header
+{
+	height: 258px;
+	background: url(~/Téléchargements/LG1.jpg) no-repeat left top;
+}
+
+
+div#onglets
+{
+        position : absolute;
+        border : 1px solid transparent;
+        padding : 0;
+        font : bold 25px Batang, arial, serif;
+        list-style-type : none;
+        left : 50%;
+        margin-top : 0;
+        width : 680px;
+        margin-left : -340px;  la moitié de width 
+
+}
+
+
+.bloc-variable {
+  position:fixed;
+  border:solid 1px;
+  top:10px;
+  left:120px;
+  bottom:10px;
+  right:10px;
+}
+
+
+
+#onglets li
+{
+    float : left;
+    height : 49px;  à modifier suivant la taille de la police pour centrer le texte dans l'onglet 
+    background-color: #F4F9FD;
+    margin : 2px 2px 0 2px !important;   Pour les navigateurs autre que IE 
+    margin : 1px 2px 0 2px;   Pour IE  
+    border : 1px solid #9EA0A1;
+}
+*/

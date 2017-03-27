@@ -11,8 +11,8 @@ package modele;
  */
 public class LoupGarou extends Villageois{
 
-    public LoupGarou(Pouvoir pouvoir, Boolean vivant) {
-        super(pouvoir, vivant);
+    public LoupGarou(String pseudo) {
+        super(pseudo);
     }
     
     @Override

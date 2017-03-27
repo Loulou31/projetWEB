@@ -5,6 +5,10 @@
  */
 package modele;
 
+import dao.PartieDAO;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author nicolasl
@@ -16,6 +20,7 @@ public class Partie {
     private int nbJoueursMax ; 
     private int dureeJour ; 
     private int dureeNuit ;
+    //Il faut absolument que l'heure de début soit en réalité une date avec l'heure du début :/
     private int heureDebut ; 
     private float probaPouvoir ; 
     private float proportionLG ; 
@@ -75,6 +80,28 @@ public class Partie {
     public float getProportionLG() {
         return proportionLG;
     }
+    
+    public Boolean enAttente(PartieDAO partieDAO){
+        SimpleDateFormat d = new SimpleDateFormat ("dd/MM/yyyy" );
+        SimpleDateFormat h = new SimpleDateFormat ("hh:mm");
+        Date currentTime_1 = new Date();
+        String dateString = d.format(currentTime_1);
+        String heureString = h.format(currentTime_1);
+        //A IMPLEMENTER: gestion du temps.
+        if (partieDAO.getNbJoueurs(idPartie)<nbJoueursMin){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public Boolean complet(PartieDAO partieDAO){
+        if (partieDAO.getNbJoueurs(idPartie)==nbJoueursMax){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
     @Override
     public String toString() {
