@@ -134,11 +134,11 @@ public class Controleur extends HttpServlet {
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException{
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
-        String login = request.getSession().getAttribute("login").toString() ;
+        String login = request.getSession().getAttribute("membre").toString() ;
         int idPartie = Integer.parseInt(request.getParameter("id")) ; 
         Partie partie = partieDAO.getPartie(idPartie);
         request.setAttribute("partie", partie) ;
-        villageoisDAO.addGameToPlayer(login, idPartie) ;
+        villageoisDAO.addPlayer(login, idPartie) ;
         actionWaitGame(request, response);
     }
     

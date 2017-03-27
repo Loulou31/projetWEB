@@ -56,11 +56,52 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
         return villageois ; 
     }
     
-    public void addGameToPlayer(String pseudo, int idPartie){
+    public void addPlayer(String pseudo, int idPartie){
         try(Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement    
-                ("UPDATE JOUEUR SET IdPartie = ? WHERE login = ?") ;
-            st.setInt(1, idPartie) ; 
+                ("INSERT INTO JOUEUR VALUES  (?, 0, 1, null, ?) ") ;
+            st.setString(1, pseudo) ; 
+            st.setInt(2, idPartie) ; 
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+    
+    
+    
+    /* Defini le role (humain ou LG) du joueur en début de partie */
+    public void updatePlayerRole(String pseudo, int role){
+        try(Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement    
+                ("UPDATE JOUEUR SET rolePartie = ? WHERE login = ?") ;
+            st.setInt(1, role) ; 
+            st.setString(2, pseudo) ; 
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+    
+    /* Mise à jour du statut vivant ou mort du joueur */
+    public void updatePlayerStatus(String pseudo, int statut){
+        try(Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement    
+                ("UPDATE JOUEUR SET Statut = ? WHERE login = ?") ;
+            st.setInt(1, statut) ; 
+            st.setString(2, pseudo) ; 
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+    
+    /* Mise à jour du pouvoir du joueur */
+    public void updatePlayerStatus(String pseudo, String pouvoir){
+        try(Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement    
+                ("UPDATE JOUEUR SET Pouvoir = ? WHERE login = ?") ;
+            st.setString(1, pouvoir) ; 
             st.setString(2, pseudo) ; 
             st.executeUpdate();
         } catch (SQLException e) {
