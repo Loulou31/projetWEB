@@ -12,6 +12,7 @@ import java.util.HashSet;
  * @author gaunetc
  */
 public class Decision {
+    private int idDecision; 
     private String joueurConcerne;
     private boolean etat;
     private HashSet<String> votants;
@@ -24,6 +25,10 @@ public class Decision {
 
     public String getJoueurConcerne() {
         return joueurConcerne;
+    }
+    
+    public int getIdDecision() {
+        return idDecision;
     }
 
     public boolean isEtat() {

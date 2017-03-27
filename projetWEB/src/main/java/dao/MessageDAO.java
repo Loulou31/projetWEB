@@ -6,6 +6,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -48,6 +49,51 @@ public class MessageDAO extends AbstractDatabaseDAO {
      /**
      * Renvoie la liste des messages de la table Message_Repaire.
      */
+    public List<Message> getListMessageRepaire() {
+        List<Message> result = new ArrayList<Message>();
+        try (
+	     Connection conn = getConn();
+	     Statement st = conn.createStatement();
+	     ) {
+            ResultSet rs = st.executeQuery("SELECT * FROM Message_Repaire");
+            while (rs.next()) {
+                Message message =
+                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"));
+                result.add(message);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+	}
+	return result;
+    }
     
+    /**
+     * Ajoute un message dans la tale MessageSalleDiscussion
+     */
+    public void ajouteMessageSalleDiscussion (String expediteur, String contenu) {
+        try (Connection conn = getConn()) {	     
+	     PreparedStatement st = conn.prepareStatement
+	       ("INSERT INTO Message_Salle_Discussion VALUES (?, ?, SYSDATE)");
+            st.setString(1,expediteur);
+            st.setString(2, contenu);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
     
+    /**
+     * Ajoute un message dans la tale MessageRepaire
+     */
+    public void ajouteMessageRepaire (String expediteur, String contenu) {
+        try (Connection conn = getConn()) {	     
+	     PreparedStatement st = conn.prepareStatement
+	       ("INSERT INTO Message_Repaire VALUES (?, ?, SYSDATE)");
+            st.setString(1,expediteur);
+            st.setString(2, contenu);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
 }
