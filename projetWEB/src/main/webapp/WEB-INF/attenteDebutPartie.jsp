@@ -19,6 +19,6 @@
         <p><%=temps.getTemps()%></p>
         
         <h1 id="header">Attendez les derniers joueurs ou le début de la partie ! </h1>
-        <a href="controleur?action=index">Quitter la partie</a>
+        <a href="controleur?action=index">Retourner au menu principal</a>
     </body>
 </html>
