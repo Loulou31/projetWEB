@@ -49,13 +49,8 @@ public class MembreDAO extends AbstractDatabaseDAO{
         }
     }
     
-    public Membre getMembre(String pseudo){
-        //Retourne le membre correspondant au pseudo.
-        return (new Membre("A effacer"));
-    }
-    
-    public void ajouterPartie(String pseudo, int idPartie){
-        //Modifie le champ partie de membre dans la BD
+    public Boolean memberHasPartie(String pseudo){
+        return (true);
     }
     
 }

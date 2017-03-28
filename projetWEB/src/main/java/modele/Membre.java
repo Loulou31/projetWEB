@@ -28,6 +28,7 @@ public class Membre {
     public void setPartie(Partie partie) {
         this.partie = partie;
     }
+
     
     @Override
     public String toString() {
