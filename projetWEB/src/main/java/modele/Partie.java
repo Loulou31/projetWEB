@@ -82,17 +82,18 @@ public class Partie {
     }
     
     public Boolean enAttente(PartieDAO partieDAO){
-        SimpleDateFormat d = new SimpleDateFormat ("dd/MM/yyyy" );
-        SimpleDateFormat h = new SimpleDateFormat ("hh:mm");
-        Date currentTime_1 = new Date();
-        String dateString = d.format(currentTime_1);
-        String heureString = h.format(currentTime_1);
-        //A IMPLEMENTER: gestion du temps.
-        if (partieDAO.getNbJoueurs(idPartie)<nbJoueursMin){
-            return true;
-        }else{
-            return false;
-        }
+//        SimpleDateFormat d = new SimpleDateFormat ("dd/MM/yyyy" );
+//        SimpleDateFormat h = new SimpleDateFormat ("hh:mm");
+//        Date currentTime_1 = new Date();
+//        String dateString = d.format(currentTime_1);
+//        String heureString = h.format(currentTime_1);
+//        //A IMPLEMENTER: gestion du temps.
+//        if (partieDAO.getNbJoueurs(idPartie)<nbJoueursMin){
+//            return true;
+//        }else{
+//            return false;
+//        }
+         return false;
     }
     public Boolean complet(PartieDAO partieDAO){
         if (partieDAO.getNbJoueurs(idPartie)==nbJoueursMax){

@@ -68,8 +68,8 @@ public class Controleur extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
             } else if (action.equals("deconnexion")){
                 actionDeconnexion(request, response);
-            } else if (action.equals("addPlayer")){
-                
+            } else if (action.equals("newDecision")){
+                actionNewDecision(request, response) ; 
             } else {
                 invalidParameters(request, response);
             }
@@ -129,7 +129,12 @@ public class Controleur extends HttpServlet {
         if (membreDAO.memberHasPartie(pseudo)){
             VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
             Villageois villageois = villageoisDAO.getVillageois(pseudo);
-            actionRejoindreSalleDiscussion(request,response,villageois);
+            Partie partie = partieDAO.getPartie(villageois.getPartie());
+            if (partie.enAttente(partieDAO)){
+                actionWaitGame(request,response);
+            }else{
+                actionRejoindreSalleDiscussion(request,response,villageois);
+            }
         }else{
             request.getRequestDispatcher("/WEB-INF/choseGame.jsp").forward(request, response);
         }
@@ -173,6 +178,27 @@ public class Controleur extends HttpServlet {
         response.setIntHeader("Refresh",1);
         request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
     }
+    
+    
+    private void actionNewDecision(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException{
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString() ; 
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
+        Villageois villageois = villageoisDAO.getVillageois(pseudo) ; 
+        int idPartie = villageois.getPartie() ; 
+        System.out.println("ID PARTIE :" + idPartie ) ; 
+        List<Villageois> villageoisList = villageoisDAO.getListVillageois(idPartie) ;
+        request.setAttribute("villageoisList", villageoisList) ; 
+        request.getRequestDispatcher("/WEB-INF/decision.jsp").forward(request, response);
+    }
+    
+    
+    
+    
+    
+    
     
     /**
      * Actions possibles en POST : ajouter, supprimer, modifier. Une fois

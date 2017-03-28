@@ -13,6 +13,8 @@
     </head>
     <body>
         <h1>Place du village !</h1>
+        <a href="controleur?action=newDecision">Proposer une décision</a>
+        
         
     </body>
 </html>
