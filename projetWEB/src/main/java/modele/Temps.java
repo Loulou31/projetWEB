@@ -29,6 +29,7 @@ public final class Temps {
                 + new DecimalFormat("00").format(cal.get(sec));
     }
     
+
     public static GregorianCalendar longToCal(long date){
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTimeInMillis(date);
@@ -39,6 +40,13 @@ public final class Temps {
         GregorianCalendar cal = new GregorianCalendar();
         GregorianCalendar cal2 = new GregorianCalendar(cal.get(cal.YEAR), cal.get(cal.MONTH), cal.get(cal.DAY_OF_MONTH), heures, minutes);
         return cal2.getTimeInMillis();
+
+    public static Boolean estJour(int idPartie){
+        return (true);
+    }
+    
+    public static Boolean estNuit(int idPartie){
+        return (false);
     }
     
 }

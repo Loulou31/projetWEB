@@ -11,7 +11,9 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
+import modele.Membre;
 import modele.Partie;
+import modele.Temps;
 import modele.Villageois;
 
 /**
@@ -121,9 +123,29 @@ public class Controleur extends HttpServlet {
             throws IOException, ServletException {
         List<Partie> parties = partieDAO.getListeParties();
         request.setAttribute("parties", parties);
-        request.getRequestDispatcher("/WEB-INF/choseGame.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        MembreDAO membreDAO = new MembreDAO(ds);
+        Membre membre = MembreDAO.getMembre(session.getAttribute("membre").toString());
+        if (villageois.estEnPartie()){
+            actionRejoindreSalleDiscussion(request,response,villageois);
+        }else{
+            request.getRequestDispatcher("/WEB-INF/choseGame.jsp").forward(request, response);
+        }
     }
-
+    
+    private void actionRejoindreSalleDiscussion(HttpServletRequest request,
+            HttpServletResponse response,Villageois villageois)throws IOException, ServletException {
+        if (Temps.estJour(villageois.getPartie())){
+            request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
+        }else{
+            if (villageois.getRole() == 1){
+                request.getRequestDispatcher("/WEB-INF/repaire.jsp").forward(request, response);
+            }else{
+                request.getRequestDispatcher("/WEB-INF/nuit.jsp").forward(request, response);
+            }
+        }
+    }
+    
     private void actionNewGame(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {

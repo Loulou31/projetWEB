@@ -31,7 +31,7 @@ public class Partie {
                   int nbJoueursMax, 
                   int dureeJour, 
                   int dureeNuit, 
-                  int heureDebut, 
+                  long heureDebut, 
                   float probaPouvoir, 
                   float proportionLG) {
         this.idPartie = idPartie;

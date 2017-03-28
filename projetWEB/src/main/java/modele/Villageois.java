@@ -76,7 +76,9 @@ public class Villageois {
         return (this.role == 1) ; 
     }
     
-    
+    public Boolean estEnPartie(){
+        return (this.partie != 0);
+    }
     
     @Override
     public String toString() {
