@@ -235,14 +235,21 @@ public class Controleur extends HttpServlet {
     private void actionAddGame(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException {
+        Temps temps = new Temps();
+        int heureDeb = temps.calToInt(Integer.parseInt(request.getParameter("beginHour")),Integer.parseInt(request.getParameter("beginMin")));
         partieDAO.ajouterPartie(Integer.parseInt(request.getParameter("JMin")), 
                                 Integer.parseInt(request.getParameter("JMax")), 
                                 "louise", 
                                 Integer.parseInt(request.getParameter("day")),
                                 Integer.parseInt(request.getParameter("night")),
-                                Integer.parseInt(request.getParameter("begin")),
+                                heureDeb,
                                 Float.parseFloat(request.getParameter("power")),
                                 Float.parseFloat(request.getParameter("werewolf")));
+        try {
+            Thread.sleep(3000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
         request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
     }
 

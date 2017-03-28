@@ -29,16 +29,31 @@ public class Temps {
                 + new DecimalFormat("00").format(cal.get(sec));
     }
     
-    public GregorianCalendar longToCal(long date){
+    public GregorianCalendar intToCal(int date){
         GregorianCalendar cal = new GregorianCalendar();
-        cal.setTimeInMillis(date);
+        //on ajoute les 3 derniers chiffres
+        cal.setTimeInMillis((long)(date)*1000);
         return cal;
     } 
     
-    public long calToLong(int heures, int minutes){
+    public String calToString(GregorianCalendar gc){    
+    	return String.valueOf(gc.get(gc.DATE))
+                + "-"
+                + String.valueOf(gc.get(gc.MONTH) + 1)
+                + "-"
+                + String.valueOf(gc.get(gc.YEAR))
+                + "  "
+                + new DecimalFormat("00").format(gc.get(gc.HOUR_OF_DAY))
+                + ":"
+                + new DecimalFormat("00").format(gc.get(gc.MINUTE))
+                ;
+    }
+    
+    
+    public int calToInt(int heures, int minutes){
         GregorianCalendar cal = new GregorianCalendar();
         GregorianCalendar cal2 = new GregorianCalendar(cal.get(cal.YEAR), cal.get(cal.MONTH), cal.get(cal.DAY_OF_MONTH), heures, minutes);
-        return cal2.getTimeInMillis();
+        return (int)(Math.floor(cal2.getTimeInMillis())/1000);
     }
     
     public Boolean estJour(int idPartie){
