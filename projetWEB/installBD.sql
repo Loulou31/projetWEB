@@ -101,7 +101,7 @@ CREATE TABLE PARTIE (
     NbJoueursMax int CONSTRAINT NbJouMaxPos CHECK (NbJoueursMax > 0) , 
     DureeJour int CONSTRAINT DureeJPos CHECK (DureeJour > 0),
     DureeNuit int CONSTRAINT DureeNPos CHECK (DureeNuit > 0), 
-    HeureDebut bigint CONSTRAINT DebutPos CHECK (HeureDebut > 0),
+    HeureDebut number(19) CONSTRAINT DebutPos CHECK (HeureDebut > 0),
     ProbaPouvoir float CONSTRAINT ProbaPos CHECK (ProbaPouvoir >= 0.0 AND ProbaPouvoir <= 1.0 ),
     ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0), 
     CONSTRAINT creatorForeign FOREIGN KEY (login) REFERENCES MEMBRE(login)
@@ -111,13 +111,13 @@ CREATE TABLE PARTIE (
 
 
 INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
-VALUES (5, 10, 1, 1, 8, 0.2, 0.5) ; 
+VALUES (5, 10, 1, 1, 1490634258421, 0.2, 0.5) ; 
 
 INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
-VALUES (2, 2, 1, 1, 8, 0.2, 0.5) ; 
+VALUES (2, 2, 1, 1, 1490631258421, 0.2, 0.5) ; 
 
 INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
-VALUES (10, 20, 1, 1, 8, 0.2, 0.5) ; 
+VALUES (10, 20, 1, 1, 1490631258421, 0.2, 0.5) ; 
 
 INSERT INTO DECISION_HUMAIN VALUES (1, 321, 'bagouc', 'loulou', 0, SYSDATE, 1 , null, null , null , null , null ,
  null , null , null , null , null , null , null , null );
