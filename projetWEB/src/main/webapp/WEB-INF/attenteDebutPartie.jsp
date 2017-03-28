@@ -4,6 +4,7 @@
     Author     : nicolasl
 --%>
 
+<%@page import="modele.Partie"%>
 <%@page import="modele.Temps"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -18,6 +19,14 @@
             %>
         <p><%=temps.getTemps()%></p>
         
+        <% Partie partie = (Partie) request.getAttribute("partie");
+           long heureDeb = partie.getHeureDebut();
+        %>
+
+        <p>L'heure du début de partie est : <%=heureDeb%></p>
+
+       
+
         <h1 id="header">Attendez les derniers joueurs ou le début de la partie ! </h1>
         <a href="controleur?action=index">Retourner au menu principal</a>
     </body>
