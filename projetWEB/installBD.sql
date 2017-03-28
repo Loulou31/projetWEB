@@ -111,7 +111,7 @@ CREATE TABLE PARTIE (
 
 
 INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
-VALUES (5, 10, 1, 1, 10, 0.2, 0.5) ; 
+VALUES (5, 10, 1, 1, 10000000000000000, 0.2, 0.5) ; 
 
 INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
 VALUES (2, 2, 1, 1, 10, 0.2, 0.5) ; 
