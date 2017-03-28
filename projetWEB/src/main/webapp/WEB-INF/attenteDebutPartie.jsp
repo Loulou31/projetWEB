@@ -22,8 +22,9 @@
         <% Partie partie = (Partie) request.getAttribute("partie");
            long heureDeb = partie.getHeureDebut();
         %>
+
         <p>L'heure du début de partie est : <%=heureDeb%></p>
-        
+
        
 
         <h1 id="header">Attendez les derniers joueurs ou le début de la partie ! </h1>
