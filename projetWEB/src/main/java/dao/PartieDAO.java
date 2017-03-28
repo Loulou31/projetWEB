@@ -78,6 +78,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
     
+   
     public Partie getPartie(int id) {
         Partie partie; 
         try(Connection conn = getConn()){

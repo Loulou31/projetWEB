@@ -68,7 +68,16 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
         }
     }
     
-    
+    public void deletePlayer(String pseudo){
+        try(Connection conn = getConn()){
+        PreparedStatement st = conn.prepareStatement
+         ("DELETE FROM Joueur WHERE id = ?");
+        st.setString(1, pseudo);
+        st.executeUpdate();
+        } catch(SQLException e){
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
     
     /* Defini le role (humain ou LG) du joueur en début de partie */
     public void updatePlayerRole(String pseudo, int role){
