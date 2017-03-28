@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
+import modele.Membre;
 
 /**
  *
@@ -46,6 +47,15 @@ public class MembreDAO extends AbstractDatabaseDAO{
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
+    }
+    
+    public Membre getMembre(String pseudo){
+        //Retourne le membre correspondant au pseudo.
+        return (new Membre("A effacer"));
+    }
+    
+    public void ajouterPartie(String pseudo, int idPartie){
+        //Modifie le champ partie de membre dans la BD
     }
     
 }

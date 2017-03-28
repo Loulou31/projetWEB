@@ -29,4 +29,12 @@ public final class Temps {
                 + new DecimalFormat("00").format(cal.get(sec));
     }
     
+    public static Boolean estJour(int idPartie){
+        return (true);
+    }
+    
+    public static Boolean estNuit(int idPartie){
+        return (false);
+    }
+    
 }

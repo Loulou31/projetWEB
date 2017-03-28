@@ -51,7 +51,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
                                              rs.getString("Pouvoir"),
                                              rs.getInt("IdPartie")) ; 
             }  catch (SQLException e) {
-                    throw new DAOException("Erreur BD " + e.getMessage(), e);
+                    throw new DAOException("Erreur BD getVillageois()" + e.getMessage(), e);
             }
         return villageois ; 
     }
