@@ -13,9 +13,9 @@ import java.util.GregorianCalendar;
  *
  * @author lenetd
  */
-public final class Temps {
+public class Temps {
     
-    public static String getTemps(){
+    public String getTemps(){
         Calendar cal = new GregorianCalendar();
         int heure = cal.HOUR_OF_DAY;
         int min = cal.MINUTE;
@@ -29,23 +29,23 @@ public final class Temps {
                 + new DecimalFormat("00").format(cal.get(sec));
     }
     
-
-    public static GregorianCalendar longToCal(long date){
+    public GregorianCalendar longToCal(long date){
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTimeInMillis(date);
         return cal;
     } 
     
-    public static long calToLong(int heures, int minutes){
+    public long calToLong(int heures, int minutes){
         GregorianCalendar cal = new GregorianCalendar();
         GregorianCalendar cal2 = new GregorianCalendar(cal.get(cal.YEAR), cal.get(cal.MONTH), cal.get(cal.DAY_OF_MONTH), heures, minutes);
         return cal2.getTimeInMillis();
-
-    public static Boolean estJour(int idPartie){
+    }
+    
+    public Boolean estJour(int idPartie){
         return (true);
     }
     
-    public static Boolean estNuit(int idPartie){
+    public Boolean estNuit(int idPartie){
         return (false);
     }
     
