@@ -188,9 +188,10 @@ public class Controleur extends HttpServlet {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
         Villageois villageois = villageoisDAO.getVillageois(pseudo) ; 
         int idPartie = villageois.getPartie() ; 
+        System.out.println("ID PARTIE :" + idPartie ) ; 
         List<Villageois> villageoisList = villageoisDAO.getListVillageois(idPartie) ;
         request.setAttribute("villageoisList", villageoisList) ; 
-        request.getRequestDispatcher("/WEB-INF/newDecision.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/decision.jsp").forward(request, response);
     }
     
     

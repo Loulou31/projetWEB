@@ -25,9 +25,9 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
         List<Villageois> result = new ArrayList<Villageois>() ;
         try(Connection conn = getConn()) {
                 PreparedStatement st = conn.prepareStatement
-                    ("SELECT login FROM JOUEUR WHERE IdPartie = ?") ;
-                ResultSet rs = st.executeQuery() ; 
+                    ("SELECT * FROM JOUEUR WHERE IdPartie = ?") ;
                 st.setInt(1, idPartie) ; 
+                ResultSet rs = st.executeQuery() ; 
                 while (rs.next()){
                     Villageois villageois = 
                             new Villageois (rs.getString("login"),
@@ -38,7 +38,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
                     result.add(villageois) ; 
                 }
             }  catch (SQLException e) {
-                    throw new DAOException("Erreur BD " + e.getMessage(), e);
+                    throw new DAOException("Erreur BD Liste villageois" + e.getMessage(), e);
             }
         return result ; 
     }
@@ -59,7 +59,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
                                              rs.getString("Pouvoir"),
                                              rs.getInt("IdPartie")) ; 
             }  catch (SQLException e) {
-                    throw new DAOException("Erreur BD getVillageois()" + e.getMessage(), e);
+                    throw new DAOException("Erreur BD " + e.getMessage(), e);
             }
         return villageois ; 
     }
