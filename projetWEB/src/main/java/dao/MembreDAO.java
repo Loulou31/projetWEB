@@ -49,8 +49,33 @@ public class MembreDAO extends AbstractDatabaseDAO{
         }
     }
     
-    public Boolean memberHasPartie(String pseudo){
-        return (true);
+    public Membre getMembre(String pseudo){
+        Membre membre ; 
+        try(Connection conn = getConn()){
+            PreparedStatement st = conn.prepareStatement
+                    ("SELECT * FROM MEMBRE WHERE login = ?") ; 
+            st.setString(1, pseudo) ; 
+            ResultSet rs = st.executeQuery() ; 
+            rs.next() ; 
+            membre = new Membre (rs.getString("login")) ; 
+        }  catch (SQLException e) {
+                throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return membre ;
+    }
+    
+    public boolean memberHasPartie(String pseudo){
+        ResultSet rs ; 
+        try(Connection conn = getConn()){
+            PreparedStatement st = conn.prepareStatement
+                    ("SELECT * FROM JOUEUR WHERE login = ?") ; 
+            st.setString(1, pseudo) ; 
+            rs = st.executeQuery() ; 
+            return rs.next() ;
+
+        }  catch (SQLException e) {
+                throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
     }
     
 }
