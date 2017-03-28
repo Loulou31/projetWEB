@@ -129,7 +129,12 @@ public class Controleur extends HttpServlet {
         if (membreDAO.memberHasPartie(pseudo)){
             VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
             Villageois villageois = villageoisDAO.getVillageois(pseudo);
-            actionRejoindreSalleDiscussion(request,response,villageois);
+            Partie partie = partieDAO.getPartie(villageois.getPartie());
+            if (partie.enAttente(partieDAO)){
+                actionWaitGame(request,response);
+            }else{
+                actionRejoindreSalleDiscussion(request,response,villageois);
+            }
         }else{
             request.getRequestDispatcher("/WEB-INF/choseGame.jsp").forward(request, response);
         }
