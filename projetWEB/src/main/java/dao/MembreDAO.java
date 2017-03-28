@@ -50,12 +50,32 @@ public class MembreDAO extends AbstractDatabaseDAO{
     }
     
     public Membre getMembre(String pseudo){
-        //Retourne le membre correspondant au pseudo.
-        return (new Membre("A effacer"));
+        Membre membre ; 
+        try(Connection conn = getConn()){
+            PreparedStatement st = conn.prepareStatement
+                    ("SELECT * FROM MEMBRE WHERE login = ?") ; 
+            st.setString(1, pseudo) ; 
+            ResultSet rs = st.executeQuery() ; 
+            rs.next() ; 
+            membre = new Membre (rs.getString("login")) ; 
+        }  catch (SQLException e) {
+                throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return membre ;
     }
     
-    public void ajouterPartie(String pseudo, int idPartie){
-        //Modifie le champ partie de membre dans la BD
+    public boolean memberHasPartie(String pseudo){
+        ResultSet rs ; 
+        try(Connection conn = getConn()){
+            PreparedStatement st = conn.prepareStatement
+                    ("SELECT * FROM JOUEUR WHERE login = ?") ; 
+            st.setString(1, pseudo) ; 
+            rs = st.executeQuery() ; 
+            return rs.next() ;
+
+        }  catch (SQLException e) {
+                throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
     }
     
 }
