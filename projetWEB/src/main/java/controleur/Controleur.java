@@ -137,7 +137,8 @@ public class Controleur extends HttpServlet {
     
     private void actionRejoindreSalleDiscussion(HttpServletRequest request,
             HttpServletResponse response,Villageois villageois)throws IOException, ServletException {
-        if (Temps.estJour(villageois.getPartie())){
+        Temps temps = new Temps();
+        if (temps.estJour(villageois.getPartie())){
             request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
         }else{
             if (villageois.getRole() == 1){
