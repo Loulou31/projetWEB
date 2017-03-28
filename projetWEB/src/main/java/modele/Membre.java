@@ -11,7 +11,6 @@ package modele;
  */
 public class Membre {
     String pseudo;
-    Partie partie = null;
 
     public Membre(String pseudo) {
         this.pseudo = pseudo;
@@ -21,14 +20,7 @@ public class Membre {
         return pseudo;
     }
     
-    public Partie getPartie(){
-        return(this.partie);
-    }
 
-    public void setPartie(Partie partie) {
-        this.partie = partie;
-    }
-    
     @Override
     public String toString() {
         return "Membre{" + "pseudo=" + pseudo + '}';
