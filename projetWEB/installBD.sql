@@ -101,7 +101,7 @@ CREATE TABLE PARTIE (
     NbJoueursMax int CONSTRAINT NbJouMaxPos CHECK (NbJoueursMax > 0) , 
     DureeJour int CONSTRAINT DureeJPos CHECK (DureeJour > 0),
     DureeNuit int CONSTRAINT DureeNPos CHECK (DureeNuit > 0), 
-    HeureDebut number(19) CONSTRAINT DebutPos CHECK (HeureDebut > 0),
+    HeureDebut int CONSTRAINT DebutPos CHECK (HeureDebut > 0),
     ProbaPouvoir float CONSTRAINT ProbaPos CHECK (ProbaPouvoir >= 0.0 AND ProbaPouvoir <= 1.0 ),
     ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0), 
     CONSTRAINT creatorForeign FOREIGN KEY (login) REFERENCES MEMBRE(login)
@@ -111,7 +111,11 @@ CREATE TABLE PARTIE (
 
 
 INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
-VALUES (5, 10, 1, 1, 1490710573974, 0.2, 0.5) ; 
+<<<<<<< HEAD
+VALUES (5, 10, 1, 1, 1490714515, 0.2, 0.5) ; 
+=======
+VALUES (5, 10, 1, 1, 8, 0.2, 0.5) ; 
+>>>>>>> 172b59eba8297304bb37b3f4d6926a8dbeb5ad67
 
 INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
 VALUES (2, 2, 1, 1, 10, 0.2, 0.5) ; 

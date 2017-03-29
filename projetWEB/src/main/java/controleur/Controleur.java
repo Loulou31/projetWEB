@@ -68,7 +68,9 @@ public class Controleur extends HttpServlet {
             } else if (action.equals("inscription")){
                 request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
             } else if (action.equals("deconnexion")){
-                actionDeconnexion(request, response);   
+                actionDeconnexion(request, response);
+            } else if (action.equals("newDecision")){
+                actionNewDecision(request, response) ; 
             } else {
                 invalidParameters(request, response);
             }
@@ -180,6 +182,27 @@ public class Controleur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
     }
     
+    
+    private void actionNewDecision(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException{
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString() ; 
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
+        Villageois villageois = villageoisDAO.getVillageois(pseudo) ; 
+        int idPartie = villageois.getPartie() ; 
+        System.out.println("ID PARTIE :" + idPartie ) ; 
+        List<Villageois> villageoisList = villageoisDAO.getListVillageois(idPartie) ;
+        request.setAttribute("villageoisList", villageoisList) ; 
+        request.getRequestDispatcher("/WEB-INF/decision.jsp").forward(request, response);
+    }
+    
+    
+    
+    
+    
+    
+    
     /**
      * Actions possibles en POST : ajouter, supprimer, modifier. Une fois
      * l’action demandée effectuée, on retourne à la page d’accueil avec
@@ -241,14 +264,21 @@ public class Controleur extends HttpServlet {
     private void actionAddGame(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException {
+        Temps temps = new Temps();
+        int heureDeb = temps.calToInt(Integer.parseInt(request.getParameter("beginHour")),Integer.parseInt(request.getParameter("beginMin")));
         partieDAO.ajouterPartie(Integer.parseInt(request.getParameter("JMin")), 
                                 Integer.parseInt(request.getParameter("JMax")), 
                                 "louise", 
                                 Integer.parseInt(request.getParameter("day")),
                                 Integer.parseInt(request.getParameter("night")),
-                                Integer.parseInt(request.getParameter("begin")),
+                                heureDeb,
                                 Float.parseFloat(request.getParameter("power")),
                                 Float.parseFloat(request.getParameter("werewolf")));
+        try {
+            Thread.sleep(3000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
         request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
     }
 

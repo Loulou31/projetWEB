@@ -55,7 +55,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
                               String createur,
                               int dureeJour,
                               int dureeNuit, 
-                              long heureDebut, 
+                              int heureDebut, 
                               float probaPouvoir, 
                               float proportionLG) {
         try (
@@ -68,7 +68,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
             st.setInt(3, nbJoueursMax);
             st.setInt(4, dureeJour);
             st.setInt(5, dureeNuit);
-            st.setLong(6, heureDebut);
+            st.setInt(6, heureDebut);
             st.setFloat(7, probaPouvoir);
             st.setFloat(8, proportionLG);
             
@@ -93,7 +93,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
                                rs.getInt("NbJoueursMax"),
                                rs.getInt("DureeJour"),
                                rs.getInt("DureeNuit"),
-                               rs.getLong("HeureDebut"), 
+                               rs.getInt("HeureDebut"), 
                                rs.getFloat("ProbaPouvoir"), 
                                rs.getFloat("ProportionLG"));
         } catch(SQLException e){
