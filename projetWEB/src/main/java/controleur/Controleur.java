@@ -175,7 +175,7 @@ public class Controleur extends HttpServlet {
     private void actionWaitGame(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException{
-        response.setIntHeader("Refresh",1);
+        //response.setIntHeader("Refresh",1);
         request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
     }
     
@@ -263,20 +263,26 @@ public class Controleur extends HttpServlet {
             throws IOException, ServletException {
         Temps temps = new Temps();
         int heureDeb = temps.calToInt(Integer.parseInt(request.getParameter("beginHour")),Integer.parseInt(request.getParameter("beginMin")));
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString() ; 
         partieDAO.ajouterPartie(Integer.parseInt(request.getParameter("JMin")), 
                                 Integer.parseInt(request.getParameter("JMax")), 
-                                "louise", 
+                                pseudo, 
                                 Integer.parseInt(request.getParameter("day")),
                                 Integer.parseInt(request.getParameter("night")),
                                 heureDeb,
                                 Float.parseFloat(request.getParameter("power")),
                                 Float.parseFloat(request.getParameter("werewolf")));
-        try {
-            Thread.sleep(3000);
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-        request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
+
+        int idPartie = partieDAO.getIDPartie(pseudo);
+        Partie partie = partieDAO.getPartie(idPartie);
+        request.setAttribute("partie", partie) ;
+        
+        
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ;
+        villageoisDAO.addPlayer(pseudo, idPartie) ;
+        
+        actionWaitGame(request, response);
     }
 
 }
