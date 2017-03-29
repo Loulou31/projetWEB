@@ -4,11 +4,6 @@
  */
 
 
-DROP TABLE MEMBRE ; 
-DROP TABLE JOUEUR ; 
-DROP TABLE PARTIE ;
-DROP TABLE DECISION_HUMAIN; 
-DROP TABLE DECISION_LOUP; 
 
 
 CREATE SEQUENCE id_seq ; 
@@ -25,7 +20,8 @@ CREATE TABLE JOUEUR (
     Statut int CONSTRAINT StatPos CHECK (Statut = 0 OR Statut = 1), 
     Pouvoir varchar(10),
     IdPartie int, 
-    CONSTRAINT loginForeign FOREIGN KEY (login) REFERENCES MEMBRE(login)
+    CONSTRAINT loginForeign FOREIGN KEY (login) REFERENCES MEMBRE(login),
+    PRIMARY KEY (login)
 ) ; 
 
 
@@ -33,18 +29,19 @@ CREATE TABLE MESSAGE_SALLE_DISCUSSION (
     login_expediteur varchar(10) NOT NULL, 
     contenu varchar(100) NOT NULL, 
     date_envoi date, 
-    PRIMARY KEY (login_expediteur, date_envoi), 
     CONSTRAINT login_expediteurForeign FOREIGN KEY 
-        (login_expediteur) REFERENCES JOUEUR(login)
+        (login_expediteur) REFERENCES JOUEUR(login) ,
+    PRIMARY KEY (login_expediteur, date_envoi)
 );
 
 CREATE TABLE MESSAGE_REPAIRE (
     login_expediteur varchar(10) NOT NULL, 
     contenu varchar(100) NOT NULL, 
     date_envoi date, 
-    PRIMARY KEY (login_expediteur, date_envoi), 
     CONSTRAINT login_expediteurForeign2 FOREIGN KEY 
-        (login_expediteur) REFERENCES JOUEUR(login)
+        (login_expediteur) REFERENCES JOUEUR(login) ,
+    PRIMARY KEY (login_expediteur, date_envoi)
+    
 );
 
 CREATE TABLE DECISION_LOUP (
@@ -119,11 +116,14 @@ VALUES (2, 2, 1, 1, 10, 0.2, 0.5) ;
 INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
 VALUES (10, 20, 1, 1, 10, 0.2, 0.5) ; 
 
-INSERT INTO DECISION_HUMAIN VALUES (1, 321, 'bagouc', 'loulou', 0, SYSDATE, 1 , null, null , null , null , null ,
+/*INSERT INTO DECISION_HUMAIN VALUES (1, 321, 'bagouc', 'loulou', 0, SYSDATE, 1 , null, null , null , null , null ,
  null , null , null , null , null , null , null , null );
+*/
 
+/*
 SELECT * FROM MESSAGE_SALLE_DISCUSSION;
 SELECT * FROM MESSAGE_REPAIRE;
 SELECT * FROM DECISION_HUMAIN; 
 SELECT * FROM PARTIE; 
+*/
 
