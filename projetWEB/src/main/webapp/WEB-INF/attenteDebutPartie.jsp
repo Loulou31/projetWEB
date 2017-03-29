@@ -20,10 +20,11 @@
         <p><%=temps.getTemps()%></p>
         
         <% Partie partie = (Partie) request.getAttribute("partie");
-           long heureDeb = partie.getHeureDebut();
+           int intDeb = partie.getHeureDebut();
+           String heureDebut = temps.calToString(temps.intToCal(intDeb));
         %>
 
-        <p>L'heure du début de partie est : <%=heureDeb%></p>
+        <p>L'heure du début de partie est : <%=heureDebut%></p>
 
        
 

@@ -21,7 +21,7 @@ public class Partie {
     private int dureeJour ; 
     private int dureeNuit ;
     //Il faut absolument que l'heure de début soit en réalité une date avec l'heure du début :/
-    private long heureDebut ; 
+    private int heureDebut ; 
     private float probaPouvoir ; 
     private float proportionLG ; 
 
@@ -31,7 +31,7 @@ public class Partie {
                   int nbJoueursMax, 
                   int dureeJour, 
                   int dureeNuit, 
-                  long heureDebut, 
+                  int heureDebut, 
                   float probaPouvoir, 
                   float proportionLG) {
         this.idPartie = idPartie;
@@ -69,7 +69,7 @@ public class Partie {
         return dureeNuit;
     }
 
-    public long getHeureDebut() {
+    public int getHeureDebut() {
         return heureDebut;
     }
 
