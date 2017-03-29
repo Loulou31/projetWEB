@@ -25,7 +25,8 @@ CREATE TABLE JOUEUR (
     Statut int CONSTRAINT StatPos CHECK (Statut = 0 OR Statut = 1), 
     Pouvoir varchar(10),
     IdPartie int, 
-    CONSTRAINT loginForeign FOREIGN KEY (login) REFERENCES MEMBRE(login)
+    CONSTRAINT loginForeign FOREIGN KEY (login) REFERENCES MEMBRE(login),
+    PRIMARY KEY (login)
 ) ; 
 
 
@@ -33,18 +34,19 @@ CREATE TABLE MESSAGE_SALLE_DISCUSSION (
     login_expediteur varchar(10) NOT NULL, 
     contenu varchar(100) NOT NULL, 
     date_envoi date, 
-    PRIMARY KEY (login_expediteur, date_envoi), 
     CONSTRAINT login_expediteurForeign FOREIGN KEY 
-        (login_expediteur) REFERENCES JOUEUR(login)
+        (login_expediteur) REFERENCES JOUEUR(login) ,
+    PRIMARY KEY (login_expediteur, date_envoi)
 );
 
 CREATE TABLE MESSAGE_REPAIRE (
     login_expediteur varchar(10) NOT NULL, 
     contenu varchar(100) NOT NULL, 
     date_envoi date, 
-    PRIMARY KEY (login_expediteur, date_envoi), 
     CONSTRAINT login_expediteurForeign2 FOREIGN KEY 
-        (login_expediteur) REFERENCES JOUEUR(login)
+        (login_expediteur) REFERENCES JOUEUR(login) ,
+    PRIMARY KEY (login_expediteur, date_envoi)
+    
 );
 
 CREATE TABLE DECISION_LOUP (
