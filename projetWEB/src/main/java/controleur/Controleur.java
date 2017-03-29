@@ -2,6 +2,7 @@ package controleur;
 
 import dao.DAOException;
 import dao.MembreDAO;
+import dao.MessageDAO;
 import dao.PartieDAO;
 import dao.VillageoisDAO;
 import java.io.*;
@@ -128,9 +129,11 @@ public class Controleur extends HttpServlet {
             VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
             Villageois villageois = villageoisDAO.getVillageois(pseudo);
             Partie partie = partieDAO.getPartie(villageois.getPartie());
+            MessageDAO messageDAO = new MessageDAO(ds);
             if (partie.enAttente(partieDAO)){
                 actionWaitGame(request,response);
             }else{
+                request.setAttribute("messages", messageDAO.getListeMessagesSalleDiscussion());
                 actionRejoindreSalleDiscussion(request,response,villageois);
             }
         }else{
