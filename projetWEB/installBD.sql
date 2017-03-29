@@ -4,11 +4,6 @@
  */
 
 
-DROP TABLE MEMBRE ; 
-DROP TABLE JOUEUR ; 
-DROP TABLE PARTIE ;
-DROP TABLE DECISION_HUMAIN; 
-DROP TABLE DECISION_LOUP; 
 
 
 CREATE SEQUENCE id_seq ; 
@@ -121,11 +116,14 @@ VALUES (2, 2, 1, 1, 10, 0.2, 0.5) ;
 INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
 VALUES (10, 20, 1, 1, 10, 0.2, 0.5) ; 
 
-INSERT INTO DECISION_HUMAIN VALUES (1, 321, 'bagouc', 'loulou', 0, SYSDATE, 1 , null, null , null , null , null ,
+/*INSERT INTO DECISION_HUMAIN VALUES (1, 321, 'bagouc', 'loulou', 0, SYSDATE, 1 , null, null , null , null , null ,
  null , null , null , null , null , null , null , null );
+*/
 
+/*
 SELECT * FROM MESSAGE_SALLE_DISCUSSION;
 SELECT * FROM MESSAGE_REPAIRE;
 SELECT * FROM DECISION_HUMAIN; 
 SELECT * FROM PARTIE; 
+*/
 
