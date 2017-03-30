@@ -236,7 +236,7 @@ public class Controleur extends HttpServlet {
     private void actionConnexionMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
-        if (membreDAO.idCorrect(request.getParameter("login"), request.getParameter("password"))) {
+        if (membreDAO.idCorrect(request.getParameter("login"))) {
             HttpSession session = request.getSession();
             session.setAttribute("membre", request.getParameter("login"));
             request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
@@ -250,7 +250,7 @@ public class Controleur extends HttpServlet {
     private void actionAjoutMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
-        if (!membreDAO.idCorrect(request.getParameter("pseudo"), request.getParameter("password"))){
+        if (membreDAO.idCorrect(request.getParameter("login"))){
             membreDAO.ajouterMembre(request.getParameter("login"), request.getParameter("password"));
             request.getRequestDispatcher("/WEB-INF/connexion.jsp").forward(request, response);
         }else{
