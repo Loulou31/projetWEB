@@ -236,7 +236,7 @@ public class Controleur extends HttpServlet {
     private void actionConnexionMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
-        if (membreDAO.idCorrect(request.getParameter("login"))) {
+        if (membreDAO.idCorrectConnexion(request.getParameter("login"), request.getParameter("password"))) {
             HttpSession session = request.getSession();
             session.setAttribute("membre", request.getParameter("login"));
             request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
@@ -250,7 +250,7 @@ public class Controleur extends HttpServlet {
     private void actionAjoutMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
-        if (membreDAO.idCorrect(request.getParameter("login"))){
+        if (membreDAO.idCorrectInscription(request.getParameter("login"))){
             membreDAO.ajouterMembre(request.getParameter("login"), request.getParameter("password"));
             request.getRequestDispatcher("/WEB-INF/connexion.jsp").forward(request, response);
         }else{
@@ -263,26 +263,30 @@ public class Controleur extends HttpServlet {
             throws IOException, ServletException {
         Temps temps = new Temps();
         int heureDeb = temps.calToInt(Integer.parseInt(request.getParameter("beginHour")),Integer.parseInt(request.getParameter("beginMin")));
-        HttpSession session = request.getSession();
-        String pseudo = session.getAttribute("membre").toString() ; 
-        partieDAO.ajouterPartie(Integer.parseInt(request.getParameter("JMin")), 
-                                Integer.parseInt(request.getParameter("JMax")), 
-                                pseudo, 
-                                Integer.parseInt(request.getParameter("day")),
-                                Integer.parseInt(request.getParameter("night")),
-                                heureDeb,
-                                Float.parseFloat(request.getParameter("power")),
-                                Float.parseFloat(request.getParameter("werewolf")));
+        if (temps.estApres(heureDeb, temps.getTempsLong())){
+            HttpSession session = request.getSession();
+            String pseudo = session.getAttribute("membre").toString() ; 
+            partieDAO.ajouterPartie(Integer.parseInt(request.getParameter("JMin")), 
+                                    Integer.parseInt(request.getParameter("JMax")), 
+                                    pseudo, 
+                                    Integer.parseInt(request.getParameter("day")),
+                                    Integer.parseInt(request.getParameter("night")),
+                                    heureDeb,
+                                    Float.parseFloat(request.getParameter("power")),
+                                    Float.parseFloat(request.getParameter("werewolf")));
 
-        int idPartie = partieDAO.getIDPartie(pseudo);
-        Partie partie = partieDAO.getPartie(idPartie);
-        request.setAttribute("partie", partie) ;
-        
-        
-        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ;
-        villageoisDAO.addPlayer(pseudo, idPartie) ;
-        
-        actionWaitGame(request, response);
+            int idPartie = partieDAO.getIDPartie(pseudo);
+            Partie partie = partieDAO.getPartie(idPartie);
+            request.setAttribute("partie", partie);
+
+            VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+            villageoisDAO.addPlayer(pseudo, idPartie);
+
+            actionWaitGame(request, response);
+        }
+        else{
+            request.getRequestDispatcher("/WEB-INF/failNewGame.jsp").forward(request, response);
+        }
     }
 
 }
