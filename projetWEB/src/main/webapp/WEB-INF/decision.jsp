@@ -10,21 +10,23 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Decision</title>
     </head>
     <body>
         <h1>Il est temps de prendre une décision ! </h1>
+        <form action="controleur" accept-charset="utf-8">
         <ul>
-            <li> Choisissez un joueur à éliminer :  
+            <li> Choisissez un joueur à éliminer : 
                 <SELECT name="decision" size="1">
-                    <c:forEach items="${villageois}" var="villageois"> 
+                    <c:forEach items="${villageoisList}" var="villageois"> 
                         <OPTION><c:out value="${villageois.pseudo}" />
                     </c:forEach>
                 </SELECT>
             </li>
         </ul>
-                    
         <input type="submit" value="Valider la décision" />
         <input type="hidden" name="action" value="addDecision"/>
+        <input type="hidden" name="decision" value="decision"/>
+        </form>
     </body>
 </html>

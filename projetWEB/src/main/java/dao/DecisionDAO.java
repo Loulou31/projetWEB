@@ -35,14 +35,14 @@ public class DecisionDAO extends AbstractDatabaseDAO{
     public List<Decision> getListDecisionHumains(int idPartie){
         //Renvoie la liste des decision pour les humainsList<Message> result = new ArrayList<Message>();
         List<Decision> result = new ArrayList<Decision>();
-        try (
-	     Connection conn = getConn();
-	     Statement st = conn.createStatement();
-	     ) {
-            ResultSet rs = st.executeQuery("SELECT * FROM Decision_Humain Where id_partie ="+idPartie);
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement
+                    ("SELECT * FROM DECISION_HUMAIN WHERE id_partie = ? ") ; 
+            st.setInt(1, idPartie) ; 
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 HashSet<String> votants = new HashSet<String>();
-                votants.add(rs.getString("login_expediteur"));
+                votants.add(rs.getString("login_expeditaire"));
                 int nbVote = Integer.parseInt(rs.getString("nbreVote"));
                 for (int i = 2; i <= nbVote; i++) {
                     votants.add(rs.getString("votant"+i));
@@ -60,14 +60,14 @@ public class DecisionDAO extends AbstractDatabaseDAO{
      public List<Decision> getListDecisionLoup(int idPartie){
         //Renvoie la liste des decision pour les loups List<Message> result = new ArrayList<Message>();
         List<Decision> result = new ArrayList<Decision>();
-        try (
-	     Connection conn = getConn();
-	     Statement st = conn.createStatement();
-	     ) {
-            ResultSet rs = st.executeQuery("SELECT * FROM Decision_Loup Where id_partie ="+idPartie);
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement
+                    ("SELECT * FROM DECISION_LOUP WHERE id_partie = ? ") ; 
+            st.setInt(1, idPartie) ; 
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 HashSet<String> votants = new HashSet<String>();
-                votants.add(rs.getString("login_expediteur"));
+                votants.add(rs.getString("login_expeditaire"));
                 int nbVote = Integer.parseInt(rs.getString("nbreVote"));
                 for (int i = 2; i <= nbVote; i++) {
                     votants.add(rs.getString("votant"+i));
@@ -82,6 +82,27 @@ public class DecisionDAO extends AbstractDatabaseDAO{
 	return result;
     }
    
+     
+     
+    public void ajouteDecisionHumain(String login_joueur, int idPartie, String login_expeditaire) {
+        try (Connection conn = getConn()) {
+	    PreparedStatement st = conn.prepareStatement
+	       ("INSERT INTO Decision_Humain (id_decision, id_partie, login_expeditaire, login_joueur_concerne, est_valide, date_envoi, nbreVote) VALUES (?, ?, ?, ?, 1, SYSDATE, 1)");
+            st.setInt(1, nbreDecisionHumain);
+            st.setInt(2, idPartie);
+            st.setString(3, login_expeditaire);
+            st.setString(4, login_joueur);
+            st.executeUpdate();
+            //nbreDecisionHumain = 1; 
+            HashSet<String> votants = new HashSet() ;
+            votants.add(login_expeditaire) ; 
+            Decision decision = new Decision(login_joueur, votants) ; 
+            ajouteVoteHumain(decision, login_joueur);
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+    /*
     public void ajouteDecisionHumain(String login_joueur, boolean etat, 
             HashSet<String> votants, int idPartie, String login_expeditaire) {
         try (Connection conn = getConn()) {
@@ -112,7 +133,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
-    }
+    }*/
     
     public void ajouteDecisionLoup(String login_joueur, boolean etat, 
             HashSet<String> votants, int idPartie, String login_expeditaire) {
