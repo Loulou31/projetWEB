@@ -261,11 +261,16 @@ public class Controleur extends HttpServlet {
     private void actionAddGame(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException {
+        
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString() ;
+        //si f5 on ne recrée pas la partie
+        System.out.println(partieDAO.getIDPartie(pseudo));
+        
         Temps temps = new Temps();
         int heureDeb = temps.calToInt(Integer.parseInt(request.getParameter("beginHour")),Integer.parseInt(request.getParameter("beginMin")));
         if (temps.estApres(heureDeb, temps.getTempsLong())){
-            HttpSession session = request.getSession();
-            String pseudo = session.getAttribute("membre").toString() ; 
+ 
             partieDAO.ajouterPartie(Integer.parseInt(request.getParameter("JMin")), 
                                     Integer.parseInt(request.getParameter("JMax")), 
                                     pseudo, 
