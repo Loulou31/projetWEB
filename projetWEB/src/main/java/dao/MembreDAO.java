@@ -22,15 +22,28 @@ public class MembreDAO extends AbstractDatabaseDAO{
         super(ds);
     }
     
-    public Boolean idCorrect(String pseudo, String password){
+    public Boolean idCorrectConnexion(String pseudo, String mdp){
         /*Renvoie true si le login et le password sont corrects, false sinon*/
         try (Connection conn = this.getConn()) {
             PreparedStatement s = conn.prepareStatement(
-                    " Select login From Membre Where login = ? and password = ? ");
+                    " Select login,password From Membre Where login = ? and password = ?");
             s.setString(1, pseudo);
-            s.setString(2, password);
+            s.setString(2, mdp);
             ResultSet r = s.executeQuery();
-            return r.next();
+            return (r.next());
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+    
+    public Boolean idCorrectInscription(String pseudo){
+        /*Renvoie true si le login et le password sont corrects, false sinon*/
+        try (Connection conn = this.getConn()) {
+            PreparedStatement s = conn.prepareStatement(
+                    " Select login From Membre Where login = ?");
+            s.setString(1, pseudo);
+            ResultSet r = s.executeQuery();
+            return !(r.next());
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }

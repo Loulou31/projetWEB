@@ -29,6 +29,11 @@ public class Temps {
                 + new DecimalFormat("00").format(cal.get(sec));
     }
     
+    public long getTempsLong(){
+        Calendar cal = new GregorianCalendar();
+        return cal.getTimeInMillis();
+    }
+    
     public GregorianCalendar intToCal(int date){
         GregorianCalendar cal = new GregorianCalendar();
         //on ajoute les 3 derniers chiffres
@@ -47,6 +52,14 @@ public class Temps {
                 + ":"
                 + new DecimalFormat("00").format(gc.get(gc.MINUTE))
                 ;
+    }
+    
+    public Boolean estApres (int apres, long avant){
+        GregorianCalendar calApres = new GregorianCalendar();
+        GregorianCalendar calAvant = new GregorianCalendar();
+        calApres.setTimeInMillis((long)apres*1000);
+        calAvant.setTimeInMillis(avant);
+        return calApres.after(calAvant);
     }
     
     
