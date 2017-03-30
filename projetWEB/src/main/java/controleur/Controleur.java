@@ -71,7 +71,9 @@ public class Controleur extends HttpServlet {
                 actionDeconnexion(request, response);
             } else if (action.equals("newDecision")){
                 actionNewDecision(request, response) ; 
-            } else {
+            } else if(action.equals("ajouterUnMessage")){
+                actionAddMessage(request, response);
+            }else {
                 invalidParameters(request, response);
             }
         } catch (DAOException e) {
@@ -135,7 +137,7 @@ public class Controleur extends HttpServlet {
             if (partie.enAttente(partieDAO)){
                 actionWaitGame(request,response);
             }else{
-                request.setAttribute("messages", messageDAO.getListeMessagesSalleDiscussion());
+                //request.setAttribute("messages", messageDAO.getListeMessagesSalleDiscussion());
                 actionRejoindreSalleDiscussion(request,response,villageois);
             }
         }else{
@@ -198,7 +200,17 @@ public class Controleur extends HttpServlet {
     }
     
     
-    
+    private void actionAddMessage(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException{
+        MessageDAO messageDAO = new MessageDAO(ds);
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("message"));
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        actionRejoindreSalleDiscussion(request, response, villageois);
+    }
     
     
     
