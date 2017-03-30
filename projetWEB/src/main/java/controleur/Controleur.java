@@ -1,9 +1,6 @@
 package controleur;
 
-import dao.DAOException;
-import dao.MembreDAO;
-import dao.PartieDAO;
-import dao.VillageoisDAO;
+import dao.* ;
 import java.io.*;
 import java.util.List;
 import javax.annotation.Resource;
@@ -11,10 +8,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
-import modele.Membre;
-import modele.Partie;
-import modele.Temps;
-import modele.Villageois;
+import modele.*;
 
 /**
  * Le contrôleur de l'application.
@@ -51,6 +45,7 @@ public class Controleur extends HttpServlet {
         String view = request.getParameter("view");
         PartieDAO partieDAO = new PartieDAO(ds);
         //MembreDAO membreDAO = new MembreDAO(ds);
+        System.out.println(action) ; 
         try {
             if (action == null){
                 actionAccueil(request, response);
@@ -68,8 +63,10 @@ public class Controleur extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
             } else if (action.equals("deconnexion")){
                 actionDeconnexion(request, response);
-            } else if (action.equals("newDecision")){
-                actionNewDecision(request, response) ; 
+            } else if (action.equals("newDecision")) {
+                actionNewDecision(request, response);
+            } else if (action.equals("addDecision")) {
+                actionAddDecision(request, response);
             } else {
                 invalidParameters(request, response);
             }
@@ -143,10 +140,16 @@ public class Controleur extends HttpServlet {
     private void actionRejoindreSalleDiscussion(HttpServletRequest request,
             HttpServletResponse response,Villageois villageois)throws IOException, ServletException {
         Temps temps = new Temps();
-        if (temps.estJour(villageois.getPartie())){
+        DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
+        int idPartie = villageois.getPartie() ; 
+        if (temps.estJour(idPartie)){
+            List<Decision> decisions = decisionDAO.getListDecisionHumains(idPartie) ; 
+            request.setAttribute("decisions", decisions) ;
             request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
         }else{
             if (villageois.getRole() == 1){
+                List<Decision> decisions = decisionDAO.getListDecisionLoup(idPartie) ; 
+                request.setAttribute("decisions", decisions) ;
                 request.getRequestDispatcher("/WEB-INF/repaire.jsp").forward(request, response);
             }else{
                 request.getRequestDispatcher("/WEB-INF/nuit.jsp").forward(request, response);
@@ -188,14 +191,26 @@ public class Controleur extends HttpServlet {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
         Villageois villageois = villageoisDAO.getVillageois(pseudo) ; 
         int idPartie = villageois.getPartie() ; 
-        System.out.println("ID PARTIE :" + idPartie ) ; 
         List<Villageois> villageoisList = villageoisDAO.getListVillageois(idPartie) ;
         request.setAttribute("villageoisList", villageoisList) ; 
         request.getRequestDispatcher("/WEB-INF/decision.jsp").forward(request, response);
     }
     
     
-    
+    private void actionAddDecision(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        System.out.println("ADD DECISION") ; 
+        HttpSession session = request.getSession();
+        String pseudoJoueur = session.getAttribute("membre").toString() ; 
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
+        DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
+        Villageois villageois = villageoisDAO.getVillageois(pseudoJoueur) ; 
+        int idPartie = villageois.getPartie() ; 
+        System.out.println("JOUEUR CHOISI : " + request.getParameter("decision")) ; 
+        decisionDAO.ajouteDecisionHumain(pseudoJoueur, idPartie, request.getParameter("decision")) ; 
+        actionRejoindreSalleDiscussion(request, response, villageois) ; 
+    }
     
     
     

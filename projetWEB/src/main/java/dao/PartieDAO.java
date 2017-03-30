@@ -144,4 +144,6 @@ public class PartieDAO extends AbstractDatabaseDAO {
         return 1;
     }
     
+    
+    
 }

@@ -22,7 +22,7 @@ public class Decision {
         this.votants = votants;
         this.etat = false;
     }
-
+    
     public String getJoueurConcerne() {
         return joueurConcerne;
     }
