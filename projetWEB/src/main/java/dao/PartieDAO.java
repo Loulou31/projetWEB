@@ -102,22 +102,39 @@ public class PartieDAO extends AbstractDatabaseDAO {
         return partie ; 
     }
     
-        public int getIDPartie(String login) {
-        ResultSet rs ; 
-        try(Connection conn = getConn()){
-        PreparedStatement st = conn.prepareStatement
-         ("SELECT IdPartie FROM PARTIE WHERE login = ?");
-        st.setString(1, login);
-        rs = st.executeQuery();
-        rs.next();
-        return rs.getInt(1) ; 
-        } catch(SQLException e){
+    //return -1 s'il n'y a pas de partie à retourner
+    public int getIDPartieCreateur(String login) {
+        ResultSet rs;
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT IdPartie FROM Partie WHERE login = ?");
+            st.setString(1, login);
+            rs = st.executeQuery();
+            if (!(rs.next()))
+                return -1;
+            return rs.getInt(1);
+        } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
-        
+
     }
     
-    /** Supprime une partie après qu'elle soit terminée **/
+    public int getIDPartieJoueur(String login) {
+        ResultSet rs;
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT IdPartie FROM Joueur WHERE login = ?");
+            st.setString(1, login);
+            rs = st.executeQuery();
+            if (!(rs.next()))
+                return -1;
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+
+    }
+
+    /**
+     * Supprime une partie après qu'elle soit terminée **/
     public void supprimerPartie(int id) {
         try(Connection conn = getConn()){
         PreparedStatement st = conn.prepareStatement

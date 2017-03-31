@@ -31,6 +31,7 @@ CREATE TABLE JOUEUR (
 
 
 CREATE TABLE MESSAGE_SALLE_DISCUSSION (
+    idPartie int NOT NULL,
     login_expediteur varchar(10) NOT NULL, 
     contenu varchar(100) NOT NULL, 
     date_envoi date, 
@@ -40,6 +41,7 @@ CREATE TABLE MESSAGE_SALLE_DISCUSSION (
 );
 
 CREATE TABLE MESSAGE_REPAIRE (
+    idPartie int NOT NULL,
     login_expediteur varchar(10) NOT NULL, 
     contenu varchar(100) NOT NULL, 
     date_envoi date, 
