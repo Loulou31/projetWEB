@@ -4,6 +4,8 @@
     Author     : nicolasl
 --%>
 
+<%@page import="modele.Villageois"%>
+<%@page import="java.util.List"%>
 <%@page import="modele.Partie"%>
 <%@page import="modele.Temps"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -15,8 +17,11 @@
         <title>Attente Début</title>
     </head>
     <body>
-        <%  Temps temps = new Temps();
-            %>
+
+
+        <h1 id="header">Attendez les derniers joueurs ou le début de la partie ! </h1>
+        
+        <p><%Temps temps = new Temps();%></p>
         <p><%=temps.getTemps()%></p>
         
         <% Partie partie = (Partie) request.getAttribute("partie");
@@ -25,10 +30,22 @@
         %>
 
         <p>L'heure du début de partie est : <%=heureDebut%></p>
-
-       
-
-        <h1 id="header">Attendez les derniers joueurs ou le début de la partie ! </h1>
+        
+        <p>Voues êtes dans la partie : <%=partie.getIdPartie()%></p>
+        
+        <% 
+            int nbJoueurs = (int) request.getAttribute("nombreJoueurs");
+            
+            String stringVillageois = "La liste des joueurs présents est : ";
+            List<Villageois> listeVillageois = (List<Villageois>) request.getAttribute("listeVillageois");
+            for (int i = 0; i < listeVillageois.size(); i++){
+                stringVillageois += listeVillageois.get(i).getPseudo() + "\n";
+            }
+        %>
+        <p>La partie doit contenir entre : <%= partie.getNbJoueursMin() %> et <%= partie.getNbJoueursMax() %> joueurs.<br>
+            Elle en contient actuellement : <%= nbJoueurs %>.<br>
+            <%= stringVillageois %>
+        </p>
         <a href="controleur?action=index">Retourner au menu principal</a>
     </body>
 </html>

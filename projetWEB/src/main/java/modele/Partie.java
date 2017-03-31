@@ -8,6 +8,9 @@ package modele;
 import dao.PartieDAO;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  *
@@ -24,6 +27,7 @@ public class Partie {
     private int heureDebut ; 
     private float probaPouvoir ; 
     private float proportionLG ; 
+    //private Set<Membre> joueursPresents;
 
     public Partie(int idPartie, 
                   String createur,
@@ -43,6 +47,7 @@ public class Partie {
         this.heureDebut = heureDebut;
         this.probaPouvoir = probaPouvoir;
         this.proportionLG = proportionLG;
+        //this.joueursPresents = new HashSet<Membre>();
     }
 
     public int getIdPartie() {
@@ -81,6 +86,26 @@ public class Partie {
         return proportionLG;
     }
     
+    
+    /*public int getNombreJoueursPresents(){
+        return this.joueursPresents.size();
+    }
+    
+    
+    public String getListeJoueursPresents(){
+        String s = "La liste des membres actuellement en attente sont : \n";
+        Iterator<Membre> it = this.joueursPresents.iterator();
+        while (it.hasNext()) {
+            s += it.next().getPseudo() + "\n";
+        }
+        return s;
+    }
+    
+    public void ajoutMembre(Membre m){
+        this.joueursPresents.add(m);
+    }*/
+    
+    //devenu useless je pense (Dorian)
     public Boolean enAttente(PartieDAO partieDAO){
 //        SimpleDateFormat d = new SimpleDateFormat ("dd/MM/yyyy" );
 //        SimpleDateFormat h = new SimpleDateFormat ("hh:mm");
@@ -95,6 +120,7 @@ public class Partie {
 //        }
          return false;
     }
+    
     public Boolean complet(PartieDAO partieDAO){
         if (partieDAO.getNbJoueurs(idPartie)==nbJoueursMax){
             return true;
