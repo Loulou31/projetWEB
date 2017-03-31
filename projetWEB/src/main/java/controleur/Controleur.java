@@ -296,8 +296,12 @@ public class Controleur extends HttpServlet {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ;
         Villageois villageois = villageoisDAO.getVillageois(pseudo) ; 
         int idPartie = villageois.getPartie() ;
-        messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString(), idPartie);
-        actionRejoindreSalleDiscussion(request, response, villageois);
+        if (request.getParameter("contenu").toString().equals("")){
+            request.getRequestDispatcher("/WEB-INF/messageVide.jsp").forward(request, response);
+        }else{
+            messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString(), idPartie);
+            actionRejoindreSalleDiscussion(request, response, villageois);
+        }
     }
     
     private void actionConnexionMembre(HttpServletRequest request,
