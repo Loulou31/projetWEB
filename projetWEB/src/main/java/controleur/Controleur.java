@@ -63,11 +63,12 @@ public class Controleur extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
             } else if (action.equals("deconnexion")){
                 actionDeconnexion(request, response);
-
             } else if (action.equals("newDecision")) {
                 actionNewDecision(request, response);
             } else if (action.equals("addDecision")) {
                 actionAddDecision(request, response);
+            } else if (action.equals("addVote")){
+                actionAddVote(request, response) ; 
             } else {
                 invalidParameters(request, response);
             }
@@ -234,17 +235,25 @@ public class Controleur extends HttpServlet {
     private void actionAddDecision(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
-        System.out.println("ADD DECISION") ; 
         HttpSession session = request.getSession();
         String pseudoJoueur = session.getAttribute("membre").toString() ; 
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
         DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
         Villageois villageois = villageoisDAO.getVillageois(pseudoJoueur) ; 
         int idPartie = villageois.getPartie() ; 
-        System.out.println("JOUEUR CHOISI : " + request.getParameter("decision")) ; 
         decisionDAO.ajouteDecisionHumain(pseudoJoueur, idPartie, request.getParameter("decision")) ; 
         actionRejoindreSalleDiscussion(request, response, villageois) ; 
     }
+    
+    
+    private void actionAddVote(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        
+    }
+    
+    
+    
     
     /**
      * Actions possibles en POST : ajouter, supprimer, modifier. Une fois
@@ -289,8 +298,12 @@ public class Controleur extends HttpServlet {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ;
         Villageois villageois = villageoisDAO.getVillageois(pseudo) ; 
         int idPartie = villageois.getPartie() ;
-        messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString(), idPartie);
-        actionRejoindreSalleDiscussion(request, response, villageois);
+        if (request.getParameter("contenu").toString().equals("")){
+            request.getRequestDispatcher("/WEB-INF/messageVide.jsp").forward(request, response);
+        }else{
+            messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString(), idPartie);
+            actionRejoindreSalleDiscussion(request, response, villageois);
+        }
     }
     
     private void actionConnexionMembre(HttpServletRequest request,
