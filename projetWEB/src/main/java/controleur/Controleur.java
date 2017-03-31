@@ -1,5 +1,6 @@
 package controleur;
 
+
 import dao.* ;
 import java.io.*;
 import java.util.List;
@@ -62,6 +63,7 @@ public class Controleur extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
             } else if (action.equals("deconnexion")){
                 actionDeconnexion(request, response);
+
             } else if (action.equals("newDecision")) {
                 actionNewDecision(request, response);
             } else if (action.equals("addDecision")) {
@@ -129,6 +131,7 @@ public class Controleur extends HttpServlet {
             if (partie.enAttente(partieDAO)){
                 actionWaitGame(request,response);
             }else{
+                //request.setAttribute("messages", messageDAO.getListeMessagesSalleDiscussion());
                 actionRejoindreSalleDiscussion(request,response,villageois);
             }
         }else{
@@ -139,9 +142,13 @@ public class Controleur extends HttpServlet {
     private void actionRejoindreSalleDiscussion(HttpServletRequest request,
             HttpServletResponse response,Villageois villageois)throws IOException, ServletException {
         Temps temps = new Temps();
-        DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
+        MessageDAO messageDAO = new MessageDAO(ds);   
         int idPartie = villageois.getPartie() ; 
+        DecisionDAO decisionDAO = null;
         if (temps.estJour(idPartie)){
+            List<Message> messages = messageDAO.getListeMessagesSalleDiscussion();
+            request.setAttribute("messages", messages);
+            decisionDAO = new DecisionDAO(ds) ; 
             List<Decision> decisions = decisionDAO.getListDecisionHumains(idPartie) ; 
             request.setAttribute("decisions", decisions) ;
             request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
@@ -237,9 +244,6 @@ public class Controleur extends HttpServlet {
         actionRejoindreSalleDiscussion(request, response, villageois) ; 
     }
     
-    
-    
-    
     /**
      * Actions possibles en POST : ajouter, supprimer, modifier. Une fois
      * l’action demandée effectuée, on retourne à la page d’accueil avec
@@ -261,10 +265,12 @@ public class Controleur extends HttpServlet {
         try {
             if (action.equals("login")) {
                 actionConnexionMembre(request, response, membreDAO);
-            }else if (action.equals("register")){
+            } else if (action.equals("register")){
                 actionAjoutMembre(request, response, membreDAO);
             } else if (action.equals("addGame")){
                 actionAddGame(request, response, partieDAO) ; 
+            } else if(action.equals("ajouterUnMessage")){
+                actionAddMessage(request, response);
             }
         } catch (DAOException e) {
             erreurBD(request, response, e);
@@ -272,7 +278,18 @@ public class Controleur extends HttpServlet {
 
     }
 
-
+    private void actionAddMessage(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException{
+        MessageDAO messageDAO = new MessageDAO(ds);
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString());
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        actionRejoindreSalleDiscussion(request, response, villageois);
+    }
+    
     private void actionConnexionMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
