@@ -259,10 +259,14 @@ public class Controleur extends HttpServlet {
         MessageDAO messageDAO = new MessageDAO(ds);
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString();
-        messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString());
-        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
-        Villageois villageois = villageoisDAO.getVillageois(pseudo);
-        actionRejoindreSalleDiscussion(request, response, villageois);
+        if (request.getParameter("contenu").toString().equals("")){
+            request.getRequestDispatcher("/WEB-INF/messageVide.jsp").forward(request, response);
+        }else{
+            messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString());
+            VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+            Villageois villageois = villageoisDAO.getVillageois(pseudo);
+            actionRejoindreSalleDiscussion(request, response, villageois);
+        }
     }
     
     private void actionConnexionMembre(HttpServletRequest request,
