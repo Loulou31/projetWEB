@@ -66,10 +66,10 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
     
     public void addPlayer(String pseudo, int idPartie){
         try(Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement    
-                ("INSERT INTO JOUEUR VALUES  (?, 0, 1, null, ?) ") ;
-            st.setString(1, pseudo) ; 
-            st.setInt(2, idPartie) ; 
+            PreparedStatement st = conn.prepareStatement("INSERT INTO JOUEUR VALUES  (?, 0, 1, ?, ?) ");
+            st.setString(1, pseudo);
+            st.setString(2, "rien");
+            st.setInt(3, idPartie);
             st.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
@@ -138,4 +138,214 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
     }
+    
+    /**
+     * donne la liste des villageois ne possedant pas de pouvoirs
+     * @param idPartie
+     * @return 
+     */
+    public List<Villageois> getListVillageoisSansPouvoir(int idPartie) {
+        List<Villageois> result = new ArrayList<Villageois>();
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? and pouvoir = ?");
+            st.setString(1, "rien");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Villageois humain
+                        = new Villageois(rs.getString("login"), rs.getInt("rolePartie"),
+                        rs.getInt("Statut"), rs.getString("pouvoir"), rs.getInt("IdPartie"));
+                result.add(humain);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return result;
+    }
+    
+    /**
+     * donne la liste des humains ne possedant pas de pouvoirs
+     * @param idPartie
+     * @return 
+     */
+    public List<Villageois> getListHumainsSansPouvoir(int idPartie) {
+        List<Villageois> result = new ArrayList<Villageois>();
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? "
+                    + "and pouvoir = ? and rolePartie = 0");
+            st.setString(1, "rien");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Villageois humain
+                        = new Villageois(rs.getString("login"), rs.getInt("rolePartie"),
+                        rs.getInt("Statut"), rs.getString("pouvoir"), rs.getInt("IdPartie"));
+                result.add(humain);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return result;
+    }
+    
+    /**
+     * donne la liste des humains ne possedant pas de pouvoirs
+     * @param idPartie
+     * @return 
+     */
+    public List<Villageois> getListLoupsSansPouvoir(int idPartie) {
+        List<Villageois> result = new ArrayList<Villageois>();
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? "
+                    + "and pouvoir = ? and rolePartie = 1");
+            st.setString(1, "rien");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Villageois humain
+                        = new Villageois(rs.getString("login"), rs.getInt("rolePartie"),
+                        rs.getInt("Statut"), rs.getString("pouvoir"), rs.getInt("IdPartie"));
+                result.add(humain);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return result;
+    }
+    
+    /**
+     * donne la liste des humains morts
+     * @param idPartie
+     * @return 
+     */
+    public List<Villageois> getListHumainsMorts(int idPartie) {
+        List<Villageois> result = new ArrayList<Villageois>();
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? and rolePartie = 0 and statut = 0");
+            st.setInt(1, idPartie);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Villageois humain
+                        = new Villageois(rs.getString("login"), rs.getInt("rolePartie"),
+                        rs.getInt("Statut"), rs.getString("pouvoir"), rs.getInt("IdPartie"));
+                result.add(humain);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return result;
+    }
+    
+     /**
+     * donne liste humains vivants
+     * @param idPartie
+     * @return 
+     */
+    public List<Villageois> getListHumainsVivants(int idPartie) {
+        List<Villageois> result = new ArrayList<Villageois>();
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? and rolePartie = 0 and statut = 1");
+            st.setInt(1, idPartie);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Villageois humain
+                        = new Villageois(rs.getString("login"), rs.getInt("rolePartie"),
+                        rs.getInt("Statut"), rs.getString("pouvoir"), rs.getInt("IdPartie"));
+                result.add(humain);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return result;
+    }
+    
+    /**
+     * renvoie la liste des humains de la partie
+     * @param idPartie
+     * @return
+     */
+    public List<Villageois> getListHumains(int idPartie) {
+        List<Villageois> result = new ArrayList<Villageois>();
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? and rolePartie = 0");
+            st.setInt(1, idPartie);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Villageois humain
+                        = new Villageois(rs.getString("login"), rs.getInt("rolePartie"),
+                        rs.getInt("Statut"), rs.getString("pouvoir"), rs.getInt("IdPartie"));
+                result.add(humain);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return result;
+    }
+    
+    /**
+     * renvoie la liste des loups de la partie
+     * @param idPartie
+     * @return
+     */
+    public List<Villageois> getListLoups(int idPartie) {
+        List<Villageois> result = new ArrayList<Villageois>();
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? and rolePartie = 1");
+            st.setInt(1, idPartie);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Villageois loup
+                        = new Villageois(rs.getString("login"), rs.getInt("rolePartie"),
+                        rs.getInt("Statut"), rs.getString("pouvoir"), rs.getInt("IdPartie"));
+                result.add(loup);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return result;
+    }
+ 
+    /**
+     * donne liste loups vivants
+     * @param idPartie
+     * @return 
+     */
+    public List<Villageois> getListLoupsVivants(int idPartie) {
+        List<Villageois> result = new ArrayList<Villageois>();
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? and rolePartie = 1 and statut = 1");
+            st.setInt(1, idPartie);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Villageois loup
+                        = new Villageois(rs.getString("login"), rs.getInt("rolePartie"),
+                        rs.getInt("Statut"), rs.getString("pouvoir"), rs.getInt("IdPartie"));
+                result.add(loup);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return result;
+    }
+    
+    /**
+     * donne la liste des loups morts
+     * @param idPartie
+     * @return 
+     */
+    public List<Villageois> getListLoupsMorts(int idPartie) {
+        List<Villageois> result = new ArrayList<Villageois>();
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? and rolePartie = 1 and statut = 0");
+            st.setInt(1, idPartie);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Villageois loup
+                        = new Villageois(rs.getString("login"), rs.getInt("rolePartie"),
+                        rs.getInt("Statut"), rs.getString("pouvoir"), rs.getInt("IdPartie"));
+                result.add(loup);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return result;
+    }
+    
 }
