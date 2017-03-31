@@ -207,14 +207,12 @@ public class Controleur extends HttpServlet {
     private void actionAddDecision(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
-        System.out.println("ADD DECISION") ; 
         HttpSession session = request.getSession();
         String pseudoJoueur = session.getAttribute("membre").toString() ; 
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
         DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
         Villageois villageois = villageoisDAO.getVillageois(pseudoJoueur) ; 
         int idPartie = villageois.getPartie() ; 
-        System.out.println("JOUEUR CHOISI : " + request.getParameter("decision")) ; 
         decisionDAO.ajouteDecisionHumain(pseudoJoueur, idPartie, request.getParameter("decision")) ; 
         actionRejoindreSalleDiscussion(request, response, villageois) ; 
     }

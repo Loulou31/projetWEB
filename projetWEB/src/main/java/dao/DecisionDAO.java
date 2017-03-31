@@ -87,81 +87,36 @@ public class DecisionDAO extends AbstractDatabaseDAO{
     public void ajouteDecisionHumain(String login_joueur, int idPartie, String login_expeditaire) {
         try (Connection conn = getConn()) {
 	    PreparedStatement st = conn.prepareStatement
-	       ("INSERT INTO Decision_Humain (id_decision, id_partie, login_expeditaire, login_joueur_concerne, est_valide, date_envoi, nbreVote) VALUES (?, ?, ?, ?, 1, SYSDATE, 1)");
-            st.setInt(1, nbreDecisionHumain);
+	       ("INSERT INTO Decision_Humain (login_joueur_concerne, id_partie, login_expeditaire, est_valide, date_envoi, nbreVote) VALUES (?, ?, ?, 1, SYSDATE, 1)");
+            System.out.println("JOUEUR CONCERNE : " + login_joueur) ;
+            System.out.println("ID PARTIE : " + idPartie) ;
+            System.out.println("EXPEDITAIRE : " + login_expeditaire) ;
+            st.setString(1, login_joueur);
             st.setInt(2, idPartie);
             st.setString(3, login_expeditaire);
-            st.setString(4, login_joueur);
             st.executeUpdate();
-            //nbreDecisionHumain = 1; 
             HashSet<String> votants = new HashSet() ;
             votants.add(login_expeditaire) ; 
             Decision decision = new Decision(login_joueur, votants) ; 
             ajouteVoteHumain(decision, login_joueur);
         } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
+            throw new DAOException("Erreur BD decision " + e.getMessage(), e);
         }
     }
-    /*
-    public void ajouteDecisionHumain(String login_joueur, boolean etat, 
-            HashSet<String> votants, int idPartie, String login_expeditaire) {
-        try (Connection conn = getConn()) {
-            int nbreVote = votants.size();
-            int etatValide = 0; 
-            if (etat) {
-                etatValide = 1;
-            }
-	    PreparedStatement st = conn.prepareStatement
-	       ("INSERT INTO Decision_Humain (id_decision, id_partie, login_expeditaire, login_joueur_concerne,"
-                       + "est_valide, date_envoi, nbreVote) VALUES (?, ?, ?, ?, ?, SYSDATE, ?)");
-            st.setInt(1, nbreDecisionHumain);
-            st.setInt(2, idPartie);
-            st.setString(3, login_expeditaire);
-            st.setString(4, login_joueur);
-            st.setInt(5, etatValide);
-            st.setInt(6, nbreVote);
-            st.executeUpdate();
-            nbreDecisionHumain++; 
-            
-            Iterator<String> it = votants.iterator(); 
-            for (int i=1; i<=nbreVote; i++) {
-                String votant = it.next(); 
-                st = conn.prepareStatement("INSERT INTO Decision_Humain (votant"+i+") values (?)");
-                st.setString(1, votant);
-                st.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
-        }
-    }*/
     
-    public void ajouteDecisionLoup(String login_joueur, boolean etat, 
-            HashSet<String> votants, int idPartie, String login_expeditaire) {
+    
+    public void ajouteDecisionLoup(String login_joueur, int idPartie, String login_expeditaire) {
         try (Connection conn = getConn()) {
-            int nbreVote = votants.size();
-            int etatValide = 0; 
-            if (etat) {
-                etatValide = 1;
-            }
-	    PreparedStatement st = conn.prepareStatement
-	       ("INSERT INTO Decision_Loup (id_partie, login_expeditaire, login_joueur_concerne,"
-                       + "est_valide, date_envoi, nbreVote) VALUES (?, ?, ?, ?, SYSDATE, ?)");
-            st.setInt(1, nbreDecisionLoup);
+            PreparedStatement st = conn.prepareStatement
+	       ("INSERT INTO Decision_Loup (login_joueur_concerne, id_partie, login_expeditaire, est_valide, date_envoi, nbreVote) VALUES (?, ?, ?, 1, SYSDATE, 1)");
+            st.setString(1, login_joueur);
             st.setInt(2, idPartie);
             st.setString(3, login_expeditaire);
-            st.setString(4, login_joueur);
-            st.setInt(5, etatValide);
-            st.setInt(6, nbreVote);
             st.executeUpdate();
-            nbreDecisionLoup++;
-            
-            Iterator<String> it = votants.iterator(); 
-            for (int i=1; i<=nbreVote; i++) {
-                String votant = it.next(); 
-                st = conn.prepareStatement("INSERT INTO Decision_Loup (votant"+i+") values (?)");
-                st.setString(1, votant);
-                st.executeUpdate();
-            }
+            HashSet<String> votants = new HashSet() ;
+            votants.add(login_expeditaire) ; 
+            Decision decision = new Decision(login_joueur, votants) ; 
+            ajouteVoteLoup(decision, login_joueur);
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
@@ -171,36 +126,36 @@ public class DecisionDAO extends AbstractDatabaseDAO{
     public void ajouteVoteHumain (Decision decision, String votant) {
         try (Connection conn = getConn()) {	     
 	     PreparedStatement st = conn.prepareStatement
-	       ("UPDATE Decision_Humain set NbreVote = NbreVote + 1 Where id_decision = ? ");
-            st.setInt(1, decision.getIdDecision());
+	       ("UPDATE Decision_Humain set NbreVote = NbreVote + 1 Where login_joueur_concerne = ? ");
+            st.setString(1, decision.getJoueurConcerne());
             st.executeUpdate();
             
             int nbreVotant = decision.getVotants().size(); 
             st = conn.prepareStatement
-	       ("UPDATE Decision_Humain set Votant? = ? Where id_decision = ? ");
-            st.setInt(1, nbreVotant+1);
+	       ("UPDATE Decision_Humain set Votant1 = ? Where login_joueur_concerne = ? ");
+            st.setInt(1, nbreVotant);
             st.setString(2, votant);
-            st.setInt(3, decision.getIdDecision());
+            st.setString(3, decision.getJoueurConcerne());
             st.executeUpdate();
             
         } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
+            throw new DAOException("Erreur BD vote " + e.getMessage(), e);
         }
     }
     
     public void ajouteVoteLoup (Decision decision, String votant) {
         try (Connection conn = getConn()) {	     
 	     PreparedStatement st = conn.prepareStatement
-	       ("UPDATE Decision_Loup set NbreVote = NbreVote + 1 Where id_decision = ? ");
-            st.setInt(1, decision.getIdDecision());
+	       ("UPDATE Decision_Loup set NbreVote = NbreVote + 1 Where login_joueur_concerne = ? ");
+            st.setString(1, decision.getJoueurConcerne());
             st.executeUpdate();
             
             int nbreVotant = decision.getVotants().size(); 
             st = conn.prepareStatement
-	       ("UPDATE Decision_Loup set Votant? = ? Where id_decision = ? ");
+	       ("UPDATE Decision_Loup set Votant? = ? Where login_joueur_concerne = ? ");
             st.setInt(1, nbreVotant+1);
             st.setString(2, votant);
-            st.setInt(3, decision.getIdDecision());
+            st.setString(3, decision.getJoueurConcerne());
             st.executeUpdate();
             
         } catch (SQLException e) {
