@@ -14,11 +14,17 @@ public class Message {
     private String expediteur;
     private String contenu;
     private Date date;
+    private int idPartie;
 
-    public Message(String expediteur, String contenu) {
+    public int getIdPartie() {
+        return idPartie;
+    }
+
+    public Message(String expediteur, String contenu, int IdPartie) {
         this.expediteur = expediteur;
         this.contenu = contenu;
         this.date = new Date();
+        this.idPartie = idPartie;
     }
         
 

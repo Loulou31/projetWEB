@@ -146,7 +146,7 @@ public class Controleur extends HttpServlet {
         int idPartie = villageois.getPartie() ; 
         DecisionDAO decisionDAO = null;
         if (temps.estJour(idPartie)){
-            List<Message> messages = messageDAO.getListeMessagesSalleDiscussion();
+            List<Message> messages = messageDAO.getListeMessagesSalleDiscussion(idPartie);
             request.setAttribute("messages", messages);
             decisionDAO = new DecisionDAO(ds) ; 
             List<Decision> decisions = decisionDAO.getListDecisionHumains(idPartie) ; 
@@ -284,9 +284,10 @@ public class Controleur extends HttpServlet {
         MessageDAO messageDAO = new MessageDAO(ds);
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString();
-        messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString());
-        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
-        Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ;
+        Villageois villageois = villageoisDAO.getVillageois(pseudo) ; 
+        int idPartie = villageois.getPartie() ;
+        messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString(), idPartie);
         actionRejoindreSalleDiscussion(request, response, villageois);
     }
     
