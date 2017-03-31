@@ -1,10 +1,7 @@
 package controleur;
 
-import dao.DAOException;
-import dao.MembreDAO;
-import dao.MessageDAO;
-import dao.PartieDAO;
-import dao.VillageoisDAO;
+
+import dao.* ;
 import java.io.*;
 import java.util.List;
 import javax.annotation.Resource;
@@ -12,11 +9,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
-import modele.Membre;
-import modele.Message;
-import modele.Partie;
-import modele.Temps;
-import modele.Villageois;
+import modele.*;
 
 /**
  * Le contrôleur de l'application.
@@ -53,6 +46,7 @@ public class Controleur extends HttpServlet {
         String view = request.getParameter("view");
         PartieDAO partieDAO = new PartieDAO(ds);
         //MembreDAO membreDAO = new MembreDAO(ds);
+        System.out.println(action) ; 
         try {
             if (action == null){
                 actionAccueil(request, response);
@@ -70,9 +64,12 @@ public class Controleur extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
             } else if (action.equals("deconnexion")){
                 actionDeconnexion(request, response);
-            } else if (action.equals("newDecision")){
-                actionNewDecision(request, response) ;
-            }else {
+
+            } else if (action.equals("newDecision")) {
+                actionNewDecision(request, response);
+            } else if (action.equals("addDecision")) {
+                actionAddDecision(request, response);
+            } else {
                 invalidParameters(request, response);
             }
         } catch (DAOException e) {
@@ -146,13 +143,20 @@ public class Controleur extends HttpServlet {
     private void actionRejoindreSalleDiscussion(HttpServletRequest request,
             HttpServletResponse response,Villageois villageois)throws IOException, ServletException {
         Temps temps = new Temps();
-        MessageDAO messageDAO = new MessageDAO(ds);
-        if (temps.estJour(villageois.getPartie())){
+        MessageDAO messageDAO = new MessageDAO(ds);   
+        int idPartie = villageois.getPartie() ; 
+        DecisionDAO decisionDAO = null;
+        if (temps.estJour(idPartie)){
             List<Message> messages = messageDAO.getListeMessagesSalleDiscussion();
             request.setAttribute("messages", messages);
+            decisionDAO = new DecisionDAO(ds) ; 
+            List<Decision> decisions = decisionDAO.getListDecisionHumains(idPartie) ; 
+            request.setAttribute("decisions", decisions) ;
             request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
         }else{
             if (villageois.getRole() == 1){
+                List<Decision> decisions = decisionDAO.getListDecisionLoup(idPartie) ; 
+                request.setAttribute("decisions", decisions) ;
                 request.getRequestDispatcher("/WEB-INF/repaire.jsp").forward(request, response);
             }else{
                 request.getRequestDispatcher("/WEB-INF/nuit.jsp").forward(request, response);
@@ -194,14 +198,26 @@ public class Controleur extends HttpServlet {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
         Villageois villageois = villageoisDAO.getVillageois(pseudo) ; 
         int idPartie = villageois.getPartie() ; 
-        System.out.println("ID PARTIE :" + idPartie ) ; 
         List<Villageois> villageoisList = villageoisDAO.getListVillageois(idPartie) ;
         request.setAttribute("villageoisList", villageoisList) ; 
         request.getRequestDispatcher("/WEB-INF/decision.jsp").forward(request, response);
     }
     
     
-    
+    private void actionAddDecision(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        System.out.println("ADD DECISION") ; 
+        HttpSession session = request.getSession();
+        String pseudoJoueur = session.getAttribute("membre").toString() ; 
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
+        DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
+        Villageois villageois = villageoisDAO.getVillageois(pseudoJoueur) ; 
+        int idPartie = villageois.getPartie() ; 
+        System.out.println("JOUEUR CHOISI : " + request.getParameter("decision")) ; 
+        decisionDAO.ajouteDecisionHumain(pseudoJoueur, idPartie, request.getParameter("decision")) ; 
+        actionRejoindreSalleDiscussion(request, response, villageois) ; 
+    }
     
     /**
      * Actions possibles en POST : ajouter, supprimer, modifier. Une fois
@@ -252,7 +268,7 @@ public class Controleur extends HttpServlet {
     private void actionConnexionMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
-        if (membreDAO.idCorrect(request.getParameter("login"), request.getParameter("password"))) {
+        if (membreDAO.idCorrectConnexion(request.getParameter("login"), request.getParameter("password"))) {
             HttpSession session = request.getSession();
             session.setAttribute("membre", request.getParameter("login"));
             request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
@@ -266,7 +282,7 @@ public class Controleur extends HttpServlet {
     private void actionAjoutMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
-        if (!membreDAO.idCorrect(request.getParameter("pseudo"), request.getParameter("password"))){
+        if (membreDAO.idCorrectInscription(request.getParameter("login"))){
             membreDAO.ajouterMembre(request.getParameter("login"), request.getParameter("password"));
             request.getRequestDispatcher("/WEB-INF/connexion.jsp").forward(request, response);
         }else{
@@ -277,28 +293,37 @@ public class Controleur extends HttpServlet {
     private void actionAddGame(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException {
+        
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString() ;
+        //si f5 on ne recrée pas la partie
+        System.out.println(partieDAO.getIDPartie(pseudo));
+        
         Temps temps = new Temps();
         int heureDeb = temps.calToInt(Integer.parseInt(request.getParameter("beginHour")),Integer.parseInt(request.getParameter("beginMin")));
-        HttpSession session = request.getSession();
-        String pseudo = session.getAttribute("membre").toString() ; 
-        partieDAO.ajouterPartie(Integer.parseInt(request.getParameter("JMin")), 
-                                Integer.parseInt(request.getParameter("JMax")), 
-                                pseudo, 
-                                Integer.parseInt(request.getParameter("day")),
-                                Integer.parseInt(request.getParameter("night")),
-                                heureDeb,
-                                Float.parseFloat(request.getParameter("power")),
-                                Float.parseFloat(request.getParameter("werewolf")));
+        if (temps.estApres(heureDeb, temps.getTempsLong())){
+ 
+            partieDAO.ajouterPartie(Integer.parseInt(request.getParameter("JMin")), 
+                                    Integer.parseInt(request.getParameter("JMax")), 
+                                    pseudo, 
+                                    Integer.parseInt(request.getParameter("day")),
+                                    Integer.parseInt(request.getParameter("night")),
+                                    heureDeb,
+                                    Float.parseFloat(request.getParameter("power")),
+                                    Float.parseFloat(request.getParameter("werewolf")));
 
-        int idPartie = partieDAO.getIDPartie(pseudo);
-        Partie partie = partieDAO.getPartie(idPartie);
-        request.setAttribute("partie", partie) ;
-        
-        
-        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ;
-        villageoisDAO.addPlayer(pseudo, idPartie) ;
-        
-        actionWaitGame(request, response);
+            int idPartie = partieDAO.getIDPartie(pseudo);
+            Partie partie = partieDAO.getPartie(idPartie);
+            request.setAttribute("partie", partie);
+
+            VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+            villageoisDAO.addPlayer(pseudo, idPartie);
+
+            actionWaitGame(request, response);
+        }
+        else{
+            request.getRequestDispatcher("/WEB-INF/failNewGame.jsp").forward(request, response);
+        }
     }
 
 }

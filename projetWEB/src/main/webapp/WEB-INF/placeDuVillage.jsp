@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,6 +14,23 @@
     </head>
     <body>
         <h1>Place du village !</h1>
+        <h2> Votez pour une décision en cours ou proposez en une ! </h2>
+        <table>
+            <tr>
+                <th> Joueur désigné  </th>
+                <th> Nombre de votes </th>
+            </tr>
+            <c:forEach items="${decisions}" var="decisions">
+                <tr>
+                    <td>${decisions.joueurConcerne}</td>
+                    <td>votants a trouver</td>
+                    <td><input type="submit" value="Voter"/>
+                        <input type="hidden" name="action" value="addVote"/>
+                    </td>
+                </tr>   
+            </c:forEach>
+            </tr>
+        </table>
         <a href="controleur?action=newDecision">Proposer une décision</a>
         <c:forEach items="${messages}" var="message">
                 <tr>
