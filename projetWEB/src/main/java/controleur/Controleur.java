@@ -45,7 +45,6 @@ public class Controleur extends HttpServlet {
         String view = request.getParameter("view");
         PartieDAO partieDAO = new PartieDAO(ds);
         //MembreDAO membreDAO = new MembreDAO(ds);
-        System.out.println(action) ; 
         try {
             if (action == null){
                 actionAccueil(request, response);
@@ -163,6 +162,7 @@ public class Controleur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/newPartie.jsp").forward(request, response);
     }
 
+    //cretateur = 1 si arrivée ici par la voie créateur, 0 sinon
     private void actionAddPlayer(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException{
@@ -171,15 +171,40 @@ public class Controleur extends HttpServlet {
         int idPartie = Integer.parseInt(request.getParameter("id")) ; 
         Partie partie = partieDAO.getPartie(idPartie);
         request.setAttribute("partie", partie) ;
-        villageoisDAO.addPlayer(login, idPartie) ;
+        
+        System.out.println("1111");
+        int id = partieDAO.getIDPartieJoueur(login);
+        if (id == 0 || id == -1)
+            villageoisDAO.addPlayer(login, idPartie) ;
+        System.out.println("2222");
+        int nombreJoueurs = villageoisDAO.nombreJoueursPartie(idPartie);
+        request.setAttribute("nombreJoueurs", nombreJoueurs);
+
+        List<Villageois> listeVillageois = villageoisDAO.getListVillageois(idPartie);
+        request.setAttribute("listeVillageois", listeVillageois);
+            
         actionWaitGame(request, response);
     }
+    
+    
     
     private void actionWaitGame(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException{
         //response.setIntHeader("Refresh",1);
-        request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
+        
+        Temps temps = new Temps();
+        Partie partie = (Partie) request.getAttribute("partie");
+        System.out.println("11");
+        int intDeb = partie.getHeureDebut();
+        System.out.println("22");
+        if (!temps.estApres(intDeb, temps.getTempsLong())){
+            System.out.println("33");
+            request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
+        }else{
+            System.out.println("44");
+            request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
+        }
     }
     
     
@@ -231,8 +256,8 @@ public class Controleur extends HttpServlet {
             return;
         }
         MembreDAO membreDAO = new MembreDAO(ds);
-        PartieDAO partieDAO = new PartieDAO(ds) ; 
-
+        PartieDAO partieDAO = new PartieDAO(ds);
+        
         try {
             if (action.equals("login")) {
                 actionConnexionMembre(request, response, membreDAO);
@@ -279,12 +304,37 @@ public class Controleur extends HttpServlet {
         
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString() ;
-        //si f5 on ne recrée pas la partie
-        System.out.println(partieDAO.getIDPartie(pseudo));
         
         Temps temps = new Temps();
         int heureDeb = temps.calToInt(Integer.parseInt(request.getParameter("beginHour")),Integer.parseInt(request.getParameter("beginMin")));
-        if (temps.estApres(heureDeb, temps.getTempsLong())){
+        
+        //si f5, il y a déjà une partie donc on ne la recréé pas
+        if(partieDAO.getIDPartieCreateur(pseudo) != -1){
+            System.out.println("1");
+            int idPartie = partieDAO.getIDPartieJoueur(pseudo);
+            System.out.println("2");
+            Partie partie = partieDAO.getPartie(idPartie);
+            System.out.println("3");
+            request.setAttribute("partie", partie);
+            System.out.println("4");
+            
+            VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+            System.out.println("5");
+            int nombreJoueurs = villageoisDAO.nombreJoueursPartie(idPartie);
+            System.out.println("6");
+            request.setAttribute("nombreJoueurs", nombreJoueurs);
+            System.out.println("7");
+            
+            List<Villageois> listeVillageois = villageoisDAO.getListVillageois(idPartie);
+            System.out.println("8");
+            request.setAttribute("listeVillageois", listeVillageois);
+            System.out.println("9");
+            
+            actionWaitGame(request, response);
+        }
+            
+        //attention code redondant à factoriser !
+        else if (temps.estApres(heureDeb, temps.getTempsLong())){
  
             partieDAO.ajouterPartie(Integer.parseInt(request.getParameter("JMin")), 
                                     Integer.parseInt(request.getParameter("JMax")), 
@@ -294,13 +344,30 @@ public class Controleur extends HttpServlet {
                                     heureDeb,
                                     Float.parseFloat(request.getParameter("power")),
                                     Float.parseFloat(request.getParameter("werewolf")));
-
-            int idPartie = partieDAO.getIDPartie(pseudo);
+            System.out.println("90");
+            int idPartie = partieDAO.getIDPartieCreateur(pseudo);
+            System.out.println("91");
+            System.out.println(idPartie);
+            System.out.println(pseudo);
             Partie partie = partieDAO.getPartie(idPartie);
+            System.out.println("92");
             request.setAttribute("partie", partie);
+System.out.println("93");
 
             VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+System.out.println("94");
             villageoisDAO.addPlayer(pseudo, idPartie);
+
+            System.out.println("95");
+            int nombreJoueurs = villageoisDAO.nombreJoueursPartie(idPartie);
+            System.out.println("96");
+            request.setAttribute("nombreJoueurs", nombreJoueurs);
+            System.out.println("97");
+
+            List<Villageois> listeVillageois = villageoisDAO.getListVillageois(idPartie);
+            System.out.println("98");
+            request.setAttribute("listeVillageois", listeVillageois);
+            System.out.println("99");
 
             actionWaitGame(request, response);
         }
