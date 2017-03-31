@@ -22,10 +22,6 @@ import java.util.Iterator;
  * @author gaunetc
  */
 public class DecisionDAO extends AbstractDatabaseDAO{
-    /* Variable globale: */
-    int nbreDecisionHumain = 1; 
-    int nbreDecisionLoup = 1; 
-
     
     public DecisionDAO(DataSource ds) {
         super(ds);
@@ -129,13 +125,12 @@ public class DecisionDAO extends AbstractDatabaseDAO{
 	       ("UPDATE Decision_Humain set NbreVote = NbreVote + 1 Where login_joueur_concerne = ? ");
             st.setString(1, decision.getJoueurConcerne());
             st.executeUpdate();
-            
+            decision.getVotants().add(votant) ; 
             int nbreVotant = decision.getVotants().size(); 
             st = conn.prepareStatement
-	       ("UPDATE Decision_Humain set Votant1 = ? Where login_joueur_concerne = ? ");
-            st.setInt(1, nbreVotant);
-            st.setString(2, votant);
-            st.setString(3, decision.getJoueurConcerne());
+	       ("UPDATE Decision_Humain set Votant"+nbreVotant+" = ? Where login_joueur_concerne = ? ");
+            st.setString(1, votant);
+            st.setString(2, decision.getJoueurConcerne());
             st.executeUpdate();
             
         } catch (SQLException e) {
@@ -152,10 +147,9 @@ public class DecisionDAO extends AbstractDatabaseDAO{
             
             int nbreVotant = decision.getVotants().size(); 
             st = conn.prepareStatement
-	       ("UPDATE Decision_Loup set Votant? = ? Where login_joueur_concerne = ? ");
-            st.setInt(1, nbreVotant+1);
-            st.setString(2, votant);
-            st.setString(3, decision.getJoueurConcerne());
+	       ("UPDATE Decision_Loup set Votant"+nbreVotant+" = ? Where login_joueur_concerne = ? ");
+            st.setString(1, votant);
+            st.setString(2, decision.getJoueurConcerne());
             st.executeUpdate();
             
         } catch (SQLException e) {

@@ -63,11 +63,12 @@ public class Controleur extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
             } else if (action.equals("deconnexion")){
                 actionDeconnexion(request, response);
-
             } else if (action.equals("newDecision")) {
                 actionNewDecision(request, response);
             } else if (action.equals("addDecision")) {
                 actionAddDecision(request, response);
+            } else if (action.equals("addVote")){
+                actionAddVote(request, response) ; 
             } else {
                 invalidParameters(request, response);
             }
@@ -241,6 +242,16 @@ public class Controleur extends HttpServlet {
         decisionDAO.ajouteDecisionHumain(pseudoJoueur, idPartie, request.getParameter("decision")) ; 
         actionRejoindreSalleDiscussion(request, response, villageois) ; 
     }
+    
+    
+    private void actionAddVote(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        
+    }
+    
+    
+    
     
     /**
      * Actions possibles en POST : ajouter, supprimer, modifier. Une fois
