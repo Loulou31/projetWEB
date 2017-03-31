@@ -19,6 +19,7 @@
             <tr>
                 <th> Joueur désigné  </th>
                 <th> Nombre de votes </th>
+                <th> Nombre de joueurs : ${nbJoueurs} </th>
             </tr>
             <c:forEach items="${decisions}" var="decisions">
                 <tr>

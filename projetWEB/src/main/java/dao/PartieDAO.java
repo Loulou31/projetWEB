@@ -146,9 +146,21 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
     public int getNbJoueurs(int id){
-        return 0;
+        ResultSet rs;
+        int nbJoueurs = 0;
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT login FROM Joueur WHERE idPartie = ?");
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                nbJoueurs++; 
+            }
+            return nbJoueurs; 
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
     }
-    
+
     public int getDateDebut(int id){
         try(Connection conn = getConn()){
         PreparedStatement st = conn.prepareStatement
