@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
 import modele.Membre;
+import modele.Message;
 import modele.Partie;
 import modele.Temps;
 import modele.Villageois;
@@ -70,9 +71,7 @@ public class Controleur extends HttpServlet {
             } else if (action.equals("deconnexion")){
                 actionDeconnexion(request, response);
             } else if (action.equals("newDecision")){
-                actionNewDecision(request, response) ; 
-            } else if(action.equals("ajouterUnMessage")){
-                actionAddMessage(request, response);
+                actionNewDecision(request, response) ;
             }else {
                 invalidParameters(request, response);
             }
@@ -133,7 +132,6 @@ public class Controleur extends HttpServlet {
             VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
             Villageois villageois = villageoisDAO.getVillageois(pseudo);
             Partie partie = partieDAO.getPartie(villageois.getPartie());
-            MessageDAO messageDAO = new MessageDAO(ds);
             if (partie.enAttente(partieDAO)){
                 actionWaitGame(request,response);
             }else{
@@ -148,7 +146,10 @@ public class Controleur extends HttpServlet {
     private void actionRejoindreSalleDiscussion(HttpServletRequest request,
             HttpServletResponse response,Villageois villageois)throws IOException, ServletException {
         Temps temps = new Temps();
+        MessageDAO messageDAO = new MessageDAO(ds);
         if (temps.estJour(villageois.getPartie())){
+            List<Message> messages = messageDAO.getListeMessagesSalleDiscussion();
+            request.setAttribute("messages", messages);
             request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
         }else{
             if (villageois.getRole() == 1){
@@ -200,19 +201,6 @@ public class Controleur extends HttpServlet {
     }
     
     
-    private void actionAddMessage(HttpServletRequest request,
-            HttpServletResponse response)
-            throws IOException, ServletException{
-        MessageDAO messageDAO = new MessageDAO(ds);
-        HttpSession session = request.getSession();
-        String pseudo = session.getAttribute("membre").toString();
-        messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("message"));
-        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
-        Villageois villageois = villageoisDAO.getVillageois(pseudo);
-        actionRejoindreSalleDiscussion(request, response, villageois);
-    }
-    
-    
     
     
     /**
@@ -236,10 +224,12 @@ public class Controleur extends HttpServlet {
         try {
             if (action.equals("login")) {
                 actionConnexionMembre(request, response, membreDAO);
-            }else if (action.equals("register")){
+            } else if (action.equals("register")){
                 actionAjoutMembre(request, response, membreDAO);
             } else if (action.equals("addGame")){
                 actionAddGame(request, response, partieDAO) ; 
+            } else if(action.equals("ajouterUnMessage")){
+                actionAddMessage(request, response);
             }
         } catch (DAOException e) {
             erreurBD(request, response, e);
@@ -247,7 +237,18 @@ public class Controleur extends HttpServlet {
 
     }
 
-
+    private void actionAddMessage(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException{
+        MessageDAO messageDAO = new MessageDAO(ds);
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString());
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        actionRejoindreSalleDiscussion(request, response, villageois);
+    }
+    
     private void actionConnexionMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
