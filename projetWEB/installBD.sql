@@ -23,7 +23,7 @@ CREATE TABLE JOUEUR (
     login varchar(10) NOT NULL , 
     rolePartie int , 
     Statut int CONSTRAINT StatPos CHECK (Statut = 0 OR Statut = 1), 
-    Pouvoir varchar(10),
+    Pouvoir varchar(20),
     IdPartie int, 
     CONSTRAINT loginForeign FOREIGN KEY (login) REFERENCES MEMBRE(login),
     PRIMARY KEY (login)
