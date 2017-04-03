@@ -72,32 +72,46 @@ public class DecisionDAO extends AbstractDatabaseDAO{
             }
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
-	}
-	return result;
+        }
+        return result;
     }
-   
-     
-     
+
     public void ajouteDecisionHumain(String login_joueur, int idPartie, String login_expeditaire) {
-        try (Connection conn = getConn()) {
-	    PreparedStatement st = conn.prepareStatement
-	       ("INSERT INTO Decision_Humain (login_joueur_concerne, id_partie, login_expeditaire, est_valide, date_envoi, nbreVote) VALUES (?, ?, ?, 1, SYSDATE, 0)");
-            System.out.println("JOUEUR CONCERNE : " + login_joueur) ;
-            System.out.println("ID PARTIE : " + idPartie) ;
-            System.out.println("EXPEDITAIRE : " + login_expeditaire) ;
-            st.setString(1, login_joueur);
-            st.setInt(2, idPartie);
-            st.setString(3, login_expeditaire);
-            st.executeUpdate();
-            HashSet<String> votants = new HashSet() ;
-            Decision decision = new Decision(login_joueur, votants) ; 
-            ajouteVoteHumain(decision, login_joueur);
-        } catch (SQLException e) {
-            throw new DAOException("Erreur BD decision " + e.getMessage(), e);
+
+        /* on vérifie que une decision n'est pas en cours sur le joueur concerné */
+        if (!decisionCorrecte(login_joueur, idPartie)) {
+            try (Connection conn = getConn()) {
+                PreparedStatement st = conn.prepareStatement("INSERT INTO Decision_Humain (login_joueur_concerne, id_partie, login_expeditaire, est_valide, date_envoi, nbreVote) VALUES (?, ?, ?, 1, SYSDATE, 0)");
+                System.out.println("JOUEUR CONCERNE : " + login_joueur);
+                System.out.println("ID PARTIE : " + idPartie);
+                System.out.println("EXPEDITAIRE : " + login_expeditaire);
+                st.setString(1, login_joueur);
+                st.setInt(2, idPartie);
+                st.setString(3, login_expeditaire);
+                st.executeUpdate();
+                HashSet<String> votants = new HashSet();
+                Decision decision = new Decision(login_joueur, votants);
+                ajouteVoteHumain(decision, login_joueur);
+            } catch (SQLException e) {
+                throw new DAOException("Erreur BD decision " + e.getMessage(), e);
+            }
         }
     }
-    
-    
+
+    public Boolean decisionCorrecte(String pseudo, int idPartie){
+        /*Renvoie true si la decision existe, false sinon*/
+        try (Connection conn = this.getConn()) {
+            PreparedStatement s = conn.prepareStatement(
+                    " Select login_joueur_concerne From Decision_Humain Where login_joueur_concerne = ? and id_partie = ?");
+            s.setString(1, pseudo);
+            s.setInt(2, idPartie);
+            ResultSet r = s.executeQuery();
+            return (r.next());
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+
     public void ajouteDecisionLoup(String login_joueur, int idPartie, String login_expeditaire) {
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement
@@ -117,7 +131,9 @@ public class DecisionDAO extends AbstractDatabaseDAO{
     
     
     public void ajouteVoteHumain (Decision decision, String votant) {
-        try (Connection conn = getConn()) {	     
+        try (Connection conn = getConn()) {
+            /* On vérifie que la personne n'a pas déjà voté pour cette décision */
+            if (!decision.getVotants().contains(votant)) {
 	     PreparedStatement st = conn.prepareStatement
 	       ("UPDATE Decision_Humain set NbreVote = NbreVote + 1 Where login_joueur_concerne = ? ");
             st.setString(1, decision.getJoueurConcerne());
@@ -132,6 +148,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
             int nbVote = decision.getNbVote() +1 ; 
             decision.setNbVote(nbVote) ; 
             System.out.println("NBVOTE : " + nbVote) ; 
+            }
         } catch (SQLException e) {
             throw new DAOException("Erreur BD vote " + e.getMessage(), e);
         }
