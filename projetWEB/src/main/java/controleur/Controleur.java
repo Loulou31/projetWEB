@@ -46,6 +46,7 @@ public class Controleur extends HttpServlet {
         String view = request.getParameter("view");
         PartieDAO partieDAO = new PartieDAO(ds);
         //MembreDAO membreDAO = new MembreDAO(ds);
+        System.out.println("ACTION : " + action) ; 
         try {
             if (action == null) {
                 actionAccueil(request, response);
@@ -369,24 +370,36 @@ public class Controleur extends HttpServlet {
             HttpServletResponse response)
             throws IOException, ServletException {
         HttpSession session = request.getSession();
-        String pseudoJoueur = session.getAttribute("membre").toString();
-        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
-        DecisionDAO decisionDAO = new DecisionDAO(ds);
-        Villageois villageois = villageoisDAO.getVillageois(pseudoJoueur);
-        int idPartie = villageois.getPartie();
-        decisionDAO.ajouteDecisionHumain(pseudoJoueur, idPartie, request.getParameter("decision"));
-        actionRejoindreSalleDiscussion(request, response, villageois);
+        String pseudoJoueur = session.getAttribute("membre").toString() ; 
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
+        DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
+        Villageois villageois = villageoisDAO.getVillageois(pseudoJoueur) ; 
+        int idPartie = villageois.getPartie() ; 
+        decisionDAO.ajouteDecisionHumain(request.getParameter("decision"), idPartie, pseudoJoueur) ; 
+        actionRejoindreSalleDiscussion(request, response, villageois) ; 
     }
 
     private void actionAddVote(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
+        System.out.println("ADD VOTE") ; 
         HttpSession session = request.getSession();
-        String votant = session.getAttribute("membre").toString();
-        DecisionDAO decisionDAO = new DecisionDAO(ds);
-        String joueurConcerne = request.getAttribute("joueurConcerne").toString();
-        Decision decision = decisionDAO.getDecisionHumain(joueurConcerne);
-        decisionDAO.ajouteVoteHumain(decision, votant);
+        System.out.println("ADD VOTE 1") ; 
+        String votant = session.getAttribute("membre").toString() ; 
+        System.out.println("ADD VOTE 2") ; 
+        DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
+        System.out.println("ADD VOTE 3") ; 
+        String joueurConcerne = request.getAttribute("joueurConcerne").toString() ; 
+        System.out.println("ADD VOTE 4") ; 
+        Decision decision = decisionDAO.getDecisionHumain(joueurConcerne) ; 
+        System.out.println("ADD VOTE 5") ; 
+        decisionDAO.ajouteVoteHumain(decision, votant) ; 
+        System.out.println("ADD VOTE 6") ; 
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
+        System.out.println("ADD VOTE 7") ; 
+        Villageois villageois = villageoisDAO.getVillageois(votant) ; 
+        System.out.println("ADD VOTE 8") ; 
+        actionRejoindreSalleDiscussion(request, response, villageois) ; 
 
     }
 
