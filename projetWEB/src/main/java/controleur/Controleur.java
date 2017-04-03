@@ -238,6 +238,7 @@ public class Controleur extends HttpServlet {
         request.setAttribute("role", villageoisDAO.getVillageois(pseudo).getRoleString());
         request.setAttribute("nombreLoup", nbLoup);
         request.setAttribute("proba", probaPouvoir);
+        request.setAttribute("pouvoir", villageoisDAO.getVillageois(pseudo).getPouvoir());
         request.getRequestDispatcher("/WEB-INF/role.jsp").forward(request, response);
     }
 
