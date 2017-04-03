@@ -10,6 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="test.css" />
         <title>Place du village</title>
     </head>
     <body>
@@ -19,6 +20,7 @@
             <tr>
                 <th> Joueur désigné  </th>
                 <th> Nombre de votes </th>
+                <th> Nombre de joueurs : ${nbJoueurs} </th>
             </tr>
             <c:forEach items="${decisions}" var="decisions">
                 <tr>

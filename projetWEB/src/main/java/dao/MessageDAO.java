@@ -28,16 +28,16 @@ public class MessageDAO extends AbstractDatabaseDAO {
     /**
      * Renvoie la liste des messages de la table Message_Salle_Discussion.
      */
-    public List<Message> getListeMessagesSalleDiscussion() {
+    public List<Message> getListeMessagesSalleDiscussion(int idPartie) {
         List<Message> result = new ArrayList<Message>();
         try (
 	     Connection conn = getConn();
 	     Statement st = conn.createStatement();
 	     ) {
-            ResultSet rs = st.executeQuery("SELECT * FROM Message_Salle_Discussion");
+            ResultSet rs = st.executeQuery("SELECT * FROM Message_Salle_Discussion WHERE idPartie = "+idPartie);
             while (rs.next()) {
                 Message message =
-                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"));
+                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"), rs.getInt("idPartie"));
                 result.add(message);
             }
         } catch (SQLException e) {
@@ -49,16 +49,16 @@ public class MessageDAO extends AbstractDatabaseDAO {
      /**
      * Renvoie la liste des messages de la table Message_Repaire.
      */
-    public List<Message> getListMessageRepaire() {
+    public List<Message> getListMessageRepaire(int idPartie) {
         List<Message> result = new ArrayList<Message>();
         try (
 	     Connection conn = getConn();
 	     Statement st = conn.createStatement();
 	     ) {
-            ResultSet rs = st.executeQuery("SELECT * FROM Message_Repaire");
+            ResultSet rs = st.executeQuery("SELECT * FROM Message_Repaire WHERE idPartie = "+idPartie);
             while (rs.next()) {
                 Message message =
-                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"));
+                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"), idPartie);
                 result.add(message);
             }
         } catch (SQLException e) {
@@ -70,12 +70,13 @@ public class MessageDAO extends AbstractDatabaseDAO {
     /**
      * Ajoute un message dans la tale MessageSalleDiscussion
      */
-    public void ajouteMessageSalleDiscussion (String expediteur, String contenu) {
+    public void ajouteMessageSalleDiscussion (String expediteur, String contenu, int idPartie) {
         try (Connection conn = getConn()) {	     
 	     PreparedStatement st = conn.prepareStatement
-	       ("INSERT INTO Message_Salle_Discussion VALUES (?, ?, SYSDATE)");
-            st.setString(1,expediteur);
-            st.setString(2, contenu);
+	       ("INSERT INTO Message_Salle_Discussion VALUES (?, ?, ?, SYSDATE)");
+            st.setInt(1, idPartie);
+            st.setString(2, expediteur);
+            st.setString(3, contenu);
             st.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
@@ -85,12 +86,12 @@ public class MessageDAO extends AbstractDatabaseDAO {
     /**
      * Ajoute un message dans la tale MessageRepaire
      */
-    public void ajouteMessageRepaire (String expediteur, String contenu) {
-        try (Connection conn = getConn()) {	     
-	     PreparedStatement st = conn.prepareStatement
-	       ("INSERT INTO Message_Repaire VALUES (?, ?, SYSDATE)");
-            st.setString(1,expediteur);
-            st.setString(2, contenu);
+    public void ajouteMessageRepaire(String expediteur, String contenu, int idPartie) {
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("INSERT INTO Message_Repaire VALUES (?, ?, ?, SYSDATE)");
+            st.setInt(1, idPartie);
+            st.setString(2, expediteur);
+            st.setString(3, contenu);
             st.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);

@@ -31,6 +31,7 @@ CREATE TABLE JOUEUR (
 
 
 CREATE TABLE MESSAGE_SALLE_DISCUSSION (
+    idPartie int NOT NULL,
     login_expediteur varchar(10) NOT NULL, 
     contenu varchar(100) NOT NULL, 
     date_envoi date, 
@@ -40,6 +41,7 @@ CREATE TABLE MESSAGE_SALLE_DISCUSSION (
 );
 
 CREATE TABLE MESSAGE_REPAIRE (
+    idPartie int NOT NULL,
     login_expediteur varchar(10) NOT NULL, 
     contenu varchar(100) NOT NULL, 
     date_envoi date, 
@@ -50,10 +52,9 @@ CREATE TABLE MESSAGE_REPAIRE (
 );
 
 CREATE TABLE DECISION_LOUP (
-    id_decision int primary key,
+    login_joueur_concerne varchar(10) NOT NULL PRIMARY KEY, 
     id_partie int, 
     login_expeditaire varchar(10) NOT NULL, 
-    login_joueur_concerne varchar(10) NOT NULL, 
     est_valide int CONSTRAINT EtatValide CHECK (est_valide = 0 OR est_valide = 1), 
     date_envoi date, 
     nbreVote int, 
@@ -73,10 +74,9 @@ CREATE TABLE DECISION_LOUP (
 );
 
 CREATE TABLE DECISION_HUMAIN (
-    id_decision int primary key,
+    login_joueur_concerne varchar(10) NOT NULL PRIMARY KEY, 
     id_partie int,
     login_expeditaire varchar(10) NOT NULL, 
-    login_joueur_concerne varchar(10) NOT NULL, 
     est_valide int CONSTRAINT EtatValide2 CHECK (est_valide = 0 OR est_valide = 1), 
     date_envoi date, 
     nbreVote int, 
