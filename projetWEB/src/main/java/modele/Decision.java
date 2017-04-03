@@ -24,6 +24,13 @@ public class Decision {
         this.nbVote = 0 ; 
     }
     
+      public Decision(String joueurConcerne, HashSet<String> votants, int nbVote) {
+        this.joueurConcerne = joueurConcerne;
+        this.votants = votants;
+        this.etat = false;
+        this.nbVote = nbVote ; 
+    }
+    
     public String getJoueurConcerne() {
         return joueurConcerne;
     }

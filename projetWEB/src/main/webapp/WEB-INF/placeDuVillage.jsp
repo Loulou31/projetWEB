@@ -22,10 +22,10 @@
                 <th> Nombre de votes </th>
                 <th> Nombre de joueurs : ${nbJoueurs} </th>
             </tr>
-            <c:forEach items="${decisions}" var="decisions">
+            <c:forEach items="${decisions}" var="decision">
                 <tr>
-                    <td>${decisions.joueurConcerne}</td>
-                    <td>${decisions.getNbVote()}</td>
+                    <td>${decision.joueurConcerne}</td>
+                    <td>${decision.getNbVote()}</td>
                     <td>
                     <form action="controleur" accept-charset="UTF-8">    
                         <input type="submit" value="Voter"/>
