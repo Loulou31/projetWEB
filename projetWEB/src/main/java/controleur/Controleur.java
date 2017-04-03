@@ -162,8 +162,7 @@ public class Controleur extends HttpServlet {
         float probaPouvoir = partie.getProbaPouvoir();
         
         /* si les roles ont deja été attribué: ne rien faire*/
-        if (testVillageois.get(0).getRole() != -1) {
-            System.out.println("on recommence a FAIRE LES ROLES!!! NONNNNN");
+        if (testVillageois.get(0).getRole() == -1) {
             /* selection des loups */
             int nbLoupCourant = 0;
             while (nbLoupCourant != nbLoup) {
