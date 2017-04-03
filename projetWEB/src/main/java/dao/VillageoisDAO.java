@@ -172,7 +172,8 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? "
                     + "and pouvoir = ? and rolePartie = 0");
-            st.setString(1, "rien");
+            st.setInt(1, idPartie);
+            st.setString(2, "rien");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Villageois humain
