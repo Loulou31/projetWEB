@@ -171,14 +171,14 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE IdPartie = ? "
-                    + "and pouvoir = ? and rolePartie = 0");
+                    + "and Pouvoir = ? and rolePartie = 0");
             st.setInt(1, idPartie);
             st.setString(2, "rien");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Villageois humain
                         = new Villageois(rs.getString("login"), rs.getInt("rolePartie"),
-                        rs.getInt("Statut"), rs.getString("pouvoir"), rs.getInt("IdPartie"));
+                        rs.getInt("Statut"), rs.getString("Pouvoir"), rs.getInt("IdPartie"));
                 result.add(humain);
             }
         } catch (SQLException e) {
@@ -196,17 +196,18 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE IdPartie = ? "
-                    + "and pouvoir = ? and rolePartie = 1");
-            st.setString(1, "rien");
+                    + "and Pouvoir = ? and rolePartie = 1");
+            st.setInt(1, idPartie);
+            st.setString(2, "rien");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Villageois humain
                         = new Villageois(rs.getString("login"), rs.getInt("rolePartie"),
-                        rs.getInt("Statut"), rs.getString("pouvoir"), rs.getInt("IdPartie"));
+                        rs.getInt("Statut"), rs.getString("Pouvoir"), rs.getInt("IdPartie"));
                 result.add(humain);
             }
         } catch (SQLException e) {
-            throw new DAOException("Erreur BD coucou" + e.getMessage(), e);
+            throw new DAOException("Erreur BD" + e.getMessage(), e);
         }
         return result;
     }
