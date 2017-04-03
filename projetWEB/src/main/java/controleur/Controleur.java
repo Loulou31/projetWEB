@@ -166,7 +166,7 @@ public class Controleur extends HttpServlet {
             List<Villageois> villageois = villageoisDAO.getListHumains(idPartie);
             System.out.println("sortie getListVillageois ds actionDebPartie");
             int nbHumain = villageois.size();
-            int valeur = generateurAleatoire(-1, nbHumain);
+            int valeur = generateurAleatoire(0, nbHumain);
             System.out.println("valeur pr avoir les loups");
             System.out.println(valeur);
             Villageois nouveauLoup = villageois.get(valeur);
@@ -191,7 +191,7 @@ public class Controleur extends HttpServlet {
                 List<Villageois> loups = villageoisDAO.getListLoupsSansPouvoir(idPartie);
                 if (loups.size() > 0) {
                     System.out.println("apres getListLoupsSansPouvoirs ds actionDebPartie");
-                    int valContam = generateurAleatoire(-1, loups.size());
+                    int valContam = generateurAleatoire(0, loups.size());
                     villageoisDAO.updatePlayerStatus(loups.get(valContam).getPseudo(), "contamination");
                 } else {
                     System.out.println("pas assez de loups pr pouvoir contam");
@@ -201,7 +201,7 @@ public class Controleur extends HttpServlet {
             if (insomnie != 0) {
                 List<Villageois> humains = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                 if (humains.size() > 0) {
-                    int valInsomn = generateurAleatoire(-1, humains.size());
+                    int valInsomn = generateurAleatoire(0, humains.size());
                     System.out.println("valeur pr donner pouvoir insomnie humain");
                     System.out.println(valInsomn);
                     villageoisDAO.updatePlayerStatus(humains.get(valInsomn).getPseudo(), "insomnie");
@@ -213,7 +213,7 @@ public class Controleur extends HttpServlet {
             if (voyance != 0) {
                 List<Villageois> villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                 if (villageois.size() > 0) {
-                    int valVoyance = generateurAleatoire(-1, villageois.size());
+                    int valVoyance = generateurAleatoire(0, villageois.size());
                     System.out.println("valeur pr donner pouvoir voyance humain");
                     System.out.println(valVoyance);
                     villageoisDAO.updatePlayerStatus(villageois.get(valVoyance).getPseudo(), "voyance");
@@ -225,7 +225,7 @@ public class Controleur extends HttpServlet {
             if (spiritisme != 0) {
                 List<Villageois> villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                 if (villageois.size() > 0) {
-                    int valSpirit = generateurAleatoire(-1, villageois.size());
+                    int valSpirit = generateurAleatoire(0, villageois.size());
                     villageoisDAO.updatePlayerStatus(villageois.get(valSpirit).getPseudo(), "spriritisme");
                 } else {
                     System.out.println("pas assez de villageois pr pouvoir spirit");

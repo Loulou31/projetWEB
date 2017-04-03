@@ -207,6 +207,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
             }
         } catch (SQLException e) {
             throw new DAOException("Erreur BD heeeey" + e.getMessage(), e);
+
         }
         return result;
     }
