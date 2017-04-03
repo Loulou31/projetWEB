@@ -1,11 +1,11 @@
 <%--<%@page import="modele.Temps"%>--%>
 <!DOCTYPE html>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<!DOCTYPE html>
 <html>
 <title>W3.CSS Template</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/test.css"/>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -41,14 +41,14 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 <button onclick="document.getElementById('id01').style.display='block'">Login</button>
 
 <!-- The Modal -->
-    <div id="id01" class="modal">
+  <div id="id01" class="modal">
   <span onclick="document.getElementById('id01').style.display='none'"
     class="close" title="Close Modal">&times;</span>
 
   <!-- Modal Content -->
   <form class="modal-content animate" action="controleur" method="post" accept-charset="UTF-8">
     <div class="imgcontainer">
-      <img src="img_avatar2.png" alt="Avatar" class="avatar">
+      <img src="css/img_avatar2.png" alt="Avatar" class="avatar">
     </div>
         <div class="container">
           <label><b>Pseudo</b></label>
