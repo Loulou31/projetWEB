@@ -391,9 +391,7 @@ public class Controleur extends HttpServlet {
         HttpSession session = request.getSession();
         String votant = session.getAttribute("membre").toString() ; 
         DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
-        System.out.println("ADD VOTE 3") ; 
         String joueurConcerne = request.getParameter("joueurConcerne").toString() ; 
-        System.out.println("ADD VOTE 4") ; 
         Decision decision = decisionDAO.getDecisionHumain(joueurConcerne) ; 
         System.out.println("ADD VOTE 5") ; 
         decisionDAO.ajouteVoteHumain(decision, votant) ; 
