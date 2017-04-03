@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <html>
-<title>W3.CSS Template</title>
+<title>Le Loup-Garou !</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="css/test.css"/>
@@ -35,10 +35,10 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
-<div class="w3-main" style="margin-left:250px">
+<!--<div class="w3-main" style="margin-left:250px">-->
 
   <!-- Button to open the modal login form -->
-<button onclick="document.getElementById('id01').style.display='block'">Login</button>
+<button onclick="document.getElementById('id01').style.display='block'" style="margin-bottom: 80px">Login</button>
 
 <!-- The Modal -->
   <div id="id01" class="modal">
@@ -48,7 +48,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
   <!-- Modal Content -->
   <form class="modal-content animate" action="controleur" method="post" accept-charset="UTF-8">
     <div class="imgcontainer">
-      <img src="css/img_avatar2.png" alt="Avatar" class="avatar">
+      <img src="css/loup.png" alt="Avatar" class="avatar">
     </div>
         <div class="container">
           <label><b>Pseudo</b></label>
@@ -86,17 +86,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
     
   </div>
 
-  <!-- Pagination -->
-  <div class="w3-center w3-padding-32">
-    <div class="w3-bar">
-      <a class="w3-button w3-black" href="#">1</a>
-      <a class="w3-button w3-hover-black" href="#">2</a>
-      <a class="w3-button w3-hover-black" href="#">3</a>
-      <a class="w3-button w3-hover-black" href="#">4</a>
-      <a class="w3-button w3-hover-black" href="#">5</a>
-      <a class="w3-button w3-hover-black" href="#">Â»</a>
-    </div>
-  </div>
 
   <footer id="myFooter">
     <div class="w3-container w3-theme-l2 w3-padding-32">

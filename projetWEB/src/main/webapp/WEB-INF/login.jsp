@@ -13,7 +13,7 @@
       <form class="modal-content animate" action="controleur" method="post" accept-charset="UTF-8"">
         <div class="imgcontainer">
           <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-          <img src="css/img_avatar2.png" alt="Avatar" class="avatar">
+          <img src="css/loup.png" alt="Avatar" class="avatar">
         </div>
 
         <div class="container">
