@@ -374,7 +374,7 @@ public class Controleur extends HttpServlet {
         DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
         Villageois villageois = villageoisDAO.getVillageois(pseudoJoueur) ; 
         int idPartie = villageois.getPartie() ; 
-        decisionDAO.ajouteDecisionHumain(pseudoJoueur, idPartie, request.getParameter("decision")) ; 
+        decisionDAO.ajouteDecisionHumain(request.getParameter("decision"), idPartie, pseudoJoueur) ; 
         actionRejoindreSalleDiscussion(request, response, villageois) ; 
     }
     
@@ -390,6 +390,7 @@ public class Controleur extends HttpServlet {
         decisionDAO.ajouteVoteHumain(decision, votant) ; 
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
         Villageois villageois = villageoisDAO.getVillageois(votant) ; 
+        System.out.println("ADD VOTE") ; 
         actionRejoindreSalleDiscussion(request, response, villageois) ; 
     }
     
