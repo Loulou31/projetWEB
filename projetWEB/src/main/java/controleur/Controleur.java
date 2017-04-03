@@ -45,6 +45,7 @@ public class Controleur extends HttpServlet {
         String action = request.getParameter("action");
         String view = request.getParameter("view");
         PartieDAO partieDAO = new PartieDAO(ds);
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         //MembreDAO membreDAO = new MembreDAO(ds);
         try {
             if (action == null) {
@@ -72,6 +73,11 @@ public class Controleur extends HttpServlet {
             } else if (action.equals("debutPartie")) {
                 request.setAttribute("estCommencee", 1);
                 actionDebutPartie(request, response);
+            } else if (action.equals("rejoindreJeu")) {
+                HttpSession session = request.getSession();
+                String pseudo = session.getAttribute("membre").toString();
+                Villageois v = villageoisDAO.getVillageois(pseudo);
+                actionRejoindreSalleDiscussion(request, response, v);
             } else {
                 invalidParameters(request, response);
             }
