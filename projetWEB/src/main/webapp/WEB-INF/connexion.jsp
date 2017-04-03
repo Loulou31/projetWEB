@@ -38,7 +38,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 <!--<div class="w3-main" style="margin-left:250px">-->
 
   <!-- Button to open the modal login form -->
-<button onclick="document.getElementById('id01').style.display='block'" style="margin-bottom: 80px">Login</button>
+<button onclick="document.getElementById('id01').style.display='block'" style="margin-top: 40px">Connexion</button>
 
 <!-- The Modal -->
   <div id="id01" class="modal">

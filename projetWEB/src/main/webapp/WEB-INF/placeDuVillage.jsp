@@ -26,9 +26,12 @@
                 <tr>
                     <td>${decisions.joueurConcerne}</td>
                     <td>${decisions.getNbVote()}</td>
-                    <td><input type="submit" value="Voter"/>
+                    <td>
+                    <form action="controleur" accept-charset="UTF-8">    
+                        <input type="submit" value="Voter"/>
                         <input type="hidden" name="action" value="addVote"/>
                         <input type="hidden" name="joueurConcerne" value="${decision.joueurConcerne}"/>
+                    </form>
                     </td>
                 </tr>   
             </c:forEach>
