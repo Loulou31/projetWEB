@@ -88,7 +88,7 @@ public class Controleur extends HttpServlet {
      */
     private void actionAccueil(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        response.setIntHeader("Refresh", 1);
+//        response.setIntHeader("Refresh",1);
         request.getRequestDispatcher("/WEB-INF/connexion.jsp").forward(request, response);
     }
 
@@ -163,7 +163,7 @@ public class Controleur extends HttpServlet {
         float probaPouvoir = partie.getProbaPouvoir();
         
         /* si les roles ont deja été attribué: ne rien faire*/
-        if (testVillageois.get(0).getRole() != -1) {
+        if (testVillageois.get(0).getRole() == -1) {
             /* selection des loups */
             int nbLoupCourant = 0;
             while (nbLoupCourant != nbLoup) {
