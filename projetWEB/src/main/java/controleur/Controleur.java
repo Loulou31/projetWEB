@@ -87,7 +87,7 @@ public class Controleur extends HttpServlet {
      */
     private void actionAccueil(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        response.setIntHeader("Refresh", 1);
+//        response.setIntHeader("Refresh",1);
         request.getRequestDispatcher("/WEB-INF/connexion.jsp").forward(request, response);
     }
 
