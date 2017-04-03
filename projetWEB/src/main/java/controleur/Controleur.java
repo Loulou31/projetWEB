@@ -319,8 +319,15 @@ public class Controleur extends HttpServlet {
     
     
     private void actionAddVote(HttpServletRequest request,
-            HttpServletResponse response)
+            HttpServletResponse response, String joueurConcerne)
             throws IOException, ServletException {
+        HttpSession session = request.getSession();
+        String pseudoJoueur = session.getAttribute("membre").toString() ; 
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
+        DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
+        Villageois villageois = villageoisDAO.getVillageois(pseudoJoueur) ; 
+        int idPartie = villageois.getPartie() ; 
+        decisionDAO.ajouteVoteHumain(decision, joueurConcerne) ; 
         
     }
     

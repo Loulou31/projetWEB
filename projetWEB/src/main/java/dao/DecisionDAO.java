@@ -92,7 +92,6 @@ public class DecisionDAO extends AbstractDatabaseDAO{
             st.setString(3, login_expeditaire);
             st.executeUpdate();
             HashSet<String> votants = new HashSet() ;
-            votants.add(login_expeditaire) ; 
             Decision decision = new Decision(login_joueur, votants) ; 
             ajouteVoteHumain(decision, login_joueur);
         } catch (SQLException e) {
@@ -132,7 +131,9 @@ public class DecisionDAO extends AbstractDatabaseDAO{
             st.setString(1, votant);
             st.setString(2, decision.getJoueurConcerne());
             st.executeUpdate();
-            
+            int nbVote = decision.getNbVote() +1 ; 
+            decision.setNbVote(nbVote) ; 
+            System.out.println("NBVOTE : " +decision.getNbVote()) ; 
         } catch (SQLException e) {
             throw new DAOException("Erreur BD vote " + e.getMessage(), e);
         }
@@ -155,5 +156,26 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
-    }
+        
+       }
+    
+   public void getDecisionHumain (String joueurConcerne){
+       Decision decision ; 
+        try (Connection conn = getConn()) {	     
+	     PreparedStatement st = conn.prepareStatement
+	       ("SELECT * FROM DECISON_HUMAIN WHERE login_joueur_concerne = ? ");
+            st.setString(1, joueurConcerne);
+            ResultSet rs = st.executeQuery(); 
+            
+            int nbreVotant = decision.getVotants().size(); 
+            st = conn.prepareStatement
+	       ("UPDATE Decision_Loup set Votant"+nbreVotant+" = ? Where login_joueur_concerne = ? ");
+            st.setString(1, votant);
+            st.setString(2, decision.getJoueurConcerne());
+            st.executeUpdate();
+            
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+   }
 }

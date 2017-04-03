@@ -25,7 +25,7 @@
             <c:forEach items="${decisions}" var="decisions">
                 <tr>
                     <td>${decisions.joueurConcerne}</td>
-                    <td>votants a trouver</td>
+                    <td>${decisions.getNbVote()}</td>
                     <td><input type="submit" value="Voter"/>
                         <input type="hidden" name="action" value="addVote"/>
                     </td>
@@ -34,6 +34,7 @@
             </tr>
         </table>
         <a href="controleur?action=newDecision">Proposer une décision</a>
+        <h2> Discutez avec les autres villageois... </h2>
         <table>
             <c:forEach items="${messages}" var="message">
                     <tr>
