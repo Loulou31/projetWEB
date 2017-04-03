@@ -8,11 +8,15 @@
 <link rel="stylesheet" type="text/css" href="css/test.css"/>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+<!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">-->
+<!--<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">--> 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+</style> 
+<!--<style>
 html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
-</style>
+</style>-->
 <body>
 
 <!-- Navbar -->
@@ -70,7 +74,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 
   <div class="w3-row w3-padding-64" style = "margin-top: 20px">
     <div class="w3-twothird w3-container">
-      <h1 class="w3-text-teal">Règles du jeu: </h1>
+      <h1 class="colspec">Règles du jeu: </h1>
       <p>Vous déciderez de rejoindre le village de Thiercelieux...</p>
       <p>Mais ce village est différent de tous ceux que vous aurez pu connaître. En effet, certaines personnes sont des humains, tandis que d'autres sont des loup-garous.</p>
       <p>Les loup-garous sont des humains le jour et se transforment la nuit pour manger un villageois. Certaines sources affirment même que vous pourriez en devenir un dû à l'étrange ambiance qui s'y cache...</p>
@@ -80,14 +84,14 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
   </div>
 
 
-  <footer id="myFooter">
+<!--  <footer id="myFooter">
     <div class="w3-container w3-theme-l2 w3-padding-32">
     </div>
 
     <div class="w3-container w3-theme-l1">
       <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
     </div>
-  </footer>
+  </footer>-->
 
 <!-- END MAIN -->
 </div>

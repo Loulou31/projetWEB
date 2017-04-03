@@ -9,7 +9,22 @@ and open the template in the editor.
 */
 
 /* On travaille sur la balise body, donc sur TOUTE la page */
+body {
+background-image: url("loup2.jpg");
+background-attachment: fixed;
+background-size: auto;
+background-position: center center;
+color: navajowhite;
+font-family: 'Press Start 2P', cursive;
 
+}
+
+#background_opacity {
+position: fixed;
+z-index: -10;
+top: 0; left: 0; right: 0; bottom: 0;
+background-color: rgba(100, 100, 100, 0.1); /* L'opacite se regle ici */
+}
 /* Full-width input fields */
 input[type=text], input[type=password] {
     width: 100%;
@@ -111,7 +126,9 @@ span.psw {
     -webkit-animation: animatezoom 0.6s;
     animation: animatezoom 0.6s
 }
-
+p, .colspec{
+    text-shadow: 4px 4px 4px #aaa;
+}
 @-webkit-keyframes animatezoom {
     from {-webkit-transform: scale(0)} 
     to {-webkit-transform: scale(1)}
