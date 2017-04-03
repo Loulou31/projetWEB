@@ -92,7 +92,6 @@ public class DecisionDAO extends AbstractDatabaseDAO{
             st.setString(3, login_expeditaire);
             st.executeUpdate();
             HashSet<String> votants = new HashSet() ;
-            votants.add(login_expeditaire) ; 
             Decision decision = new Decision(login_joueur, votants) ; 
             ajouteVoteHumain(decision, login_joueur);
         } catch (SQLException e) {
@@ -132,7 +131,9 @@ public class DecisionDAO extends AbstractDatabaseDAO{
             st.setString(1, votant);
             st.setString(2, decision.getJoueurConcerne());
             st.executeUpdate();
-            
+            int nbVote = decision.getNbVote() +1 ; 
+            decision.setNbVote(nbVote) ; 
+            System.out.println("NBVOTE : " + nbVote) ; 
         } catch (SQLException e) {
             throw new DAOException("Erreur BD vote " + e.getMessage(), e);
         }
@@ -155,5 +156,28 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
-    }
+        
+       }
+    
+   public Decision getDecisionHumain (String joueurConcerne){
+       Decision decision = null ; 
+        try (Connection conn = getConn()) {	     
+	    PreparedStatement st = conn.prepareStatement
+                    ("SELECT * FROM DECISION_HUMAIN WHERE login_joueur_concerne = ? ") ; 
+            st.setString(1, joueurConcerne) ; 
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                HashSet<String> votants = new HashSet<String>();
+                votants.add(rs.getString("login_expeditaire"));
+                int nbVote = Integer.parseInt(rs.getString("nbreVote"));
+                for (int i = 2; i <= nbVote; i++) {
+                    votants.add(rs.getString("votant"+i));
+                }
+                decision = new Decision(joueurConcerne, votants);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return decision ; 
+   }
 }
