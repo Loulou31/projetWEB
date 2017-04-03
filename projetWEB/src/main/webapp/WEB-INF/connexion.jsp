@@ -20,7 +20,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
   <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
     <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
     <!--<a href="controleur?action=connexion" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Connexion</a>-->
-    <button onclick="document.getElementById('id01').style.display='block'" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Connexion</button>
+    <button onclick="document.getElementById('id01').style.display='block'" class="w3-bar-item w3-button w3-hide-small w3-hover-white bspec">Connexion</button>
     <a href="controleur?action=inscription" class="w3-bar-item w3-button w3-theme-l1">Inscription</a>
   </div>
 </div>
@@ -39,7 +39,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 <!--<div class="w3-main" style="margin-left:250px">-->
 
   <!-- Button to open the modal login form -->
-<button onclick="document.getElementById('id01').style.display='block'" style="margin-top: 40px" w3-bar-item w3-button w3-hide-small w3-hover-white>Connexion</button>
 
 <!-- The Modal -->
   <div id="id01" class="modal">
@@ -69,20 +68,13 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
     </div> 
   </div>
 
-  <div class="w3-row">
+  <div class="w3-row w3-padding-64" style = "margin-top: 20px">
     <div class="w3-twothird w3-container">
-      <h1 class="w3-text-teal">Heading</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum
-        dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-    
-  </div>
-
-  <div class="w3-row w3-padding-64">
-    <div class="w3-twothird w3-container">
-      <h1 class="w3-text-teal">Heading</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum
-        dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <h1 class="w3-text-teal">Règles du jeu: </h1>
+      <p>Vous déciderez de rejoindre le village de Thiercelieux...</p>
+      <p>Mais ce village est différent de tous ceux que vous aurez pu connaître. En effet, certaines personnes sont des humains, tandis que d'autres sont des loup-garous.</p>
+      <p>Les loup-garous sont des humains le jour et se transforment la nuit pour manger un villageois. Certaines sources affirment même que vous pourriez en devenir un dû à l'étrange ambiance qui s'y cache...</p>
+      <p>Parviendrez-vous à défendre votre village de ces horribles bêtes à l'aide des autres villageois ? Ou bien réussirez-vous à tous les manger...</p>
     </div>
     
   </div>
@@ -90,7 +82,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 
   <footer id="myFooter">
     <div class="w3-container w3-theme-l2 w3-padding-32">
-      <h4>Footer</h4>
     </div>
 
     <div class="w3-container w3-theme-l1">
