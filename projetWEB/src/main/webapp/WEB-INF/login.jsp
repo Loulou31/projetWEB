@@ -3,17 +3,17 @@
 <html lang="fr">
     <head>
       <meta charset="UTF-8" />
-      <link rel="stylesheet" type="text/css" href="style.css" />	
+      <link rel="stylesheet" type="text/css" href="css/test.css"/>	
       <title>Connexion</title>
     </head>
     <body>
       <h1>Connexion</h1>
-      <form action="controleur" method="post" accept-charset="UTF-8">
+      <form action="controleur" method="post" accept-charset="UTF-8" >
         <ul>
           <li> Login : <input type="text" name="login"/></li>
           <li> Mot de passe : <input type="password" name="password"/></li>
         </ul>
-        <input type="submit" name="Login" value ="connexion" />
+        <input type="submit" name="Login" value ="connexion" class="button"/>
         <input type="hidden" name="action" value="login" />
       </form>
     </body>

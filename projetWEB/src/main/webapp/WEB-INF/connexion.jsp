@@ -5,7 +5,6 @@
 <html>
     <head>
         <meta content="text/html ; charset=UTF-8">
-        <link rel="stylesheet" href="designWEB.css" />
         <title>Start Page</title>
        
        
