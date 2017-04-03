@@ -22,6 +22,6 @@
                 out.print("<h1>Vous ne possedez aucun pouvoir.</h1>");
             }
         %>
-        <li><a href="controleur?action=rejoindreJeu">Re</a></li>
+        <li><a href="controleur?action=rejoindreJeu">Rejoindre Salle Discussion</a></li>
     </body>
 </html>
