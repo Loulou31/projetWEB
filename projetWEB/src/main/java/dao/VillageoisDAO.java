@@ -170,7 +170,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
     public List<Villageois> getListHumainsSansPouvoir(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? "
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE IdPartie = ? "
                     + "and pouvoir = ? and rolePartie = 0");
             st.setInt(1, idPartie);
             st.setString(2, "rien");
@@ -195,7 +195,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
     public List<Villageois> getListLoupsSansPouvoir(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? "
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE IdPartie = ? "
                     + "and pouvoir = ? and rolePartie = 1");
             st.setString(1, "rien");
             ResultSet rs = st.executeQuery();
