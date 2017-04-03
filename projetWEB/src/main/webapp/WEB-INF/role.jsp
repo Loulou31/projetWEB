@@ -19,7 +19,7 @@
             if (!pouvoir.equals("rien")) {
                 out.print("<h1>Vous possedez le pouvoir : " + pouvoir + ".</h1>");
             } else {
-                out.print("Vous ne possedez aucun pouvoir.")
+                out.print("Vous ne possedez aucun pouvoir.");
             }
         %>
     </body>
