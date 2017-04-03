@@ -163,6 +163,7 @@ public class Controleur extends HttpServlet {
         
         /* si les roles ont deja été attribué: ne rien faire*/
         if (testVillageois.get(0).getRole() != -1) {
+            System.out.println("on recommence a FAIRE LES ROLES!!! NONNNNN");
             /* selection des loups */
             int nbLoupCourant = 0;
             while (nbLoupCourant != nbLoup) {
