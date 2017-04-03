@@ -133,7 +133,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
             st.executeUpdate();
             int nbVote = decision.getNbVote() +1 ; 
             decision.setNbVote(nbVote) ; 
-            System.out.println("NBVOTE : " +decision.getNbVote()) ; 
+            System.out.println("NBVOTE : " + nbVote) ; 
         } catch (SQLException e) {
             throw new DAOException("Erreur BD vote " + e.getMessage(), e);
         }
@@ -159,23 +159,25 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         
        }
     
-   public void getDecisionHumain (String joueurConcerne){
-       Decision decision ; 
+   public Decision getDecisionHumain (String joueurConcerne){
+       Decision decision = null ; 
         try (Connection conn = getConn()) {	     
-	     PreparedStatement st = conn.prepareStatement
-	       ("SELECT * FROM DECISON_HUMAIN WHERE login_joueur_concerne = ? ");
-            st.setString(1, joueurConcerne);
-            ResultSet rs = st.executeQuery(); 
-            
-            int nbreVotant = decision.getVotants().size(); 
-            st = conn.prepareStatement
-	       ("UPDATE Decision_Loup set Votant"+nbreVotant+" = ? Where login_joueur_concerne = ? ");
-            st.setString(1, votant);
-            st.setString(2, decision.getJoueurConcerne());
-            st.executeUpdate();
-            
+	    PreparedStatement st = conn.prepareStatement
+                    ("SELECT * FROM DECISION_HUMAIN WHERE login_joueur_concerne = ? ") ; 
+            st.setString(1, joueurConcerne) ; 
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                HashSet<String> votants = new HashSet<String>();
+                votants.add(rs.getString("login_expeditaire"));
+                int nbVote = Integer.parseInt(rs.getString("nbreVote"));
+                for (int i = 2; i <= nbVote; i++) {
+                    votants.add(rs.getString("votant"+i));
+                }
+                decision = new Decision(joueurConcerne, votants);
+            }
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
+        return decision ; 
    }
 }

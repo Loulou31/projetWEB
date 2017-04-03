@@ -46,7 +46,7 @@ public class Decision {
     }
 
     public int getNbVote() {
-        return nbVote;
+        return this.nbVote;
     }
     
     
