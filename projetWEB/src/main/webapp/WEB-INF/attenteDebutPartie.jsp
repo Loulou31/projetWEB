@@ -46,6 +46,8 @@
             Elle en contient actuellement : <%= nbJoueurs %>.<br>
             <%= stringVillageois %>
         </p>
+        
+        
         <a href="controleur?action=index">Retourner au menu principal</a>
     </body>
 </html>
