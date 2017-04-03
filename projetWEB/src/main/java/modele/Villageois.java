@@ -12,8 +12,8 @@ package modele;
 public class Villageois {
     
     protected String pseudo;
-    protected int role ; 
-    protected int vivant;
+    protected int role ; // = 0 humain , = 1 loup
+    protected int vivant; // 0 = mort , 1 = vivant
     protected String pouvoir;
     protected int partie ; 
     
@@ -50,6 +50,14 @@ public class Villageois {
 
     public int getRole() {
         return role;
+    }
+    
+    public String getRoleString() {
+        if (this.getRole() == 0) {
+            return "Humain";
+        } else {
+            return "Loup Garou";
+        }
     }
 
     public int getPartie() {

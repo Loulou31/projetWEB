@@ -1,7 +1,7 @@
 <%-- 
-    Document   : attenteDebutPartie
-    Created on : Mar 24, 2017, 3:43:56 PM
-    Author     : nicolasl
+    Document   : attenteDebutPartiePrete
+    Created on : Mar 31, 2017, 12:18:57 PM
+    Author     : lenetd
 --%>
 
 <%@page import="modele.Villageois"%>
@@ -46,6 +46,8 @@
             Elle en contient actuellement : <%= nbJoueurs %>.<br>
             <%= stringVillageois %>
         </p>
+        
+        <a href="controleur?action=debutPartie&id=${partie.idPartie}">Démarrer Partie</a>
         
         
         <a href="controleur?action=index">Retourner au menu principal</a>
