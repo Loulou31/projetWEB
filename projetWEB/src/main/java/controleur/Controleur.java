@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
 import modele.*;
+import sun.invoke.util.ValueConversions;
 
 /**
  * Le contrôleur de l'application.
@@ -166,7 +167,10 @@ public class Controleur extends HttpServlet {
             List<Villageois> villageois = villageoisDAO.getListHumains(idPartie);
             System.out.println("sortie getListVillageois ds actionDebPartie");
             int nbHumain = villageois.size();
-            int valeur = generateurAleatoire(0, nbHumain);
+            int valeur = generateurAleatoire(-1, nbHumain);
+            while (valeur == -1 || valeur == nbHumain) {
+                valeur = generateurAleatoire(-1, nbHumain);
+            }
             System.out.println("valeur pr avoir les loups");
             System.out.println(valeur);
             Villageois nouveauLoup = villageois.get(valeur);
@@ -191,7 +195,10 @@ public class Controleur extends HttpServlet {
                 List<Villageois> loups = villageoisDAO.getListLoupsSansPouvoir(idPartie);
                 if (loups.size() > 0) {
                     System.out.println("apres getListLoupsSansPouvoirs ds actionDebPartie");
-                    int valContam = generateurAleatoire(0, loups.size());
+                    int valContam = generateurAleatoire(-1, loups.size());
+                    while (valContam == -1 || valContam == loups.size()) {
+                        valContam = generateurAleatoire(-1, loups.size());
+                    }
                     villageoisDAO.updatePlayerStatus(loups.get(valContam).getPseudo(), "contamination");
                 } else {
                     System.out.println("pas assez de loups pr pouvoir contam");
@@ -201,7 +208,10 @@ public class Controleur extends HttpServlet {
             if (insomnie != 0) {
                 List<Villageois> humains = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                 if (humains.size() > 0) {
-                    int valInsomn = generateurAleatoire(0, humains.size());
+                    int valInsomn = generateurAleatoire(-1, humains.size());
+                    while (valInsomn == -1 || valInsomn == humains.size()) {
+                        valInsomn = generateurAleatoire(-1, humains.size());
+                    }
                     System.out.println("valeur pr donner pouvoir insomnie humain");
                     System.out.println(valInsomn);
                     villageoisDAO.updatePlayerStatus(humains.get(valInsomn).getPseudo(), "insomnie");
@@ -213,7 +223,10 @@ public class Controleur extends HttpServlet {
             if (voyance != 0) {
                 List<Villageois> villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                 if (villageois.size() > 0) {
-                    int valVoyance = generateurAleatoire(0, villageois.size());
+                    int valVoyance = generateurAleatoire(-1, villageois.size());
+                    while (valVoyance == -1 || valVoyance == villageois.size()) {
+                        valVoyance = generateurAleatoire(-1, villageois.size());
+                    }
                     System.out.println("valeur pr donner pouvoir voyance humain");
                     System.out.println(valVoyance);
                     villageoisDAO.updatePlayerStatus(villageois.get(valVoyance).getPseudo(), "voyance");
@@ -225,7 +238,10 @@ public class Controleur extends HttpServlet {
             if (spiritisme != 0) {
                 List<Villageois> villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                 if (villageois.size() > 0) {
-                    int valSpirit = generateurAleatoire(0, villageois.size());
+                    int valSpirit = generateurAleatoire(-1, villageois.size());
+                    while (valSpirit == -1 || valSpirit == villageois.size()) {
+                        valSpirit = generateurAleatoire(-1, villageois.size());
+                    }
                     villageoisDAO.updatePlayerStatus(villageois.get(valSpirit).getPseudo(), "spriritisme");
                 } else {
                     System.out.println("pas assez de villageois pr pouvoir spirit");
@@ -366,6 +382,12 @@ public class Controleur extends HttpServlet {
     private void actionAddVote(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
+        HttpSession session = request.getSession();
+        String votant = session.getAttribute("membre").toString() ; 
+        DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
+        String joueurConcerne = request.getAttribute("joueurConcerne").toString() ; 
+        Decision decision = decisionDAO.getDecisionHumain(joueurConcerne) ; 
+        decisionDAO.ajouteVoteHumain(decision, votant) ; 
         
     }
     

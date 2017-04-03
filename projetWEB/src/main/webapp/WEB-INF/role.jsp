@@ -16,8 +16,10 @@
         <h1>Il y a ${nombreLoup} loups.</h1>
         <h1>Les pouvoirs sont présents à la probabilité: ${proba}.</h1>
         <% String pouvoir = request.getAttribute("pouvoir").toString();
-            if (pouvoir != "rien") {
-                out.print("<h1>Vous possedez le pouvoir : " + pouvoir + "</h1>");
+            if (!pouvoir.equals("rien")) {
+                out.print("<h1>Vous possedez le pouvoir : " + pouvoir + ".</h1>");
+            } else {
+                out.print("Vous ne possedez aucun pouvoir.");
             }
         %>
     </body>
