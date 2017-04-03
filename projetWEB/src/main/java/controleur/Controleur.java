@@ -165,44 +165,71 @@ public class Controleur extends HttpServlet {
         while (nbLoupCourant != nbLoup) {
             List<Villageois> villageois = villageoisDAO.getListHumains(idPartie);
             System.out.println("sortie getListVillageois ds actionDebPartie");
-            int nbHumain = villageois.size();          
+            int nbHumain = villageois.size();
             int valeur = generateurAleatoire(-1, nbHumain);
+            System.out.println("valeur pr avoir les loups");
+            System.out.println(valeur);
             Villageois nouveauLoup = villageois.get(valeur);
+            System.out.println("apres villageois.get ds actionDebPartie");
             villageoisDAO.updatePlayerRole(nouveauLoup.getPseudo(), 1);
-            nbLoupCourant++; 
+            nbLoupCourant++;
         }
-        
+
         /* attribution des pouvoirs */
-        float probaPouvoir = partie.getProbaPouvoir(); 
+        float probaPouvoir = partie.getProbaPouvoir();
         if (probaPouvoir != 0.0) {
             int contamination = computeX(probaPouvoir);
             int insomnie = computeX(probaPouvoir); 
             int voyance = computeX(probaPouvoir); 
             int spiritisme = computeX(probaPouvoir); 
-            
+            System.out.println(contamination);
+            System.out.println(insomnie);
+            System.out.println(voyance);
+            System.out.println(spiritisme);
             /* attribution du pouvoir contamination à un loup */
             if (contamination != 0) {
                 List<Villageois> loups = villageoisDAO.getListLoupsSansPouvoir(idPartie);
-                int valContam = generateurAleatoire(-1, loups.size());
-                villageoisDAO.updatePlayerStatus(loups.get(valContam).getPseudo(), "contamination");
+                if (loups.size() > 0) {
+                    System.out.println("apres getListLoupsSansPouvoirs ds actionDebPartie");
+                    int valContam = generateurAleatoire(-1, loups.size());
+                    villageoisDAO.updatePlayerStatus(loups.get(valContam).getPseudo(), "contamination");
+                } else {
+                    System.out.println("pas assez de loups pr pouvoir contam");
+                }
             }
             /* attribution du pouvoir insomnie à un humain */
             if (insomnie != 0) {
                 List<Villageois> humains = villageoisDAO.getListHumainsSansPouvoir(idPartie);
-                int valInsomn = generateurAleatoire(-1, humains.size());
-                villageoisDAO.updatePlayerStatus(humains.get(valInsomn).getPseudo(), "insomnie");
+                if (humains.size() > 0) {
+                    int valInsomn = generateurAleatoire(-1, humains.size());
+                    System.out.println("valeur pr donner pouvoir insomnie humain");
+                    System.out.println(valInsomn);
+                    villageoisDAO.updatePlayerStatus(humains.get(valInsomn).getPseudo(), "insomnie");
+                } else {
+                    System.out.println("pas assez d'humains pr pouvoir insom");
+                }
             }
             /* attribution du pouvoir voyance à un villageois */
             if (voyance != 0) {
                 List<Villageois> villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
-                int valVoyance = generateurAleatoire(-1, villageois.size());
-                villageoisDAO.updatePlayerStatus(villageois.get(valVoyance).getPseudo(), "voyance");
+                if (villageois.size() > 0) {
+                    int valVoyance = generateurAleatoire(-1, villageois.size());
+                    System.out.println("valeur pr donner pouvoir voyance humain");
+                    System.out.println(valVoyance);
+                    villageoisDAO.updatePlayerStatus(villageois.get(valVoyance).getPseudo(), "voyance");
+                } else {
+                    System.out.println("pas assez de villageois pr pouvoir voyance");
+                }
             }
             /* attribution du pouvoir spiritisme à un villageois */
             if (spiritisme != 0) {
                 List<Villageois> villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
-                int valSpirit = generateurAleatoire(-1, villageois.size());
-                villageoisDAO.updatePlayerStatus(villageois.get(valSpirit).getPseudo(), "spriritisme");
+                if (villageois.size() > 0) {
+                    int valSpirit = generateurAleatoire(-1, villageois.size());
+                    villageoisDAO.updatePlayerStatus(villageois.get(valSpirit).getPseudo(), "spriritisme");
+                } else {
+                    System.out.println("pas assez de villageois pr pouvoir spirit");
+                }
             }
         }
         request.setAttribute("partie", partie);

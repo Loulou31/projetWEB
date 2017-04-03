@@ -14,7 +14,7 @@
         <ul>
           <li> Nombre de participants entre  
             <SELECT name="JMin" size="1">
-                <c:forEach var="i" begin="2" end="20" step="1"> 
+                <c:forEach var="i" begin="1" end="20" step="1"> 
                     <OPTION><c:out value="${ i }" />
                 </c:forEach>
             </SELECT>
