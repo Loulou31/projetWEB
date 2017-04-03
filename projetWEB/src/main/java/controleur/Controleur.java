@@ -148,6 +148,7 @@ public class Controleur extends HttpServlet {
         int idPartie = Integer.parseInt(request.getParameter("id"));
         PartieDAO partieDAO = new PartieDAO(ds);
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        List<Villageois> testVillageois = villageoisDAO.getListVillageois(idPartie);
         List<Villageois> villageois = villageoisDAO.getListJoueurs(idPartie);
         Partie partie = partieDAO.getPartie(idPartie);
         int nbJoueurs = partieDAO.getNbJoueurs(idPartie);
@@ -161,7 +162,7 @@ public class Controleur extends HttpServlet {
         float probaPouvoir = partie.getProbaPouvoir();
         
         /* si les roles ont deja été attribué: ne rien faire*/
-        if (villageois.get(0).getRole() != -1) {
+        if (testVillageois.get(0).getRole() != -1) {
             /* selection des loups */
             int nbLoupCourant = 0;
             while (nbLoupCourant != nbLoup) {
