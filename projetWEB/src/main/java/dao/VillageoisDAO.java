@@ -66,7 +66,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
     
     public void addPlayer(String pseudo, int idPartie){
         try(Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("INSERT INTO JOUEUR VALUES  (?, 0, 1, ?, ?) ");
+            PreparedStatement st = conn.prepareStatement("INSERT INTO JOUEUR VALUES  (?, -1, 1, ?, ?) ");
             st.setString(1, pseudo);
             st.setString(2, "rien");
             st.setInt(3, idPartie);
@@ -175,6 +175,25 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
                     + "and Pouvoir = ? and rolePartie = 0");
             st.setInt(1, idPartie);
             st.setString(2, "rien");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Villageois humain
+                        = new Villageois(rs.getString("login"), rs.getInt("rolePartie"),
+                        rs.getInt("Statut"), rs.getString("Pouvoir"), rs.getInt("IdPartie"));
+                result.add(humain);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return result;
+    }
+    
+    public List<Villageois> getListJoueurs(int idPartie) {
+        List<Villageois> result = new ArrayList<Villageois>();
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE IdPartie = ? "
+                    + " and rolePartie = -1");
+            st.setInt(1, idPartie);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Villageois humain
