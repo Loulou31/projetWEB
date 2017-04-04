@@ -305,8 +305,8 @@ public class Controleur extends HttpServlet {
             request.setAttribute("decisions", decisions);
             request.setAttribute("nbJoueurs", villageoisDAO.getListVillageoisVivants(idPartie).size());
             if (!partieDAO.decisionHumainRatifie(idPartie)){
-                //request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
-                goToVoyance(request, response, idPartie, villageoisDAO) ; 
+                request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
+                //goToVoyance(request, response, idPartie, villageoisDAO) ; 
             } else {
                 request.getRequestDispatcher("/WEB-INF/placeRatifie.jsp").forward(request, response);
             }
