@@ -67,11 +67,12 @@ input[type=text], input[type=password] {
   color: #FFFFFF;
   text-align: center;
   font-size: 20px;
-  padding: 10px;
+  padding: 0px;
   width: 100px;
   transition: all 0.5s;
   cursor: pointer;
   margin: 5px;
+  margin-left: 40px;
 }
 
 .button span {
