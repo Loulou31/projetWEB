@@ -168,7 +168,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         ResultSet rs;
         int nbJoueurs = 0;
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM Decision_Humain WHERE idPartie = ? and ratifie = 1");
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Decision_Humain WHERE id_partie = ? and ratifie = 1");
             st.setInt(1, idPartie);
             rs = st.executeQuery();
             return rs.next();
