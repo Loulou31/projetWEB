@@ -12,6 +12,7 @@ import java.util.HashSet;
  * @author gaunetc
  */
 public class Decision {
+    private int idPartie; 
     private String joueurConcerne;
     private boolean etat;
     private HashSet<String> votants;
@@ -21,20 +22,24 @@ public class Decision {
         this.joueurConcerne = joueurConcerne;
         this.votants = votants;
         this.etat = false;
-        this.nbVote = 0 ; 
+        this.nbVote = 0;
     }
-    
-      public Decision(String joueurConcerne, HashSet<String> votants, int nbVote) {
+
+    public Decision(String joueurConcerne, HashSet<String> votants, int nbVote, int idPartie) {
+        this.idPartie = idPartie;
         this.joueurConcerne = joueurConcerne;
         this.votants = votants;
         this.etat = false;
-        this.nbVote = nbVote ; 
+        this.nbVote = nbVote;
     }
-    
+
+    public int getIdPartie() {
+        return idPartie;
+    }
+
     public String getJoueurConcerne() {
         return joueurConcerne;
     }
-
 
     public boolean isEtat() {
         return etat;

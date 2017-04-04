@@ -394,9 +394,11 @@ public class Controleur extends HttpServlet {
         String joueurConcerne = request.getParameter("joueurConcerne").toString() ; 
         Decision decision = decisionDAO.getDecisionHumain(joueurConcerne) ; 
         System.out.println("ADD VOTE 5") ; 
-        decisionDAO.ajouteVoteHumain(decision, votant) ; 
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds); 
+        Villageois v = villageoisDAO.getVillageois(votant); 
+        int idPartie = v.getPartie(); 
+        decisionDAO.ajouteVoteHumain(decision, votant, idPartie) ; 
         System.out.println("ADD VOTE 6") ; 
-        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
         System.out.println("ADD VOTE 7") ; 
         Villageois villageois = villageoisDAO.getVillageois(votant) ; 
         System.out.println("ADD VOTE 8") ; 

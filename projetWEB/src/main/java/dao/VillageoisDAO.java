@@ -43,6 +43,28 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
         return result ; 
     }
     
+    public List<Villageois> getListVillageoisVivants(int idPartie){
+        List<Villageois> result = new ArrayList<Villageois>() ;
+        try(Connection conn = getConn()) {
+                PreparedStatement st = conn.prepareStatement
+                    ("SELECT * FROM JOUEUR WHERE IdPartie = ? and Statut = 1") ;
+                st.setInt(1, idPartie) ; 
+                ResultSet rs = st.executeQuery() ; 
+                while (rs.next()){
+                    Villageois villageois = 
+                            new Villageois (rs.getString("login"),
+                                            rs.getInt("rolePartie"),
+                                            rs.getInt("Statut"),
+                                            rs.getString("Pouvoir"),
+                                            rs.getInt("IdPartie")) ; 
+                    result.add(villageois) ; 
+                }
+            }  catch (SQLException e) {
+                    throw new DAOException("Erreur BD Liste villageois" + e.getMessage(), e);
+            }
+        return result ; 
+    }
+    
     public Villageois getVillageois(String pseudo){
         Villageois villageois ;
         try(
