@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Partie;
+import modele.Temps;
 
 public class PartieDAO extends AbstractDatabaseDAO {
 
@@ -152,20 +153,39 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
-    public int getDateDebut(int id) {
-        try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("SELECT FROM PARTIE WHERE IdPartie = ?");
-            st.setInt(1, id);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
-        }
-        return 1;
-    }
-
     public Boolean decisionRatifie(int idPartie){
         //A partir de l'id d'une partie: retourne si oui ou non la partie contient une décision ratifiée
         return false;
+    }
+    
+    public Boolean estJour(int idPartie){
+        ResultSet rs;
+        int nbJoueurs = 0;
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT DureeJour, DureeNuit, HeureDebut FROM Joueur WHERE idPartie = ?");
+            st.setInt(1, idPartie);
+            rs = st.executeQuery();
+            int dureeJour = rs.getInt("DureeJour");
+            int dureeNuit = rs.getInt("DureeNuit");
+            int heureDebut = rs.getInt("HeureDebut");
+            Temps temps = new Temps();
+            int heureActuelle = temps.getTempsInt();
+            int tempsPasse = heureActuelle - heureDebut;
+            int dureeJournee = dureeJour + dureeNuit;
+            int joursPasses = tempsPasse / dureeJournee;
+            int heureJournee = tempsPasse - joursPasses * dureeJournee;
+            
+            if (dureeJour >= heureJournee)
+                return true;
+            else
+                return false;
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+    
+    public Boolean estNuit(int idPartie){
+        return !estJour(idPartie);
     }
     
 }

@@ -34,6 +34,11 @@ public class Temps {
         return cal.getTimeInMillis();
     }
     
+    public int getTempsInt(){
+        Calendar cal = new GregorianCalendar();
+        return (int)(cal.getTimeInMillis()/1000);        
+    }
+    
     public GregorianCalendar intToCal(int date){
         GregorianCalendar cal = new GregorianCalendar();
         //on ajoute les 3 derniers chiffres
@@ -67,6 +72,11 @@ public class Temps {
         GregorianCalendar cal = new GregorianCalendar();
         GregorianCalendar cal2 = new GregorianCalendar(cal.get(cal.YEAR), cal.get(cal.MONTH), cal.get(cal.DAY_OF_MONTH), heures, minutes);
         return (int)(Math.floor(cal2.getTimeInMillis())/1000);
+    }
+    
+    //transforme les durees en secondes
+    public int dureeToInt(int heures, int minutes){
+        return 3600 * heures + 60 * minutes;
     }
     
     public Boolean estJour(int idPartie){

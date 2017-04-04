@@ -581,16 +581,16 @@ public class Controleur extends HttpServlet {
         else if (temps.estApres(heureDeb, temps.getTempsLong())){
             System.out.println("3");
             int idPartie = Partie.getNumeroPartie();
-            int dureeDay = temps.calToInt(Integer.parseInt(request.getParameter("dayHour")),Integer.parseInt(request.getParameter("dayMin")));
-            int dureeNight = temps.calToInt(Integer.parseInt(request.getParameter("nightHour")),Integer.parseInt(request.getParameter("nightMin")));
+            int dureeDay = temps.dureeToInt(Integer.parseInt(request.getParameter("dayHour")),Integer.parseInt(request.getParameter("dayMin")));
+            int dureeNight = temps.dureeToInt(Integer.parseInt(request.getParameter("nightHour")),Integer.parseInt(request.getParameter("nightMin")));
             partieDAO.ajouterPartie(idPartie,
                                     Integer.parseInt(request.getParameter("JMin")), 
                                     Integer.parseInt(request.getParameter("JMax")), 
                                     dureeDay,
                                     dureeNight,
                                     heureDeb,
-                                    Float.parseFloat(request.getParameter("power")),
-                                    Float.parseFloat(request.getParameter("werewolf")));
+                                    (float)Integer.parseInt(request.getParameter("power"))/(float)100,
+                                    (float)Integer.parseInt(request.getParameter("werewolf"))/(float)100);
 
             
             Partie partie = partieDAO.getPartie(idPartie);

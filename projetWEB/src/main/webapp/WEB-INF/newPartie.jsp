@@ -12,7 +12,7 @@
         <p> Veuillez saisir les parametres de la nouvelle partie </p>
         <form action="controleur" method="post" accept-charset="UTF-8">
         <ul>
-          <li> Nombre de participants entre  
+            <%--<li> Nombre de participants entre  
             <SELECT name="JMin" size="1">
                 <c:forEach var="i" begin="1" end="20" step="1"> 
                     <OPTION><c:out value="${ i }" />
@@ -24,12 +24,13 @@
                     <OPTION><c:out value="${ i }" />
                 </c:forEach>
             </SELECT>
-          </li>
-          <li> Duree d'une journee : <input type="text" name="dayHour" value="14" size="2"/>h <input type="text" name="dayMin" value="00" size="2"/></li>
-          <li> Duree d'une nuit : <input type="text" name="nightHour" value="10" size="2"/>h <input type="text" name="nightMin" value="00" size="2"/></li>
-          <li> A quelle heure commencera la partie aujourd'hui ? <input type="text" name="beginHour" value="12" size="2"/>h <input type="text" name="beginMin" value="00" size="2"/></li>
-          <li> Probabilite d'attribution des pouvoirs speciaux :  <input type="text" name="power" value="0.0" size="2"/> </li>
-          <li> Proportion initiale des Loups-Garous :  <input type="text" name="werewolf" value="0.3" size="2"/></li>
+          </li>--%>
+          <li> Nombre de participants entre : <input type="number" name="JMin" value="5" min="2" max="20"/> et <input type="number" name="JMax" value="20" min="2" max="20"/></li>
+          <li> Duree d'une journee : <input type="number" name="dayHour" value="14" min="0" max="23"/> h <input type="number" name="dayMin" value="0" min="0" max="59"/></li>
+          <li> Duree d'une nuit : <input type="number" name="nightHour" value="10" min="0" max="23"/> h <input type="number" name="nightMin" value="0" min="0" max="59"/></li>
+          <li> A quelle heure commencera la partie aujourd'hui ? <input type="number" name="beginHour" value="8" min="0" max="23"/> h <input type="number" name="beginMin" value="0" min="0" max="59"/></li>
+          <li> Probabilite d'attribution des pouvoirs speciaux :  <input type="number" name="power" value="0" min="0" max="100" /> % </li>
+          <li> Proportion initiale des Loups-Garous :  <input type="number" name="werewolf" value="35" min="0" max="100"/> % </li>
         </ul>
         <input type="submit" value="Creer une nouvelle partie" />
         <input type="hidden" name="action" value="addGame"/>
