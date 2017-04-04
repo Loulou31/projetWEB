@@ -9,61 +9,67 @@ package dao;
  *
  * @author nicolasl
  */
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
-import modele.Partie ; 
-
+import modele.Partie;
 
 public class PartieDAO extends AbstractDatabaseDAO {
-    
+
     public PartieDAO(DataSource ds) {
         super(ds);
     }
-    
+
     public List<Partie> getListeParties() {
         List<Partie> result = new ArrayList<Partie>();
         try (
-	     Connection conn = getConn();
-	     Statement st = conn.createStatement();
-	     ) {
+                Connection conn = getConn();
+                Statement st = conn.createStatement();) {
             ResultSet rs = st.executeQuery("SELECT * FROM PARTIE");
             while (rs.next()) {
-                Partie partie =
-                    new Partie(rs.getInt("IdPartie"), 
-                               rs.getString("login"),
-                               rs.getInt("NbJoueursMin"),
-                               rs.getInt("NbJoueursMax"),
-                               rs.getInt("DureeJour"),
-                               rs.getInt("DureeNuit"),
-                               rs.getInt("HeureDebut"), 
-                               rs.getFloat("ProbaPouvoir"), 
-                               rs.getFloat("ProportionLG"));
+                Partie partie
+                        = new Partie(rs.getInt("IdPartie"),
+                                rs.getString("login"),
+                                rs.getInt("NbJoueursMin"),
+                                rs.getInt("NbJoueursMax"),
+                                rs.getInt("DureeJour"),
+                                rs.getInt("DureeNuit"),
+                                rs.getInt("HeureDebut"),
+                                rs.getFloat("ProbaPouvoir"),
+                                rs.getFloat("ProportionLG"));
                 result.add(partie);
             }
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
-	}
-	return result;
+        }
+        return result;
     }
-    
-    
+
+    public int getNbJoueursVivants(int id) {
+        try (Connection conn = this.getConn()) {
+            PreparedStatement st = conn.prepareStatement
+                    ("SELECT * FROM PARTIE WHERE IdPartie = " + id) ; 
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            return rs.getInt("nbJoueursVivants");
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+
     public void ajouterPartie(int nbJoueursMin,
-                              int nbJoueursMax,
-                              String createur,
-                              int dureeJour,
-                              int dureeNuit, 
-                              int heureDebut, 
-                              float probaPouvoir, 
-                              float proportionLG) {
+            int nbJoueursMax,
+            String createur,
+            int dureeJour,
+            int dureeNuit,
+            int heureDebut,
+            float probaPouvoir,
+            float proportionLG) {
         try (
-	     Connection conn = getConn();
-	     PreparedStatement st = conn.prepareStatement
-	       ("INSERT INTO PARTIE (login, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-	     ) {
-            st.setString(1, createur) ;
+                Connection conn = getConn();
+                PreparedStatement st = conn.prepareStatement("INSERT INTO PARTIE (login, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG, nbJoueursVivants) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");) {
+            st.setString(1, createur);
             st.setInt(2, nbJoueursMin);
             st.setInt(3, nbJoueursMax);
             st.setInt(4, dureeJour);
@@ -71,37 +77,36 @@ public class PartieDAO extends AbstractDatabaseDAO {
             st.setInt(6, heureDebut);
             st.setFloat(7, probaPouvoir);
             st.setFloat(8, proportionLG);
-            
+            st.setInt(9, 0);
+
             st.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Erreur BD ajouter Partie" + e.getMessage(), e);
         }
     }
-    
-   
+
     public Partie getPartie(int id) {
-        Partie partie; 
-        try(Connection conn = getConn()){
-        PreparedStatement st = conn.prepareStatement
-         ("SELECT * FROM PARTIE WHERE IdPartie = ?");
-        st.setInt(1, id);
-        ResultSet rs = st.executeQuery();
-        rs.next() ; 
-        partie = new Partie(rs.getInt("IdPartie"),
-                               rs.getString("login"),
-                               rs.getInt("NbJoueursMin"),
-                               rs.getInt("NbJoueursMax"),
-                               rs.getInt("DureeJour"),
-                               rs.getInt("DureeNuit"),
-                               rs.getInt("HeureDebut"), 
-                               rs.getFloat("ProbaPouvoir"), 
-                               rs.getFloat("ProportionLG"));
-        } catch(SQLException e){
+        Partie partie;
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM PARTIE WHERE IdPartie = ?");
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            partie = new Partie(rs.getInt("IdPartie"),
+                    rs.getString("login"),
+                    rs.getInt("NbJoueursMin"),
+                    rs.getInt("NbJoueursMax"),
+                    rs.getInt("DureeJour"),
+                    rs.getInt("DureeNuit"),
+                    rs.getInt("HeureDebut"),
+                    rs.getFloat("ProbaPouvoir"),
+                    rs.getFloat("ProportionLG"));
+        } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
-        return partie ; 
+        return partie;
     }
-    
+
     //return -1 s'il n'y a pas de partie à retourner
     public int getIDPartieCreateur(String login) {
         ResultSet rs;
@@ -109,23 +114,25 @@ public class PartieDAO extends AbstractDatabaseDAO {
             PreparedStatement st = conn.prepareStatement("SELECT IdPartie FROM Partie WHERE login = ?");
             st.setString(1, login);
             rs = st.executeQuery();
-            if (!(rs.next()))
+            if (!(rs.next())) {
                 return -1;
+            }
             return rs.getInt(1);
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
 
     }
-    
+
     public int getIDPartieJoueur(String login) {
         ResultSet rs;
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("SELECT IdPartie FROM Joueur WHERE login = ?");
             st.setString(1, login);
             rs = st.executeQuery();
-            if (!(rs.next()))
+            if (!(rs.next())) {
                 return -1;
+            }
             return rs.getInt(1);
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
@@ -134,18 +141,19 @@ public class PartieDAO extends AbstractDatabaseDAO {
     }
 
     /**
-     * Supprime une partie après qu'elle soit terminée **/
+     * Supprime une partie après qu'elle soit terminée *
+     */
     public void supprimerPartie(int id) {
-        try(Connection conn = getConn()){
-        PreparedStatement st = conn.prepareStatement
-         ("DELETE FROM PARTIE WHERE IdPartie = ?");
-        st.setInt(1, id);
-        st.executeUpdate();
-        } catch(SQLException e){
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("DELETE FROM PARTIE WHERE IdPartie = ?");
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
     }
-    public int getNbJoueurs(int id){
+
+    public int getNbJoueurs(int id) {
         ResultSet rs;
         int nbJoueurs = 0;
         try (Connection conn = getConn()) {
@@ -153,26 +161,23 @@ public class PartieDAO extends AbstractDatabaseDAO {
             st.setInt(1, id);
             rs = st.executeQuery();
             while (rs.next()) {
-                nbJoueurs++; 
+                nbJoueurs++;
             }
-            return nbJoueurs; 
+            return nbJoueurs;
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
     }
 
-    public int getDateDebut(int id){
-        try(Connection conn = getConn()){
-        PreparedStatement st = conn.prepareStatement
-         ("SELECT FROM PARTIE WHERE IdPartie = ?");
-        st.setInt(1, id);
-        st.executeUpdate();
-        } catch(SQLException e){
+    public int getDateDebut(int id) {
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT FROM PARTIE WHERE IdPartie = ?");
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
         return 1;
     }
-    
-    
-    
+
 }

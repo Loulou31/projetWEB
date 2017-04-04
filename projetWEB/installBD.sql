@@ -55,7 +55,7 @@ CREATE TABLE DECISION_LOUP (
     login_joueur_concerne varchar(10) NOT NULL PRIMARY KEY, 
     id_partie int, 
     login_expeditaire varchar(10) NOT NULL, 
-    est_valide int CONSTRAINT EtatValide CHECK (est_valide = 0 OR est_valide = 1), 
+    ratifie int CONSTRAINT EtatValide CHECK (ratifie = 0 OR ratifie = 1), 
     date_envoi date, 
     nbreVote int, 
     votant1 varchar(10),
@@ -77,7 +77,7 @@ CREATE TABLE DECISION_HUMAIN (
     login_joueur_concerne varchar(10) NOT NULL PRIMARY KEY, 
     id_partie int,
     login_expeditaire varchar(10) NOT NULL, 
-    est_valide int CONSTRAINT EtatValide2 CHECK (est_valide = 0 OR est_valide = 1), 
+    ratifie int CONSTRAINT EtatValide2 CHECK (ratifie = 0 OR ratifie = 1), 
     date_envoi date, 
     nbreVote int, 
     votant1 varchar(10),
@@ -105,7 +105,8 @@ CREATE TABLE PARTIE (
     DureeNuit int CONSTRAINT DureeNPos CHECK (DureeNuit > 0), 
     HeureDebut int CONSTRAINT DebutPos CHECK (HeureDebut > 0),
     ProbaPouvoir float CONSTRAINT ProbaPos CHECK (ProbaPouvoir >= 0.0 AND ProbaPouvoir <= 1.0 ),
-    ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0), 
+    ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0),
+    nbJoueursVivants int,
     CONSTRAINT creatorForeign FOREIGN KEY (login) REFERENCES MEMBRE(login)
 ) ; 
 
