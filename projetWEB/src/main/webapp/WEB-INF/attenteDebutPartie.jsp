@@ -48,6 +48,6 @@
         </p>
         
         
-        <a href="controleur?action=index">Retourner au menu principal</a>
+        <a href="controleur?action=quitteAttentePartie">Quitter la salle d'attente et retourner au menu principal</a>
     </body>
 </html>

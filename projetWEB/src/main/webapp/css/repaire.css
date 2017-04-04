@@ -10,7 +10,7 @@ and open the template in the editor.
 
 /* On travaille sur la balise body, donc sur TOUTE la page */
 body {
-background-image: url("place.JPG");
+background-image: url("repaire.png");
 background-attachment: fixed;
 background-size: cover;
 color: #FFFFFF;
@@ -30,7 +30,7 @@ background-color: rgba(100, 100, 100, 0.1); /* L'opacite se regle ici */
 }
 /* Full-width input fields */
 input[type=text], input[type=password] {
-    width: 50%;
+    width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -40,15 +40,15 @@ input[type=text], input[type=password] {
 
 #customers {
     border-collapse: collapse;
-    width: 50%;
+    width: 100%;
 }
 
 #customers td, #customers th {
-    border: 2px solid white;
+    border: 1px solid #ddd;
     padding: 8px;
 }
 
-#customers tr:nth-child(even){background-color: transparent;}
+#customers tr:nth-child(even){background-color: #000;}
 
 #customers tr:hover {background-color: #000;}
 
@@ -56,7 +56,7 @@ input[type=text], input[type=password] {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: transparent;
+    background-color: firebrick;
     color: white;
 }
 
