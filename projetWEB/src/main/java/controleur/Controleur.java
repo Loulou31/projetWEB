@@ -304,7 +304,7 @@ public class Controleur extends HttpServlet {
             List<Decision> decisions = decisionDAO.getListDecisionHumains(idPartie);
             request.setAttribute("decisions", decisions);
             request.setAttribute("nbJoueurs", villageoisDAO.getListVillageoisVivants(idPartie).size());
-            if (!partieDAO.decisionRatifie(idPartie)){
+            if (!partieDAO.decisionHumainRatifie(idPartie)){
                 request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
             } else {
                 request.getRequestDispatcher("/WEB-INF/placeRatifie.jsp").forward(request, response);

@@ -163,7 +163,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         return 1;
     }
 
-    public Boolean decisionRatifie(int idPartie){
+    public Boolean decisionHumainRatifie(int idPartie){
         //A partir de l'id d'une partie: retourne si oui ou non la partie contient une décision ratifiée
         return false;
     }
