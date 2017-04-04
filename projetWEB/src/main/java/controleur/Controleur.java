@@ -456,6 +456,7 @@ public class Controleur extends HttpServlet {
     private void actionAddVote(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
+        System.out.println("debut addVote");
         HttpSession session = request.getSession();
         String votant = session.getAttribute("membre").toString() ; 
         DecisionDAO decisionDAO = new DecisionDAO(ds) ;
@@ -464,7 +465,7 @@ public class Controleur extends HttpServlet {
         int idPartie = v.getPartie(); 
         String joueurConcerne = request.getParameter("joueurConcerne").toString() ; 
         Decision decision = decisionDAO.getDecisionHumain(joueurConcerne, idPartie) ; 
-        
+        System.out.println("apres get Decision");        
         boolean vote = decisionDAO.ajouteVoteHumain(decision, votant, idPartie); 
         Villageois villageois = villageoisDAO.getVillageois(votant) ; 
        
