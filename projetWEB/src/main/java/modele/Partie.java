@@ -27,6 +27,8 @@ public class Partie {
     private float probaPouvoir ; 
     private float proportionLG ; 
     //private Set<Membre> joueursPresents;
+    
+    static int numeroPartie = 0;
 
     public Partie(int idPartie, 
                   int nbJoueursMin, 
@@ -47,6 +49,10 @@ public class Partie {
         //this.joueursPresents = new HashSet<Membre>();
     }
 
+    static public int getNumeroPartie(){
+        return numeroPartie++;
+    }
+    
     public int getIdPartie() {
         return idPartie;
     }
