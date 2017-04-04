@@ -409,18 +409,20 @@ public class Controleur extends HttpServlet {
         Decision decision = decisionDAO.getDecisionHumain(joueurConcerne, idPartie) ; 
         System.out.println("ADD VOTE 5") ; 
         
-        decisionDAO.ajouteVoteHumain(decision, votant, idPartie) ; 
+        boolean vote = decisionDAO.ajouteVoteHumain(decision, votant, idPartie); 
         System.out.println("ADD VOTE 6") ; 
         System.out.println("ADD VOTE 7") ; 
         Villageois villageois = villageoisDAO.getVillageois(votant) ; 
         System.out.println("ADD VOTE 8") ; 
         
         /* On vérifie si la decision doit être ratifiée */
+        if (vote) {
         PartieDAO partieDAO = new PartieDAO(ds);
         int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
         int limiteRatifie = (nbJoueurs / 2) + 1;
         int nbVoteActuel = decisionDAO.getDecisionHumain(request.getParameter("decision"), idPartie).getNbVote(); 
         decisionDAO.ratifieDecisionSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);
+        }
         
         actionRejoindreSalleDiscussion(request, response, villageois) ; 
 

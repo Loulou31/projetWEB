@@ -160,7 +160,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         }
     }
     
-    public void ajouteVoteHumain(Decision decision, String votant, int idPartie) {
+    public boolean ajouteVoteHumain(Decision decision, String votant, int idPartie) {
         try (Connection conn = getConn()) {
             /* On vérifie que la personne n'a pas déjà voté pour cette décision */
             if (!decision.getVotants().contains(votant)) {
@@ -175,8 +175,10 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                 st.executeUpdate();
                 int nbVote = decision.getNbVote() + 1;
                 decision.setNbVote(nbVote);
-                System.out.println("NBVOTE : " + decision.getNbVote());                
+                System.out.println("NBVOTE : " + decision.getNbVote());  
+                return true; 
             }
+            return false;
         } catch (SQLException e) {
             throw new DAOException("Erreur BD vote " + e.getMessage(), e);
         }
