@@ -53,9 +53,9 @@
         </table>
         <a href="controleur?action=newDecision">Proposer une décision</a>
         <h2> Discutez avec les autres loups... </h2>
-        <p> Mais faites attention aux oreilles indiscètes qui pourraient vous écouter....</p>
+        <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
         <table>
-            <c:forEach items="${messages}" var="message">
+            <c:forEach items="${messagesRepaire}" var="message">
                     <tr>
                         <td><B>@${message.expediteur}  :  </B></td><td>  ${message.contenu}</td>
                     </tr>
