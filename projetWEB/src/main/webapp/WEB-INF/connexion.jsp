@@ -6,11 +6,11 @@
     <title>Le Loup-Garou !</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/test.css"/>
+    <link rel="stylesheet" type="text/css" href="css/connexion.css"/>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-    <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">-->
-     <link href="https://fonts.googleapis.com/css?family=Rock+Salt" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Rock+Salt" rel="stylesheet"> 
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
     <style>
     html,body,h1,h2,h3,h4,h5,h6 {font-family: "Rock Salt", cursive}
@@ -86,9 +86,9 @@
       <input type="password" placeholder="Entrez votre mot de passe..." name="password" required>
 
       <div class="clearfix">
-        <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
         <button type="submit" class="signupbtn">S'inscrire</button>
-         <input type="hidden" name="action" value="register" />
+        <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+        <input type="hidden" name="action" value="register" />
       </div>
     </div>
   </form>

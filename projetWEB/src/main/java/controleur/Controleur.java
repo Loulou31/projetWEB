@@ -82,8 +82,7 @@ public class Controleur extends HttpServlet {
             } else if (action.equals("rejoindreJeu")) {
                 HttpSession session = request.getSession();
                 String pseudo = session.getAttribute("membre").toString();
-                Villageois v = villageoisDAO.getVillageois(pseudo);
-                actionRejoindreSalleDiscussion(request, response, v);
+                actionRejoindreSalleDiscussion(request, response);
             } else {
                 invalidParameters(request, response);
             }
@@ -157,7 +156,7 @@ public class Controleur extends HttpServlet {
                 actionWaitGame(request, response);
             } else {
                 //request.setAttribute("messages", messageDAO.getListeMessagesSalleDiscussion());
-                actionRejoindreSalleDiscussion(request, response, villageois);
+                actionRejoindreSalleDiscussion(request, response);
             }
         } else {
             request.getRequestDispatcher("/WEB-INF/choseGame.jsp").forward(request, response);
@@ -289,9 +288,13 @@ public class Controleur extends HttpServlet {
     }
 
     private void actionRejoindreSalleDiscussion(HttpServletRequest request,
-            HttpServletResponse response, Villageois villageois) throws IOException, ServletException {
+            HttpServletResponse response) throws IOException, ServletException {
         Temps temps = new Temps();
         MessageDAO messageDAO = new MessageDAO(ds);
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString() ;
+        Villageois villageois = villageoisDAO.getVillageois(pseudo);
         PartieDAO partieDAO = new PartieDAO(ds);
         DecisionDAO decisionDAO = new DecisionDAO(ds);
         int idPartie = villageois.getPartie();
@@ -309,6 +312,9 @@ public class Controleur extends HttpServlet {
             // récupérer le nombre de LG vivants
             request.getRequestDispatcher("/WEB-INF/repaire.jsp").forward(request, response);
         } else {
+            if (villageois.getPouvoir().equals("insomnie")){
+                request.getRequestDispatcher("/WEB-INF/nuit.jsp").forward(request, response);
+            }
             request.getRequestDispatcher("/WEB-INF/nuit.jsp").forward(request, response);
         }
     }
@@ -429,7 +435,8 @@ public class Controleur extends HttpServlet {
             decisionDAO.ratifieDecisionSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);*/
         }
         
-        actionRejoindreSalleDiscussion(request, response, villageois) ; 
+        /* On rejoint la salle de discussion */
+        actionRejoindreSalleDiscussion(request, response);
     }
 
     private void actionAddVote(HttpServletRequest request,
@@ -454,7 +461,7 @@ public class Controleur extends HttpServlet {
         int nbVoteActuel = decisionDAO.getDecisionHumain(request.getParameter("decision"), idPartie).getNbVote(); 
         decisionDAO.ratifieDecisionSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);
         
-        actionRejoindreSalleDiscussion(request, response, villageois) ; 
+        actionRejoindreSalleDiscussion(request, response) ; 
 
     }
 
@@ -505,7 +512,7 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/messageVide.jsp").forward(request, response);
         } else {
             messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString(), idPartie);
-            actionRejoindreSalleDiscussion(request, response, villageois);
+            actionRejoindreSalleDiscussion(request, response);
         }
     }
 

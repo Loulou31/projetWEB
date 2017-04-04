@@ -10,16 +10,12 @@ and open the template in the editor.
 
 /* On travaille sur la balise body, donc sur TOUTE la page */
 body {
-background-image: url("place.JPG");
+background-image: url("loup2.jpg");
 background-attachment: fixed;
-background-size: cover;
-color: #FFFFFF;
+background-size: auto;
 background-position: center center;
+color: navajowhite;
 font-family: 'Press Start 2P', cursive;
-}
-
-h1{
-    
 }
 
 #background_opacity {
@@ -30,7 +26,7 @@ background-color: rgba(100, 100, 100, 0.1); /* L'opacite se regle ici */
 }
 /* Full-width input fields */
 input[type=text], input[type=password] {
-    width: 50%;
+    width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -38,67 +34,22 @@ input[type=text], input[type=password] {
     box-sizing: border-box;
 }
 
-#customers {
-    border-collapse: collapse;
-    width: 50%;
-}
-
-#customers td, #customers th {
-    border: 2px solid white;
-    padding: 8px;
-}
-
-#customers tr:nth-child(even){background-color: transparent;}
-
-#customers tr:hover {background-color: #000;}
-
-#customers th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: transparent;
+/* Set a style for all buttons */
+button {
+    background-color: #4CAF50;
     color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
 }
 
-.button {
-  border-radius: 4px;
-  background-color: black;
-  border: none;
-  color: #FFFFFF;
-  text-align: center;
-  font-size: 20px;
-  padding: 0px;
-  width: 100px;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
-  margin-left: 40px;
+/* Add a hover effect for buttons */
+button:hover {
+    opacity: 0.8;
 }
 
-.button span {
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  transition: 0.5s;
-}
-
-.button span:after {
-  content: '\00bb';
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: -20px;
-  transition: 0.5s;
-}
-
-.button:hover span {
-  padding-right: 25px;
-}
-
-.button:hover span:after {
-  opacity: 1;
-  right: 0;
-}
 .bspec{
     
 }
@@ -123,6 +74,7 @@ img.avatar {
 
 .container {
     padding: 16px;
+    font-family: 'Luckiest Guy', cursive;
 }
 
 span.psw {
