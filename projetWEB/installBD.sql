@@ -98,15 +98,13 @@ CREATE TABLE DECISION_HUMAIN (
 
 CREATE TABLE PARTIE (
     IdPartie number(3) DEFAULT id_seq.nextval PRIMARY KEY , 
-    login varchar(10) , 
     NbJoueursMin int CONSTRAINT NbJouPos CHECK (NbJoueursMin > 0) , 
     NbJoueursMax int CONSTRAINT NbJouMaxPos CHECK (NbJoueursMax > 0) , 
     DureeJour int CONSTRAINT DureeJPos CHECK (DureeJour > 0),
     DureeNuit int CONSTRAINT DureeNPos CHECK (DureeNuit > 0), 
     HeureDebut int CONSTRAINT DebutPos CHECK (HeureDebut > 0),
     ProbaPouvoir float CONSTRAINT ProbaPos CHECK (ProbaPouvoir >= 0.0 AND ProbaPouvoir <= 1.0 ),
-    ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0), 
-    CONSTRAINT creatorForeign FOREIGN KEY (login) REFERENCES MEMBRE(login)
+    ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0),
 ) ; 
 
 

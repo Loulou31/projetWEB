@@ -277,20 +277,21 @@ public class Controleur extends HttpServlet {
             HttpServletResponse response, Villageois villageois) throws IOException, ServletException {
         Temps temps = new Temps();
         MessageDAO messageDAO = new MessageDAO(ds);
+        PartieDAO partieDAO = new PartieDAO(ds);
+        DecisionDAO decisionDAO = new DecisionDAO(ds);
         int idPartie = villageois.getPartie();
-        DecisionDAO decisionDAO = null;
+        List<Message> messages = messageDAO.getListeMessagesSalleDiscussion(idPartie);
+        request.setAttribute("messages", messages);
         if (temps.estJour(idPartie)) {
-            List<Message> messages = messageDAO.getListeMessagesSalleDiscussion(idPartie);
-            request.setAttribute("messages", messages);
-            decisionDAO = new DecisionDAO(ds);
             List<Decision> decisions = decisionDAO.getListDecisionHumains(idPartie);
             request.setAttribute("decisions", decisions);
-            PartieDAO partieDAO = new PartieDAO(ds);
+            // ATTENTION : récuperer le nb de joueurs vivants !!
             request.setAttribute("nbJoueurs", partieDAO.getNbJoueurs(idPartie));
             request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
         } else if (villageois.getRole() == 1) {
             List<Decision> decisions = decisionDAO.getListDecisionLoup(idPartie);
             request.setAttribute("decisions", decisions);
+            // récupérer le nombre de LG vivants
             request.getRequestDispatcher("/WEB-INF/repaire.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("/WEB-INF/nuit.jsp").forward(request, response);
@@ -375,13 +376,21 @@ public class Controleur extends HttpServlet {
     private void actionAddDecision(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
+        Temps temps = new Temps();
         HttpSession session = request.getSession();
         String pseudoJoueur = session.getAttribute("membre").toString() ; 
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
         DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
         Villageois villageois = villageoisDAO.getVillageois(pseudoJoueur) ; 
         int idPartie = villageois.getPartie() ; 
-        decisionDAO.ajouteDecisionHumain(request.getParameter("decision"), idPartie, pseudoJoueur) ; 
+        if (temps.estJour(idPartie)){
+            request.setAttribute("lieu", "sur la Place du village") ; 
+            decisionDAO.ajouteDecisionHumain(request.getParameter("decision"), idPartie, pseudoJoueur) ; 
+        } else {
+            request.setAttribute("lieu", "dans Repaire des Loups") ; 
+            decisionDAO.ajouteDecisionLoup(request.getParameter("decision"), idPartie, pseudoJoueur) ; 
+        }
+        
         actionRejoindreSalleDiscussion(request, response, villageois) ; 
     }
 
@@ -393,15 +402,11 @@ public class Controleur extends HttpServlet {
         DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
         String joueurConcerne = request.getParameter("joueurConcerne").toString() ; 
         Decision decision = decisionDAO.getDecisionHumain(joueurConcerne) ; 
-        System.out.println("ADD VOTE 5") ; 
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds); 
         Villageois v = villageoisDAO.getVillageois(votant); 
         int idPartie = v.getPartie(); 
         decisionDAO.ajouteVoteHumain(decision, votant, idPartie) ; 
-        System.out.println("ADD VOTE 6") ; 
-        System.out.println("ADD VOTE 7") ; 
         Villageois villageois = villageoisDAO.getVillageois(votant) ; 
-        System.out.println("ADD VOTE 8") ; 
         actionRejoindreSalleDiscussion(request, response, villageois) ; 
 
     }

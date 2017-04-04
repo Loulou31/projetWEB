@@ -18,7 +18,6 @@ import java.util.Set;
  */
 public class Partie {
     private int idPartie ; 
-    private String createur ; 
     private int nbJoueursMin ; 
     private int nbJoueursMax ; 
     private int dureeJour ; 
@@ -39,7 +38,6 @@ public class Partie {
                   float probaPouvoir, 
                   float proportionLG) {
         this.idPartie = idPartie;
-        this.createur = createur ; 
         this.nbJoueursMin = nbJoueursMin;
         this.nbJoueursMax = nbJoueursMax;
         this.dureeJour = dureeJour;
@@ -54,9 +52,6 @@ public class Partie {
         return idPartie;
     }
 
-    public String getCreateur() {
-        return createur;
-    }
 
     public int getNbJoueursMin() {
         return nbJoueursMin;
@@ -132,7 +127,7 @@ public class Partie {
 
     @Override
     public String toString() {
-        return "Partie{" + "idPartie=" + idPartie + ", createur=" + createur + ", nbJoueursMin=" + nbJoueursMin + ", nbJoueursMax=" + nbJoueursMax + ", dureeJour=" + dureeJour + ", dureeNuit=" + dureeNuit + ", heureDebut=" + heureDebut + ", probaPouvoir=" + probaPouvoir + ", proportionLG=" + proportionLG + '}';
+        return "Partie{" + "idPartie=" + idPartie + ", nbJoueursMin=" + nbJoueursMin + ", nbJoueursMax=" + nbJoueursMax + ", dureeJour=" + dureeJour + ", dureeNuit=" + dureeNuit + ", heureDebut=" + heureDebut + ", probaPouvoir=" + probaPouvoir + ", proportionLG=" + proportionLG + '}';
     }
 
     
