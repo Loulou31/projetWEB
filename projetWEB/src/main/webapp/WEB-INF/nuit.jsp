@@ -1,3 +1,9 @@
+<%-- 
+    Document   : nuit
+    Created on : Apr 4, 2017, 3:32:38 PM
+    Author     : nicolasl & gaunetc
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,10 +18,11 @@
         <style>
         html,body,h1,h2,h3,h4,h5,h6 {font-family: "Revalia", cursive;}
         </style>
-        <title>Nuit</title>
+        <title>Nuit au village</title>
     </head>
     <body>
-        <h1 align="left" style='margin-top: 150px'>Attendez le lever du jour pour pouvoir continuer à jouer !</h1>
-        <h3>(Pour rappel, vous n'etes qu'un simple villageois)</h3>
+        <h1>Une sieste s'impose ! </h1>
+        <p></p>
+        <h2>Mais attention... les loups-garou rôdent autour du village....</h2>
     </body>
 </html>
