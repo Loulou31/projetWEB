@@ -75,6 +75,9 @@
   <div id="id02" class="modal">
   <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
   <form class="modal-content animate" action="controleur" method="post" accept-charset="UTF-8">
+    <div class="imgcontainer">
+      <img src="css/loup.png" alt="Avatar" class="avatar">
+    </div>
     <div class="container">
       <label><b>Pseudo</b></label>
       <input type="text" placeholder="Entrez votre pseudo..." name="login" required>

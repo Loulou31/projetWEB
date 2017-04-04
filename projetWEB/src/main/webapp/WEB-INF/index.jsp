@@ -21,8 +21,7 @@
 <div class="w3-top">
   <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
     <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
-    <a href="controleur?action=choseGame"class="w3-bar-item w3-button w3-hide-small w3-hover-white bspec">Jouer</a>
-    <a href="controleur?action=deconnexion" class="w3-bar-item w3-button w3-theme-l1 bspec">Déconnexion</a>
+    <a href="controleur?action=deconnexion" class="w3-bar-item w3-button w3-hide-small w3-hover-white bspec">Déconnexion</a>
   </div>
 </div>
 
@@ -44,9 +43,12 @@
 
   <div class="w3-row w3-padding-64" style = "margin-top: 20px">
     <div class="w3-twothird w3-container">
-        <h1 class="colspec">Etes-vous prêt à entrer dans le village ?</h1>
+        <p><h3 class="colspec" align="center">Etes-vous prêt à entrer dans le village ?</h3></p>
+         <form action="controleur" method="get" align="center">
+             <button type="submit" class="button"><span>Jouer</span></button><br>
+             <input type="hidden" name="action" value="choseGame"/>
+         </form> 
     </div>
-    
   </div>
 
 
@@ -60,31 +62,6 @@
   </footer>-->
 
 <!-- END MAIN -->
-</div>
-
- <script>
-// Get the modal
-var modal = document.getElementById('id01');
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-</script>
- <script>
-// Get the modal
-var modal = document.getElementById('id02');
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-</script>
-
 </body>
 </html>
 

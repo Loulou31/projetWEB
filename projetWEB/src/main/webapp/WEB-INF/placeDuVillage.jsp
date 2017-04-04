@@ -10,13 +10,21 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="css/test.css"/>
+        <link rel="stylesheet" type="text/css" href="css/place.css"/>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">-->
+        <link href="https://fonts.googleapis.com/css?family=Revalia" rel="stylesheet"> 
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+        <style>
+        html,body,h1,h2,h3,h4,h5,h6 {font-family: "Revalia", cursive;}
+        </style>
         <title>Place du village</title>
     </head>
     <body>
-        <h1>Place du village !</h1>
+        <h1 align="center">Place du village !</h1>
         <h2> Votez pour une décision en cours ou proposez en une ! </h2>
-        <table>
+        <table id="customers">
             <tr>
                 <th> Joueur désigné  </th>
                 <th> Nombre de votes </th>
@@ -47,8 +55,8 @@
             </c:forEach>
         </table>
         <form action="controleur" method="post" accept-charset="UTF-8">
-            Ecrire un message : <input type="text" name="contenu" value = "Rentrez votre message ici"/>
-        <input type="submit" name="Message" value ="Poster" />
+            Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
+        <button type="submit" class="button"><span>Poster</span></button><br>
         <input type="hidden" name="action" value="ajouterUnMessage" />
         </form>
     </body>
