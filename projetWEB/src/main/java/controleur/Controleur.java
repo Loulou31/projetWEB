@@ -3,6 +3,9 @@ package controleur;
 import dao.*;
 import java.io.*;
 import static java.lang.Math.ceil;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Resource;
@@ -381,14 +384,24 @@ public class Controleur extends HttpServlet {
         String pseudoJoueur = session.getAttribute("membre").toString() ; 
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
         DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
+        PartieDAO partieDAO = new PartieDAO(ds);
         Villageois villageois = villageoisDAO.getVillageois(pseudoJoueur) ; 
         int idPartie = villageois.getPartie() ; 
         if (temps.estJour(idPartie)){
             request.setAttribute("lieu", "sur la Place du village") ; 
             decisionDAO.ajouteDecisionHumain(request.getParameter("decision"), idPartie, pseudoJoueur) ; 
+            int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
+            int limiteRatifie = (nbJoueurs / 2) + 1;
+            int nbVoteActuel = decisionDAO.getDecisionHumain(request.getParameter("decision"), idPartie).getNbVote(); 
+            decisionDAO.ratifieDecisionSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);
         } else {
             request.setAttribute("lieu", "dans Repaire des Loups") ; 
-            decisionDAO.ajouteDecisionLoup(request.getParameter("decision"), idPartie, pseudoJoueur) ; 
+            decisionDAO.ajouteDecisionLoup(request.getParameter("decision"), idPartie, pseudoJoueur) ;
+            /*
+            int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
+            int limiteRatifie = (nbJoueurs / 2) + 1;
+            int nbVoteActuel = decisionDAO.getDecisionLoup(request.getParameter("decision"), idPartie).getNbVote(); 
+            decisionDAO.ratifieDecisionSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);*/
         }
         
         actionRejoindreSalleDiscussion(request, response, villageois) ; 
@@ -399,14 +412,23 @@ public class Controleur extends HttpServlet {
             throws IOException, ServletException {
         HttpSession session = request.getSession();
         String votant = session.getAttribute("membre").toString() ; 
-        DecisionDAO decisionDAO = new DecisionDAO(ds) ; 
-        String joueurConcerne = request.getParameter("joueurConcerne").toString() ; 
-        Decision decision = decisionDAO.getDecisionHumain(joueurConcerne) ; 
+        DecisionDAO decisionDAO = new DecisionDAO(ds) ;
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds); 
         Villageois v = villageoisDAO.getVillageois(votant); 
         int idPartie = v.getPartie(); 
+        String joueurConcerne = request.getParameter("joueurConcerne").toString() ; 
+        Decision decision = decisionDAO.getDecisionHumain(joueurConcerne, idPartie) ; 
+        
         decisionDAO.ajouteVoteHumain(decision, votant, idPartie) ; 
         Villageois villageois = villageoisDAO.getVillageois(votant) ; 
+       
+        /* On vérifie si la decision doit être ratifiée */
+        PartieDAO partieDAO = new PartieDAO(ds);
+        int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
+        int limiteRatifie = (nbJoueurs / 2) + 1;
+        int nbVoteActuel = decisionDAO.getDecisionHumain(request.getParameter("decision"), idPartie).getNbVote(); 
+        decisionDAO.ratifieDecisionSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);
+        
         actionRejoindreSalleDiscussion(request, response, villageois) ; 
 
     }
