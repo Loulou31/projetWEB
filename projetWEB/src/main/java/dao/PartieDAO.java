@@ -30,7 +30,6 @@ public class PartieDAO extends AbstractDatabaseDAO {
             while (rs.next()) {
                 Partie partie
                         = new Partie(rs.getInt("IdPartie"),
-                                rs.getString("login"),
                                 rs.getInt("NbJoueursMin"),
                                 rs.getInt("NbJoueursMax"),
                                 rs.getInt("DureeJour"),
@@ -46,6 +45,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         return result;
     }
 
+
     public int getNbJoueursVivants(int id) {
         try (Connection conn = this.getConn()) {
             PreparedStatement st = conn.prepareStatement
@@ -58,9 +58,9 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
-    public void ajouterPartie(int nbJoueursMin,
+    public void ajouterPartie(int idPartie,
+            int nbJoueursMin,
             int nbJoueursMax,
-            String createur,
             int dureeJour,
             int dureeNuit,
             int heureDebut,
@@ -68,8 +68,8 @@ public class PartieDAO extends AbstractDatabaseDAO {
             float proportionLG) {
         try (
                 Connection conn = getConn();
-                PreparedStatement st = conn.prepareStatement("INSERT INTO PARTIE (login, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG, nbJoueursVivants) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");) {
-            st.setString(1, createur);
+                PreparedStatement st = conn.prepareStatement("INSERT INTO PARTIE (IdPartie, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG, nbJoueursVivants) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");) {
+            st.setInt(1, idPartie);
             st.setInt(2, nbJoueursMin);
             st.setInt(3, nbJoueursMax);
             st.setInt(4, dureeJour);
@@ -78,7 +78,6 @@ public class PartieDAO extends AbstractDatabaseDAO {
             st.setFloat(7, probaPouvoir);
             st.setFloat(8, proportionLG);
             st.setInt(9, 0);
-
             st.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Erreur BD ajouter Partie" + e.getMessage(), e);
@@ -93,7 +92,6 @@ public class PartieDAO extends AbstractDatabaseDAO {
             ResultSet rs = st.executeQuery();
             rs.next();
             partie = new Partie(rs.getInt("IdPartie"),
-                    rs.getString("login"),
                     rs.getInt("NbJoueursMin"),
                     rs.getInt("NbJoueursMax"),
                     rs.getInt("DureeJour"),
@@ -107,23 +105,8 @@ public class PartieDAO extends AbstractDatabaseDAO {
         return partie;
     }
 
+
     //return -1 s'il n'y a pas de partie à retourner
-    public int getIDPartieCreateur(String login) {
-        ResultSet rs;
-        try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("SELECT IdPartie FROM Partie WHERE login = ?");
-            st.setString(1, login);
-            rs = st.executeQuery();
-            if (!(rs.next())) {
-                return -1;
-            }
-            return rs.getInt(1);
-        } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
-        }
-
-    }
-
     public int getIDPartieJoueur(String login) {
         ResultSet rs;
         try (Connection conn = getConn()) {
@@ -137,15 +120,15 @@ public class PartieDAO extends AbstractDatabaseDAO {
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
-
     }
+
 
     /**
      * Supprime une partie après qu'elle soit terminée *
      */
     public void supprimerPartie(int id) {
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("DELETE FROM PARTIE WHERE IdPartie = ?");
+            PreparedStatement st = conn.prepareStatement("DELETE FROM Partie WHERE IdPartie = ?");
             st.setInt(1, id);
             st.executeUpdate();
         } catch (SQLException e) {

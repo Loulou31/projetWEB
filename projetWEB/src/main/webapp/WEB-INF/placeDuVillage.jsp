@@ -22,8 +22,9 @@
         <title>Place du village</title>
     </head>
     <body>
-        <h1 align="center">Place du village !</h1>
-        <h2> Votez pour une décision en cours ou proposez en une ! </h2>
+        <h1 align="center">Bienvenue sur la place du village !</h1>
+        <h2> Désignez le villageois à éliminer aujoud'hui... </h2>
+        <p></p>
         <table id="customers">
             <tr>
                 <th> Joueur désigné  </th>
@@ -50,10 +51,11 @@
         <table>
             <c:forEach items="${messages}" var="message">
                     <tr>
-                        <td>${message.expediteur}</td><td>${message.contenu}</td>
+                        <td><B>@${message.expediteur}  :   </B></td><td>  ${message.contenu}</td>
                     </tr>
             </c:forEach>
         </table>
+        <p></p>
         <form action="controleur" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
         <button type="submit" class="button"><span>Poster</span></button><br>

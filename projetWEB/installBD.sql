@@ -11,8 +11,6 @@ DROP TABLE JOUEUR ;
 DROP TABLE PARTIE ;
 DROP TABLE MEMBRE ;  
 
-CREATE SEQUENCE id_seq ; 
-
 CREATE TABLE MEMBRE (
     login varchar(10) NOT NULL PRIMARY KEY,
     password varchar(10) NOT NULL
@@ -97,8 +95,7 @@ CREATE TABLE DECISION_HUMAIN (
 
 
 CREATE TABLE PARTIE (
-    IdPartie number(3) DEFAULT id_seq.nextval PRIMARY KEY , 
-    login varchar(10) , 
+    IdPartie int PRIMARY KEY , 
     NbJoueursMin int CONSTRAINT NbJouPos CHECK (NbJoueursMin > 0) , 
     NbJoueursMax int CONSTRAINT NbJouMaxPos CHECK (NbJoueursMax > 0) , 
     DureeJour int CONSTRAINT DureeJPos CHECK (DureeJour > 0),
@@ -106,21 +103,12 @@ CREATE TABLE PARTIE (
     HeureDebut int CONSTRAINT DebutPos CHECK (HeureDebut > 0),
     ProbaPouvoir float CONSTRAINT ProbaPos CHECK (ProbaPouvoir >= 0.0 AND ProbaPouvoir <= 1.0 ),
     ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0),
-    nbJoueursVivants int,
-    CONSTRAINT creatorForeign FOREIGN KEY (login) REFERENCES MEMBRE(login)
+    nbJoueursVivants int
 ) ; 
 
 
 
 
-INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
-VALUES (5, 10, 1, 1, 1490714515, 0.2, 0.5) ; 
-
-INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
-VALUES (2, 2, 1, 1, 10, 0.2, 0.5) ; 
-
-INSERT INTO PARTIE (NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
-VALUES (10, 20, 1, 1, 10, 0.2, 0.5) ; 
 
 /*INSERT INTO DECISION_HUMAIN VALUES (1, 321, 'bagouc', 'loulou', 0, SYSDATE, 1 , null, null , null , null , null ,
  null , null , null , null , null , null , null , null );

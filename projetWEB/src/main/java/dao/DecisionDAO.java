@@ -145,7 +145,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         /* on vérifie que une decision n'est pas en cours sur le joueur concerné */
         if (!decisionCorrecteLoup(login_joueur, idPartie)) {
             try (Connection conn = getConn()) {
-                PreparedStatement st = conn.prepareStatement("INSERT INTO Decision_Loup (login_joueur_concerne, id_partie, login_expeditaire, ratifie, date_envoi, nbreVote) VALUES (?, ?, ?, 0, SYSDATE, 1)");
+                PreparedStatement st = conn.prepareStatement("INSERT INTO Decision_Loup (login_joueur_concerne, id_partie, login_expeditaire, ratifie, date_envoi, nbreVote) VALUES (?, ?, ?, 0, SYSDATE, 0)");
                 st.setString(1, login_joueur);
                 st.setInt(2, idPartie);
                 st.setString(3, login_expeditaire);
@@ -153,7 +153,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                 HashSet<String> votants = new HashSet();
                 votants.add(login_expeditaire);
                 Decision decision = new Decision(login_joueur, votants, 0, idPartie);
-                ajouteVoteLoup(decision, login_joueur);
+                ajouteVoteLoup(decision, login_joueur, idPartie);
             } catch (SQLException e) {
                 throw new DAOException("Erreur BD " + e.getMessage(), e);
             }
@@ -182,7 +182,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         }
     }
 
-    public void ajouteVoteLoup(Decision decision, String votant) {
+    public void ajouteVoteLoup(Decision decision, String votant, int idPartie) {
         try (Connection conn = getConn()) {
             /* On vérifie que la personne n'a pas déjà voté pour cette décision */
             if (!decision.getVotants().contains(votant)) {
@@ -194,6 +194,18 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                 st.setString(1, votant);
                 st.setString(2, decision.getJoueurConcerne());
                 st.executeUpdate();
+                int nbVote = decision.getNbVote() + 1;
+                decision.setNbVote(nbVote);
+                
+                /* On vérifie si la decision doit être ratifiée */
+                VillageoisDAO villageoisDAO = new VillageoisDAO(this.dataSource);
+                int nbJoueurs = villageoisDAO.getListVillageoisVivants(idPartie).size(); 
+                int limiteRatifie = (nbJoueurs / 2) + 1;
+                if (decision.getNbVote() == limiteRatifie) {
+                    st = conn.prepareStatement("UPDATE Decision_Humain set ratifie = 1 Where login_joueur_concerne = ? ");
+                    st.setString(1, decision.getJoueurConcerne());
+                    st.executeUpdate();
+                }
             }
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
@@ -207,6 +219,29 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                     ("SELECT * FROM DECISION_HUMAIN WHERE login_joueur_concerne = ? and id_partie = ?") ; 
             st.setString(1, joueurConcerne) ; 
             st.setInt(2, idPartie); 
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                HashSet<String> votants = new HashSet<String>();
+                votants.add(rs.getString("login_expeditaire"));
+                int nbVote = Integer.parseInt(rs.getString("nbreVote"));
+                for (int i = 2; i <= nbVote; i++) {
+                    votants.add(rs.getString("votant"+i));
+                }
+                decision = new Decision(joueurConcerne, votants);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return decision ; 
+   }
+    
+    
+    public Decision getDecisionLoup(String joueurConcerne) {
+        Decision decision = null;
+        try (Connection conn = getConn()) {	     
+	    PreparedStatement st = conn.prepareStatement
+                    ("SELECT * FROM DECISION_LOUP WHERE login_joueur_concerne = ? ") ; 
+            st.setString(1, joueurConcerne) ; 
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 HashSet<String> votants = new HashSet<String>();
