@@ -75,7 +75,6 @@ public class Controleur extends HttpServlet {
             } else if (action.equals("addVote")) {
                 actionAddVote(request, response);
             } else if (action.equals("debutPartie")) {
-                request.setAttribute("estCommencee", 1);
                 actionDebutPartie(request, response);
             } else if (action.equals("quitteAttentePartie")){
                 //actionAddVote(request, response) ; 
@@ -358,27 +357,14 @@ public class Controleur extends HttpServlet {
 
         PartieDAO partieDAO = new PartieDAO(ds);
 
-        if (request.getAttribute("estCommencee") != null) {
-            request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
-        } else if (!temps.estApres(intDeb, temps.getTempsLong())) {
-            System.out.println("22");
-            if (nombreJoueursMin <= nombreJoueurs) {
-                request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
-            } else {
-                //il faut tout détruire
-                int idPartie = partie.getIdPartie();
-                partieDAO.supprimerPartie(idPartie);
-                VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
-                villageoisDAO.supprimerVillageois(idPartie);
-                request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
-            }
-        } else {
-            System.out.println("33");
+        if (!temps.estApres(intDeb, temps.getTempsLong())) {
             if (nombreJoueursMin <= nombreJoueurs) {
                 request.getRequestDispatcher("/WEB-INF/attenteDebutPartiePrete.jsp").forward(request, response);
             } else {
-                request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
+                quitteAttentePartie(request, response);
             }
+        } else {
+                request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
         }
     }
 
