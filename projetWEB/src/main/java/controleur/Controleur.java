@@ -314,7 +314,7 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/repaire.jsp").forward(request, response);
         } else {
             if (villageois.getPouvoir().equals("insomnie")){
-                
+                request.getRequestDispatcher("/WEB-INF/nuit.jsp").forward(request, response);
             }
             request.getRequestDispatcher("/WEB-INF/nuit.jsp").forward(request, response);
         }
