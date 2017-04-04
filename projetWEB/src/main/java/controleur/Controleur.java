@@ -580,7 +580,7 @@ public class Controleur extends HttpServlet {
         //attention code redondant à factoriser !
         else if (temps.estApres(heureDeb, temps.getTempsLong())){
             System.out.println("3");
-            int idPartie = pseudo.hashCode();
+            int idPartie = Partie.getNumeroPartie();
             int dureeDay = temps.calToInt(Integer.parseInt(request.getParameter("dayHour")),Integer.parseInt(request.getParameter("dayMin")));
             int dureeNight = temps.calToInt(Integer.parseInt(request.getParameter("nightHour")),Integer.parseInt(request.getParameter("nightMin")));
             partieDAO.ajouterPartie(idPartie,
