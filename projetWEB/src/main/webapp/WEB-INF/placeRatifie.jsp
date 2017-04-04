@@ -23,9 +23,7 @@
     </head>
     <body>
         <h1 align="center">Bienvenue sur la place du village !</h1>
-        <h2> ${morts} </h2>
-        <p></p>
-        <h2> Désignez le villageois à éliminer aujoud'hui... </h2>
+        <h2> La décision est ratifiée !</h2>
         <p></p>
         <table id="customers">
             <tr>
