@@ -29,7 +29,6 @@ public class Partie {
     //private Set<Membre> joueursPresents;
 
     public Partie(int idPartie, 
-                  String createur,
                   int nbJoueursMin, 
                   int nbJoueursMax, 
                   int dureeJour, 
@@ -51,7 +50,6 @@ public class Partie {
     public int getIdPartie() {
         return idPartie;
     }
-
 
     public int getNbJoueursMin() {
         return nbJoueursMin;
