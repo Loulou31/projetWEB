@@ -461,8 +461,7 @@ public class Controleur extends HttpServlet {
         Villageois v = villageoisDAO.getVillageois(votant); 
         int idPartie = v.getPartie(); 
         String joueurConcerne = request.getParameter("joueurConcerne").toString() ; 
-        Decision decision = decisionDAO.getDecisionHumain(joueurConcerne, idPartie) ; 
-        System.out.println("apres get Decision");        
+        Decision decision = decisionDAO.getDecisionHumain(joueurConcerne, idPartie) ;        
         boolean vote = decisionDAO.ajouteVoteHumain(decision, votant, idPartie); 
         Villageois villageois = villageoisDAO.getVillageois(votant) ; 
        
@@ -470,20 +469,25 @@ public class Controleur extends HttpServlet {
         if (vote) {
         int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
         int limiteRatifie = (nbJoueurs / 2) + 1;
-        int nbVoteActuel = decisionDAO.getDecisionHumain(request.getParameter("decision"), idPartie).getNbVote(); 
-        decisionDAO.ratifieDecisionHumainSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);
-        }
+        int nbVoteActuel = decisionDAO.getDecisionHumain(request.getParameter("joueurConcerne"), idPartie).getNbVote(); 
+        decisionDAO.ratifieDecisionHumainSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("joueurConcerne"), idPartie);
+        } 
         
+        /*
         int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
+        System.out.println("apres get NbJoueursVivants"); 
         int limiteRatifie = (nbJoueurs / 2) + 1;
-        /* On vérifie si la decision doit être ratifiée */
-        if (temps.estJour(idPartie)){
+         /*On vérifie si la decision doit être ratifiée */
+        /*if (temps.estJour(idPartie)){
+            System.out.println("if temps est jour"); 
             int nbVoteActuel = decisionDAO.getDecisionHumain(request.getParameter("decision"), idPartie).getNbVote(); 
+            System.out.println("apres get DecisionHumain ds if"); 
             decisionDAO.ratifieDecisionHumainSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);
         } else {
+            System.out.println("if temps nest pas jour"); 
             int nbVoteActuel = decisionDAO.getDecisionLoup(request.getParameter("decision"), idPartie).getNbVote(); 
             decisionDAO.ratifieDecisionLoupSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);
-        }
+        }*/
         actionRejoindreSalleDiscussion(request, response) ; 
 
     }
