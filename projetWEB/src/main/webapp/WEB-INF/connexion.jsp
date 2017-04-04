@@ -2,21 +2,20 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <html>
-<title>Le Loup-Garou !</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="css/test.css"/>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-<!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">-->
-<!--<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">--> 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
-</style> 
-<!--<style>
-html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
-</style>-->
+<head>
+    <title>Le Loup-Garou !</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/test.css"/>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+    <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">-->
+     <link href="https://fonts.googleapis.com/css?family=Rock+Salt" rel="stylesheet"> 
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+    <style>
+    html,body,h1,h2,h3,h4,h5,h6 {font-family: "Rock Salt", cursive}
+    </style>
+</head>
 <body>
 
 <!-- Navbar -->
@@ -25,7 +24,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
     <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
     <!--<a href="controleur?action=connexion" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Connexion</a>-->
     <button onclick="document.getElementById('id01').style.display='block'" class="w3-bar-item w3-button w3-hide-small w3-hover-white bspec">Connexion</button>
-    <a href="controleur?action=inscription" class="w3-bar-item w3-button w3-theme-l1">Inscription</a>
+    <button onclick="document.getElementById('id02').style.display='block'" class="w3-bar-item w3-button w3-theme-l1 bspec">Inscription</button>
   </div>
 </div>
 
@@ -71,6 +70,26 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
       </form>
     </div> 
   </div>
+  
+  
+  <div id="id02" class="modal">
+  <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+  <form class="modal-content animate" action="controleur" method="post" accept-charset="UTF-8">
+    <div class="container">
+      <label><b>Pseudo</b></label>
+      <input type="text" placeholder="Entrez votre pseudo..." name="login" required>
+
+      <label><b>Mot de passe</b></label>
+      <input type="password" placeholder="Entrez votre mot de passe..." name="password" required>
+
+      <div class="clearfix">
+        <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="submit" class="signupbtn">S'inscrire</button>
+         <input type="hidden" name="action" value="register" />
+      </div>
+    </div>
+  </form>
+</div>
 
   <div class="w3-row w3-padding-64" style = "margin-top: 20px">
     <div class="w3-twothird w3-container">
@@ -96,28 +115,26 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 <!-- END MAIN -->
 </div>
 
-<script>
-// Get the Sidebar
-var mySidebar = document.getElementById("mySidebar");
+ <script>
+// Get the modal
+var modal = document.getElementById('id01');
 
-// Get the DIV with overlay effect
-var overlayBg = document.getElementById("myOverlay");
-
-// Toggle between showing and hiding the sidebar, and add overlay effect
-function w3_open() {
-    if (mySidebar.style.display === 'block') {
-        mySidebar.style.display = 'none';
-        overlayBg.style.display = "none";
-    } else {
-        mySidebar.style.display = 'block';
-        overlayBg.style.display = "block";
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
     }
 }
+</script>
+ <script>
+// Get the modal
+var modal = document.getElementById('id02');
 
-// Close the sidebar with the close button
-function w3_close() {
-    mySidebar.style.display = "none";
-    overlayBg.style.display = "none";
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 </script>
 
