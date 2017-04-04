@@ -10,40 +10,55 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="test.css" />
+        <link rel="stylesheet" type="text/css" href="css/place.css"/>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">-->
+        <link href="https://fonts.googleapis.com/css?family=Revalia" rel="stylesheet"> 
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+        <style>
+        html,body,h1,h2,h3,h4,h5,h6 {font-family: "Revalia", cursive;}
+        </style>
         <title>Place du village</title>
     </head>
     <body>
-        <h1>Place du village !</h1>
-        <h2> Votez pour une décision en cours ou proposez en une ! </h2>
-        <table>
+        <h1 align="center">Bienvenue sur la place du village !</h1>
+        <h2> Désignez le villageois à éliminer aujoud'hui... </h2>
+        <p></p>
+        <table id="customers">
             <tr>
                 <th> Joueur désigné  </th>
                 <th> Nombre de votes </th>
                 <th> Nombre de joueurs : ${nbJoueurs} </th>
             </tr>
-            <c:forEach items="${decisions}" var="decisions">
+            <c:forEach items="${decisions}" var="decision">
                 <tr>
-                    <td>${decisions.joueurConcerne}</td>
-                    <td>votants a trouver</td>
-                    <td><input type="submit" value="Voter"/>
+                    <td>${decision.joueurConcerne}</td>
+                    <td>${decision.getNbVote()}</td>
+                    <td>
+                    <form action="controleur" accept-charset="UTF-8">    
+                        <input type="submit" value="Voter"/>
                         <input type="hidden" name="action" value="addVote"/>
+                        <input type="hidden" name="joueurConcerne" value="${decision.joueurConcerne}"/>
+                    </form>
                     </td>
                 </tr>   
             </c:forEach>
             </tr>
         </table>
         <a href="controleur?action=newDecision">Proposer une décision</a>
+        <h2> Discutez avec les autres villageois... </h2>
         <table>
             <c:forEach items="${messages}" var="message">
                     <tr>
-                        <td>${message.expediteur}</td><td>${message.contenu}</td>
+                        <td><B>@${message.expediteur}  :   </B></td><td>  ${message.contenu}</td>
                     </tr>
             </c:forEach>
         </table>
+        <p></p>
         <form action="controleur" method="post" accept-charset="UTF-8">
-            Ecrire un message : <input type="text" name="contenu" value = "Rentrez votre message ici"/>
-        <input type="submit" name="Message" value ="Poster" />
+            Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
+        <button type="submit" class="button"><span>Poster</span></button><br>
         <input type="hidden" name="action" value="ajouterUnMessage" />
         </form>
     </body>

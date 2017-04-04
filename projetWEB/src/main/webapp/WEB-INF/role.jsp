@@ -15,5 +15,13 @@
         <h1>Votre rôle dans cette partie est :${role}.</h1>
         <h1>Il y a ${nombreLoup} loups.</h1>
         <h1>Les pouvoirs sont présents à la probabilité: ${proba}.</h1>
+        <% String pouvoir = request.getAttribute("pouvoir").toString();
+            if (!pouvoir.equals("rien")) {
+                out.print("<h1>Vous possedez le pouvoir : " + pouvoir + ".</h1>");
+            } else {
+                out.print("<h1>Vous ne possedez aucun pouvoir.</h1>");
+            }
+        %>
+        <li><a href="controleur?action=rejoindreJeu">Rejoindre Salle Discussion</a></li>
     </body>
 </html>

@@ -21,7 +21,7 @@ CREATE TABLE JOUEUR (
     login varchar(10) NOT NULL , 
     rolePartie int , 
     Statut int CONSTRAINT StatPos CHECK (Statut = 0 OR Statut = 1), 
-    Pouvoir varchar(10),
+    Pouvoir varchar(20),
     IdPartie int, 
     CONSTRAINT loginForeign FOREIGN KEY (login) REFERENCES MEMBRE(login),
     PRIMARY KEY (login)
@@ -53,7 +53,7 @@ CREATE TABLE DECISION_LOUP (
     login_joueur_concerne varchar(10) NOT NULL PRIMARY KEY, 
     id_partie int, 
     login_expeditaire varchar(10) NOT NULL, 
-    est_valide int CONSTRAINT EtatValide CHECK (est_valide = 0 OR est_valide = 1), 
+    ratifie int CONSTRAINT EtatValide CHECK (ratifie = 0 OR ratifie = 1), 
     date_envoi date, 
     nbreVote int, 
     votant1 varchar(10),
@@ -75,7 +75,7 @@ CREATE TABLE DECISION_HUMAIN (
     login_joueur_concerne varchar(10) NOT NULL PRIMARY KEY, 
     id_partie int,
     login_expeditaire varchar(10) NOT NULL, 
-    est_valide int CONSTRAINT EtatValide2 CHECK (est_valide = 0 OR est_valide = 1), 
+    ratifie int CONSTRAINT EtatValide2 CHECK (ratifie = 0 OR ratifie = 1), 
     date_envoi date, 
     nbreVote int, 
     votant1 varchar(10),
@@ -102,20 +102,13 @@ CREATE TABLE PARTIE (
     DureeNuit int CONSTRAINT DureeNPos CHECK (DureeNuit > 0), 
     HeureDebut int CONSTRAINT DebutPos CHECK (HeureDebut > 0),
     ProbaPouvoir float CONSTRAINT ProbaPos CHECK (ProbaPouvoir >= 0.0 AND ProbaPouvoir <= 1.0 ),
-    ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0)
+    ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0),
+    nbJoueursVivants int
 ) ; 
 
 
 
 
-INSERT INTO PARTIE (IdPartie, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
-VALUES (1, 5, 10, 1, 1, 1490714515, 0.2, 0.5) ; 
-
-INSERT INTO PARTIE (IdPartie, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
-VALUES (2, 2, 2, 1, 1, 10, 0.2, 0.5) ; 
-
-INSERT INTO PARTIE (IdPartie, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG)
-VALUES (3, 10, 20, 1, 1, 10, 0.2, 0.5) ; 
 
 /*INSERT INTO DECISION_HUMAIN VALUES (1, 321, 'bagouc', 'loulou', 0, SYSDATE, 1 , null, null , null , null , null ,
  null , null , null , null , null , null , null , null );
@@ -127,4 +120,5 @@ SELECT * FROM MESSAGE_REPAIRE;
 SELECT * FROM DECISION_HUMAIN; 
 SELECT * FROM PARTIE; 
 */
+SELECT * FROM JOUEUR;
 
