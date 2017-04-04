@@ -10,7 +10,7 @@ and open the template in the editor.
 
 /* On travaille sur la balise body, donc sur TOUTE la page */
 body {
-background-image: url("village.png");
+background-image: url("route.png");
 background-attachment: fixed;
 background-size: cover;
 color: gold;
