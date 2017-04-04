@@ -10,14 +10,22 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="css/test.css"/>
+        <link rel="stylesheet" type="text/css" href="css/repaire.css"/>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">-->
+        <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+        <style>
+        html,body,h1,h2,h3,h4,h5,h6 {font-family: "Luckiest Guy", cursive;}
+        </style>
         <title>Repaire des loups</title>
     </head>
     <body>
-        <h1>Vous entrez dans le repaire des Loups-Garou</h1>
-        <h2> Qui allez-vous dévorer ce soir...? </h2>
+        <h1 align="center">Vous êtes dans le repaire des Loups-Garou</h1>
+        <h2> Restez discrêt... Ils ne doivent pas vous voir... </h2>
         <p></p>
-        <table>
+        <table id="customers">
             <tr>
                 <th> Joueur désigné  </th>
                 <th> Nombre de votes </th>
@@ -27,24 +35,16 @@
                 <tr>
                     <td>${decision.joueurConcerne}</td>
                     <td>${decision.getNbVote()}</td>
-                    <td>
-                    <form action="controleur" accept-charset="UTF-8">    
-                        <input type="submit" value="Voter"/>
-                        <input type="hidden" name="action" value="addVote"/>
-                        <input type="hidden" name="joueurConcerne" value="${decision.joueurConcerne}"/>
-                    </form>
-                    </td>
                 </tr>   
             </c:forEach>
             </tr>
         </table>
-        <a href="controleur?action=newDecision">Proposer une décision</a>
         <h2> Discutez avec les autres loups... </h2>
         <p> Mais faites attention aux oreilles indiscètes qui pourraient vous écouter....</p>
         <table>
-            <c:forEach items="${messages}" var="message">
+            <c:forEach items="${messagesRepaireInsomnie}" var="message">
                     <tr>
-                        <td>${message.expediteur}</td><td>${message.contenu}</td>
+                        <td><B>@${message.expediteur}  :  </B></td><td>  ${message.contenu}</td>
                     </tr>
             </c:forEach>
         </table>
