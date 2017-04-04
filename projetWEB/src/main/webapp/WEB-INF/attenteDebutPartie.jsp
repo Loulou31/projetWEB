@@ -39,7 +39,7 @@
         
         <p>L'heure du début de partie est : <%=heureDebut%></p>
         
-        <p>Voues êtes dans la partie : <%=partie.getIdPartie()%></p>
+        <p>Vous êtes dans la partie : <%=partie.getIdPartie()%></p>
         
         <% 
             int nbJoueurs = (int) request.getAttribute("nombreJoueurs");
@@ -50,12 +50,14 @@
                 stringVillageois += listeVillageois.get(i).getPseudo() + "\n";
             }
         %>
-        <p>La partie doit contenir entre : <%= partie.getNbJoueursMin() %> et <%= partie.getNbJoueursMax() %> joueurs.<br>
+        <p>La partie doit contenir entre : <b><%= partie.getNbJoueursMin() %></b> et <b><%= partie.getNbJoueursMax() %></b> joueurs.<br>
             Elle en contient actuellement : <%= nbJoueurs %>.<br>
             <%= stringVillageois %>
         </p>
         
-        
-        <a href="controleur?action=quitteAttentePartie">Quitter la salle d'attente et retourner au menu principal</a>
+        <form action="controleur" method="get" align="center">
+            <button type="submit" class="button"><span>Quitter la salle d'attente et retourner au menu principal</span></button><br>
+            <input type="hidden" name="action" value="quitteAttentePartie"/>
+        </form>
     </body>
 </html>
