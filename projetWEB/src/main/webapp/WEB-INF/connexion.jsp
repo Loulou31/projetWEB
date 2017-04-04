@@ -59,14 +59,13 @@
 
           <label><b>Mot de passe</b></label>
           <input type="password" placeholder="Entre votre mot de passe..." name="password" required>
+          <div class="clearfix">
+            <button type="submit" class="signupbtn">Login</button>
+            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+            <input type="hidden" name="action" value="login" />
+          </div>
 
-          <button type="submit">Login</button>
         </div>
-
-        <div class="container" style="background-color:#f1f1f1">
-          <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-        </div>
-      <input type="hidden" name="action" value="login" />
       </form>
     </div> 
   </div>

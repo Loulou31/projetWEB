@@ -15,13 +15,12 @@ background-attachment: fixed;
 background-size: cover;
 color: #FFFFFF;
 background-position: center center;
-font-family: 'Press Start 2P', cursive;
+
 }
 
-h1{
-    
+body a{
+   text-decoration: none; 
 }
-
 #background_opacity {
 position: fixed;
 z-index: -10;
@@ -45,12 +44,13 @@ input[type=text], input[type=password] {
 
 #customers td, #customers th {
     border: 2px solid white;
-    padding: 8px;
+    padding: 25px;
 }
 
-#customers tr:nth-child(even){background-color: transparent;}
+#customers tr:nth-child(even){background-color: transparent;
+}
 
-#customers tr:hover {background-color: #000;}
+#customers tr:hover {background-color: #000; }
 
 #customers th {
     padding-top: 12px;

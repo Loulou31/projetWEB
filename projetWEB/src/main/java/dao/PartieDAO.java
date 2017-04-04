@@ -163,4 +163,20 @@ public class PartieDAO extends AbstractDatabaseDAO {
         return 1;
     }
 
+    public Boolean decisionHumainRatifie(int idPartie){
+        //A partir de l'id d'une partie: retourne si oui ou non la partie contient une décision ratifiée
+        ResultSet rs;
+        int nbJoueurs = 0;
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Decision_Humain WHERE idPartie = ? and ratifie = 1");
+            st.setInt(1, idPartie);
+            rs = st.executeQuery();
+            return rs.next();
+             
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        
+    }
+    
 }
