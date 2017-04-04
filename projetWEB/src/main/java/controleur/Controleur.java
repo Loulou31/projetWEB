@@ -74,6 +74,8 @@ public class Controleur extends HttpServlet {
             } else if (action.equals("debutPartie")) {
                 request.setAttribute("estCommencee", 1);
                 actionDebutPartie(request, response);
+            } else if (action.equals("quitteAttentePartie")){
+                //actionAddVote(request, response) ; 
             } else {
                 invalidParameters(request, response);
             }
@@ -90,8 +92,14 @@ public class Controleur extends HttpServlet {
     
     private void actionAccueil(HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
-        response.setIntHeader("Refresh",1);
-        request.getRequestDispatcher("/WEB-INF/connexion.jsp").forward(request, response);
+
+        HttpSession session = request.getSession();
+        if(session.getAttribute("membre") == null)
+            request.getRequestDispatcher("/WEB-INF/connexion.jsp").forward(request, response);
+        else{
+            response.setIntHeader("Refresh",1);
+            request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
+        }
     }
     
     private void actionIndex(HttpServletRequest request, 
@@ -101,7 +109,11 @@ public class Controleur extends HttpServlet {
 
     private void actionLogin(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        if(session.getAttribute("membre") == null)
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        else
+            request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
     }
     
     private void actionDeconnexion(HttpServletRequest request, 
@@ -249,63 +261,86 @@ public class Controleur extends HttpServlet {
     //cretateur = 1 si arrivée ici par la voie créateur, 0 sinon
     private void actionAddPlayer(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
-            throws IOException, ServletException{
-        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
-        String login = request.getSession().getAttribute("membre").toString() ;
-        int idPartie = Integer.parseInt(request.getParameter("id")) ; 
+            throws IOException, ServletException {
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        String login = request.getSession().getAttribute("membre").toString();
+        int idPartie = Integer.parseInt(request.getParameter("id"));
         Partie partie = partieDAO.getPartie(idPartie);
-        request.setAttribute("partie", partie) ;
-        
+        request.setAttribute("partie", partie);
+
         int id = partieDAO.getIDPartieJoueur(login);
-        if (id == 0 || id == -1)
-            villageoisDAO.addPlayer(login, idPartie) ;
- 
+        if (id == 0 || id == -1) {
+            villageoisDAO.addPlayer(login, idPartie);
+        }
+
         int nombreJoueurs = villageoisDAO.nombreJoueursPartie(idPartie);
         request.setAttribute("nombreJoueurs", nombreJoueurs);
 
         List<Villageois> listeVillageois = villageoisDAO.getListVillageois(idPartie);
         request.setAttribute("listeVillageois", listeVillageois);
-            
+
         actionWaitGame(request, response);
     }
-    
-    
-    
+
     private void actionWaitGame(HttpServletRequest request,
             HttpServletResponse response)
-            throws IOException, ServletException{
+            throws IOException, ServletException {
         //response.setIntHeader("Refresh",1);
-        
+
+        //si la partie a été supprimée par le chef ou un f5 après temps dépassé
+        PartieDAO partieDAO = new PartieDAO(ds);
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString() ;
+        if (!(partieDAO.partieExisteJoueur(pseudo))){
+            request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
+        }
+                
+                
         Temps temps = new Temps();
         Partie partie = (Partie) request.getAttribute("partie");
 
         int intDeb = partie.getHeureDebut();
         int nombreJoueurs = (int) request.getAttribute("nombreJoueurs");
         int nombreJoueursMin = partie.getNbJoueursMin();
-        
-        if(request.getAttribute("estCommencee") != null){
-            System.out.println("11");
+
+        if (request.getAttribute("estCommencee") != null) {
             request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
-        }
-        
-        else if (!temps.estApres(intDeb, temps.getTempsLong())){
-            System.out.println("22");
-            if (nombreJoueursMin <= nombreJoueurs)
+        } else if (!temps.estApres(intDeb, temps.getTempsLong())) {
+            if (nombreJoueursMin <= nombreJoueurs) {
                 request.getRequestDispatcher("/WEB-INF/placeDuVillage.jsp").forward(request, response);
-            else{
+            } else {
                 //il faut tout détruire
-            } 
-        }else{
-            System.out.println("33");
-            if (nombreJoueursMin <= nombreJoueurs){
-                request.getRequestDispatcher("/WEB-INF/attenteDebutPartiePrete.jsp").forward(request, response);
+                int idPartie = partie.getIdPartie();
+                partieDAO.supprimerPartie(idPartie);
+                VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+                villageoisDAO.supprimerVillageois(idPartie);
+                request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
             }
-            else{
-                request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
-            }
+        } else if (nombreJoueursMin <= nombreJoueurs) {
+            request.getRequestDispatcher("/WEB-INF/attenteDebutPartiePrete.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/WEB-INF/attenteDebutPartie.jsp").forward(request, response);
         }
     }
-    
+
+    private void quitteAttentePartie(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        PartieDAO partieDAO = new PartieDAO(ds);
+
+        //si dernier joueur de partie : on détruit tout
+        int idPartie = partieDAO.getIDPartieJoueur(pseudo);
+        if (partieDAO.getNbJoueurs(idPartie) == 1) {
+            partieDAO.supprimerPartie(idPartie);
+        }
+        
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        villageoisDAO.supprimerVillageois(pseudo);
+        request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
+    }
+
     
     private void actionNewDecision(HttpServletRequest request,
             HttpServletResponse response)
@@ -426,12 +461,13 @@ public class Controleur extends HttpServlet {
         
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString() ;
-        
+        System.out.println("1");
         Temps temps = new Temps();
         int heureDeb = temps.calToInt(Integer.parseInt(request.getParameter("beginHour")),Integer.parseInt(request.getParameter("beginMin")));
-        
+        System.out.println("2");
         //si f5, il y a déjà une partie donc on ne la recréé pas
-        if(partieDAO.getIDPartieCreateur(pseudo) != -1){
+        if(partieDAO.getIDPartieJoueur(pseudo) != -1){
+            System.out.println("11111111111111111111111111");
             int idPartie = partieDAO.getIDPartieJoueur(pseudo);
             Partie partie = partieDAO.getPartie(idPartie);
             request.setAttribute("partie", partie);
@@ -445,34 +481,40 @@ public class Controleur extends HttpServlet {
             
             actionWaitGame(request, response);
         }
-            
+ 
         //attention code redondant à factoriser !
         else if (temps.estApres(heureDeb, temps.getTempsLong())){
- 
-            partieDAO.ajouterPartie(Integer.parseInt(request.getParameter("JMin")), 
+            System.out.println("3");
+            int idPartie = pseudo.hashCode();
+            partieDAO.ajouterPartie(idPartie,
+                                    Integer.parseInt(request.getParameter("JMin")), 
                                     Integer.parseInt(request.getParameter("JMax")), 
-                                    pseudo, 
                                     Integer.parseInt(request.getParameter("day")),
                                     Integer.parseInt(request.getParameter("night")),
                                     heureDeb,
                                     Float.parseFloat(request.getParameter("power")),
                                     Float.parseFloat(request.getParameter("werewolf")));
-
-            int idPartie = partieDAO.getIDPartieCreateur(pseudo);
-
+                                 
+                System.out.println("4");
+            System.out.println(idPartie);
+            System.out.println("5");
+            
             Partie partie = partieDAO.getPartie(idPartie);
+            System.out.println("6");
             request.setAttribute("partie", partie);
 
             VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
             villageoisDAO.addPlayer(pseudo, idPartie);
+            System.out.println("7");
 
             int nombreJoueurs = villageoisDAO.nombreJoueursPartie(idPartie);
             request.setAttribute("nombreJoueurs", nombreJoueurs);
 
             List<Villageois> listeVillageois = villageoisDAO.getListVillageois(idPartie);
             request.setAttribute("listeVillageois", listeVillageois);
-
-            actionWaitGame(request, response);
+            
+            System.out.println("8");
+            actionWaitGame(request, response);         
         }
         else{
             request.getRequestDispatcher("/WEB-INF/failNewGame.jsp").forward(request, response);

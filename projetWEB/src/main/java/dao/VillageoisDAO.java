@@ -76,10 +76,21 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
         }
     }
 
-    public void deletePlayer(String pseudo) {
+    public void supprimerVillageois (String pseudo) {
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("DELETE FROM Joueur WHERE id = ?");
+            PreparedStatement st = conn.prepareStatement("DELETE FROM Joueur WHERE login = ?");
             st.setString(1, pseudo);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+    
+        //suprime tous les villageois liés à une partie
+    public void supprimerVillageois(int idPartie) {
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("DELETE FROM Joueur WHERE IdPartie = ?");
+            st.setInt(1, idPartie);
             st.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
@@ -348,5 +359,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO{
         }
         return result;
     }
-    
+
+
+
 }
