@@ -16,6 +16,7 @@ import modele.Decision;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import javax.annotation.Resource;
 
 /**
  *
@@ -74,6 +75,20 @@ public class DecisionDAO extends AbstractDatabaseDAO{
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
         return result;
+    }
+
+    public void ratifieDecisionSiBesoin(int limiteRatifie, int nbVote, String pseudo, int idPartie) {
+        if (nbVote >= limiteRatifie) {
+            try (Connection conn = getConn()) {
+                PreparedStatement st = conn.prepareStatement("Update Decision_Humain set"
+                        + "ratifie = 1 Where login_joueur_concerne = ? and id_partie = ?");
+                st.setString(1, pseudo);
+                st.setInt(2, idPartie);
+                st.executeQuery();
+            } catch (SQLException e) {
+                throw new DAOException("Erreur BD " + e.getMessage(), e);
+            }
+        }
     }
 
     public void ajouteDecisionHumain(String login_joueur, int idPartie, String login_expeditaire) {
@@ -144,7 +159,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
             }
         }
     }
-
+    
     public void ajouteVoteHumain(Decision decision, String votant, int idPartie) {
         try (Connection conn = getConn()) {
             /* On vérifie que la personne n'a pas déjà voté pour cette décision */
@@ -160,21 +175,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                 st.executeUpdate();
                 int nbVote = decision.getNbVote() + 1;
                 decision.setNbVote(nbVote);
-                System.out.println("NBVOTE : " + decision.getNbVote());
-                
-                /* On vérifie si la decision doit être ratifiée */
-                // PartieDAO partieDAO = new PartieDAO(this.dataSource);
-                //int nbJoueurs = partieDAO.getNbJoueurs(idPartie);
-                VillageoisDAO villageoisDAO = new VillageoisDAO(this.dataSource);
-                int nbJoueurs = villageoisDAO.getListVillageoisVivants(idPartie).size(); 
-                //int nbJoueurs = 1;
-                int limiteRatifie = (nbJoueurs / 2) + 1;
-                if (decision.getNbVote() == limiteRatifie) {
-                    System.out.println("on ratifie");
-                    st = conn.prepareStatement("UPDATE Decision_Humain set ratifie = 1 Where login_joueur_concerne = ? ");
-                    st.setString(1, decision.getJoueurConcerne());
-                    st.executeUpdate();
-                }
+                System.out.println("NBVOTE : " + decision.getNbVote());                
             }
         } catch (SQLException e) {
             throw new DAOException("Erreur BD vote " + e.getMessage(), e);
@@ -199,12 +200,13 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         }
     }
 
-    public Decision getDecisionHumain(String joueurConcerne) {
+    public Decision getDecisionHumain(String joueurConcerne, int idPartie) {
         Decision decision = null;
         try (Connection conn = getConn()) {	     
 	    PreparedStatement st = conn.prepareStatement
-                    ("SELECT * FROM DECISION_HUMAIN WHERE login_joueur_concerne = ? ") ; 
+                    ("SELECT * FROM DECISION_HUMAIN WHERE login_joueur_concerne = ? and id_partie = ?") ; 
             st.setString(1, joueurConcerne) ; 
+            st.setInt(2, idPartie); 
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 HashSet<String> votants = new HashSet<String>();
