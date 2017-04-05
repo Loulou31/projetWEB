@@ -28,6 +28,7 @@
             <input type="hidden" name="action" value="newGame"/>
         </form>
         <h2> Parties en attente de joueurs </h2>
+        
         <tr>
         <table id="customers">
             <tr class="bloc-variable">
