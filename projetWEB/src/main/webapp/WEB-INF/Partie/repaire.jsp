@@ -10,6 +10,7 @@
 >>>>>>> e5a58b960d1bcdfeb6b1c80bb504be2a43b2a887
 --%>
 
+<%@page import="modele.Partie"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -64,5 +65,10 @@
         <button type="submit" class="button"><span>Poster</span></button><br>
         <input type="hidden" name="action" value="ajouterUnMessage" />
         </form>
+        
+        <% Partie partie = (Partie) request.getAttribute("partie");
+           String tempsChangement = partie.tempsAvantChangement(0);
+        %>
+        <p><%=tempsChangement%></p>
     </body>
 </html>

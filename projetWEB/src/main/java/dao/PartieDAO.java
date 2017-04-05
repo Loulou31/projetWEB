@@ -157,40 +157,6 @@ public class PartieDAO extends AbstractDatabaseDAO {
         //A partir de l'id d'une partie: retourne si oui ou non la partie contient une décision ratifiée
         return false;
     }
-    
-    public Boolean estJour(int idPartie){
-        ResultSet rs;
-        int nbJoueurs = 0;
-        try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("SELECT DureeJour, DureeNuit, HeureDebut FROM Partie WHERE idPartie = ?");
-            st.setInt(1, idPartie);
-            System.out.println("111111");
-            rs = st.executeQuery();
-            rs.next();
-            System.out.println("222222");
-            int dureeJour = rs.getInt("DureeJour");
-            int dureeNuit = rs.getInt("DureeNuit");
-            int heureDebut = rs.getInt("HeureDebut");
-            Temps temps = new Temps();
-            int heureActuelle = temps.getTempsInt();
-            int tempsPasse = heureActuelle - heureDebut;
-            int dureeJournee = dureeJour + dureeNuit;
-            int joursPasses = tempsPasse / dureeJournee;
-            int heureJournee = tempsPasse - joursPasses * dureeJournee;
-            
-            if (dureeJour >= heureJournee)
-                return true;
-            else
-                return false;
-        } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
-        }
-    }
-
-    
-    public Boolean estNuit(int idPartie){
-        return !estJour(idPartie);
-    }
 
     public Boolean decisionHumainRatifie(int idPartie){
         //A partir de l'id d'une partie: retourne si oui ou non la partie contient une décision ratifiée
@@ -224,6 +190,24 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
         
 
+    }
+    
+    public int getIdDispo(){
+        ResultSet rs;
+        try (Connection conn = getConn()) {
+            int resultat = 1;
+            PreparedStatement st = conn.prepareStatement("SELECT IdPartie FROM Partie");
+            rs = st.executeQuery();
+            while (rs.next()){
+                int inter = rs.getInt("IdPartie");
+                if (inter > resultat)
+                    resultat = inter;
+            }
+            System.out.println(resultat);
+            return (resultat+1);
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
     }
     
 }

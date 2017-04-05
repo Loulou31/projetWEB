@@ -28,7 +28,6 @@ public class Partie {
     private float proportionLG ; 
     //private Set<Membre> joueursPresents;
     
-    static int numeroPartie = 0;
 
     public Partie(int idPartie, 
                   int nbJoueursMin, 
@@ -49,9 +48,6 @@ public class Partie {
         //this.joueursPresents = new HashSet<Membre>();
     }
 
-    static public int getNumeroPartie(){
-        return numeroPartie++;
-    }
     
     public int getIdPartie() {
         return idPartie;
@@ -133,10 +129,49 @@ public class Partie {
     public String toString() {
         return "Partie{" + "idPartie=" + idPartie + ", nbJoueursMin=" + nbJoueursMin + ", nbJoueursMax=" + nbJoueursMax + ", dureeJour=" + dureeJour + ", dureeNuit=" + dureeNuit + ", heureDebut=" + heureDebut + ", probaPouvoir=" + probaPouvoir + ", proportionLG=" + proportionLG + '}';
     }
+    
+    public Boolean estJour() {
+        Temps temps = new Temps();
+        int heureActuelle = temps.getTempsInt();
+        int tempsPasse = heureActuelle - heureDebut;
+        int dureeJournee = dureeJour + dureeNuit;
+        int joursPasses = tempsPasse / dureeJournee;
+        int heureJournee = tempsPasse - joursPasses * dureeJournee;
+
+        if (dureeJour >= heureJournee) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public Boolean estNuit() {
+        return !estJour();
+    }
 
     
-    
-    
-    
-    
+    //entier à 1 si jour, à 0 si nuit
+    //tous les temps sont en secondes
+    public String tempsAvantChangement(int jon) {
+        System.out.print("11111111111111111");
+        Temps temps = new Temps();
+        int heureActuelle = temps.getTempsInt();
+        int tempsPasse = heureActuelle - heureDebut;
+        int dureeJournee = dureeJour + dureeNuit;
+        int joursPasses = tempsPasse / dureeJournee;
+        int heureJournee = tempsPasse - joursPasses * dureeJournee;
+
+        int tempsAvant;
+        System.out.print("22222222222");
+        if (jon == 1) {
+            tempsAvant = dureeJour - heureJournee;
+            System.out.print("33333333333333");
+            return "Il reste : " + temps.tempsSecToString(tempsAvant) + "avant la nuit.";
+        } else {
+            tempsAvant = dureeJournee - heureJournee;
+            return "Il reste : " + temps.tempsSecToString(tempsAvant) + "avant le jour.";
+        }
+
+    }
+
 }

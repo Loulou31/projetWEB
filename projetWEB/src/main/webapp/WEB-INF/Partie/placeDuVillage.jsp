@@ -4,6 +4,7 @@
     Author     : gaunetc
 --%>
 
+<%@page import="modele.Partie"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -61,5 +62,10 @@
         <button type="submit" class="button"><span>Poster</span></button><br>
         <input type="hidden" name="action" value="ajouterUnMessage" />
         </form>
+        
+        <% Partie partie = (Partie) request.getAttribute("partie");
+           String tempsChangement = partie.tempsAvantChangement(1);
+        %>
+        <p><%=tempsChangement%></p>
     </body>
 </html>

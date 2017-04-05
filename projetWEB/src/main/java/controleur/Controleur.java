@@ -319,7 +319,7 @@ public class Controleur extends HttpServlet {
 
         } else {
 
-            int idPartie = pseudo.hashCode();
+            int idPartie = partieDAO.getIdDispo();
             int dureeDay = temps.dureeToInt(Integer.parseInt(request.getParameter("dayHour")), Integer.parseInt(request.getParameter("dayMin")));
             int dureeNight = temps.dureeToInt(Integer.parseInt(request.getParameter("nightHour")), Integer.parseInt(request.getParameter("nightMin")));
             partieDAO.ajouterPartie(idPartie,
