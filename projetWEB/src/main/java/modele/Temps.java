@@ -80,11 +80,11 @@ public class Temps {
     }
     
     public Boolean estJour(int idPartie){
-        return (true);
+        return (false);
     }
     
     public Boolean estNuit(int idPartie){
-        return (false);
+        return (true);
     }
     
 }

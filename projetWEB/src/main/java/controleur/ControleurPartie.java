@@ -340,7 +340,7 @@ public class ControleurPartie extends HttpServlet {
             //request.setAttribute("lieu", "dans Repaire des Loups") ; 
             decisionDAO.ajouteDecisionLoup(request.getParameter("decision"), idPartie, pseudoJoueur);
             System.out.println("apres ajouteDecision");
-            int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
+            int nbJoueurs = villageoisDAO.getListLoupsVivants(idPartie).size();
             System.out.println("apres get nb joueurs vivant");
             int limiteRatifie = (nbJoueurs / 2) + 1;
             int nbVoteActuel = decisionDAO.getDecisionLoup(request.getParameter("decision"), idPartie).getNbVote();
