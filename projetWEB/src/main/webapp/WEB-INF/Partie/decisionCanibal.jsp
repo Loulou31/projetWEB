@@ -1,6 +1,6 @@
 <%-- 
-    Document   : nuitVoyance
-    Created on : Apr 4, 2017, 4:38:20 PM
+    Document   : decisionCanibal
+    Created on : Apr 5, 2017, 3:23:33 PM
     Author     : nicolasl
 --%>
 
@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="css/repaire.css"/>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
@@ -17,19 +17,23 @@
         <style>
         html,body,h1,h2,h3,h4,h5,h6 {font-family: "Luckiest Guy", cursive;}
         </style>
-        <title>Voyance</title>
+        <title>Decision</title>
     </head>
     <body>
-        <h1>Choisissez le joueur dont vous voulez connaître le rôle et le pouvoir.</h1>
+        <h1>Il est temps de prendre une décision ! </h1>
         <form action="controleurPartie" accept-charset="utf-8">
-        <SELECT name="choixVoyance" size="1">
+        <ul>
+            <li> Choisissez un joueur à éliminer : 
+                <SELECT name="decisionCanibal" size="1">
                     <c:forEach items="${vivants}" var="vivants"> 
-                        <OPTION><c:out value="${vivants.getPseudo()}" />
+                        <OPTION><c:out value="${vivants.pseudo}" />
                     </c:forEach>
-         </SELECT>
-        <button type="submit" class="button"><span>Valider la décision</span></button><br>
-        <input type="hidden" name="action" value="addChoixVoyant"/>
-        <input type="hidden" name="choixVoyance" value="choixVoyance"/>
+                </SELECT>
+            </li>
+        </ul>
+        <button type="submit" class="button"><span>Valider</span></button><br>
+        <input type="hidden" name="action" value="addDecisionCanibal"/>
+        <input type="hidden" name="decision" value="decisionCanibal"/>
         </form>
     </body>
 </html>

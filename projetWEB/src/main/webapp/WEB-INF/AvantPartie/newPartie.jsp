@@ -3,8 +3,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
     <head>
-        <link media="all" rel="stylesheet" type="text/css" href="design.css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/chose.css"/>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+        <link href="https://fonts.googleapis.com/css?family=Revalia" rel="stylesheet"> 
+        <style>
+        html,body,h1,h2,h3,h4,h5,h6 {font-family: "Revalia", cursive;}
+        </style>
         <title>Nouvelle Partie</title>
     </head>
     <body>
@@ -29,7 +35,7 @@
           <li> Probabilite d'attribution des pouvoirs speciaux :  <input type="number" name="power" value="0" min="0" max="100" /> % </li>
           <li> Proportion initiale des Loups-Garous :  <input type="number" name="werewolf" value="35" min="0" max="100"/> % </li>
         </ul>
-        <input type="submit" value="Creer une nouvelle partie" />
+        <button type="submit" class="button"><span>Créer la partie</span></button><br>
         <input type="hidden" name="action" value="addGame"/>
         <p style="color:red;"></p>
       </form>

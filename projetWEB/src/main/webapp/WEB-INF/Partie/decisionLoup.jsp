@@ -1,7 +1,7 @@
 <%-- 
-    Document   : nuitVoyance
-    Created on : Apr 4, 2017, 4:38:20 PM
-    Author     : nicolasl
+    Document   : decisionLoup
+    Created on : Apr 5, 2017, 2:57:45 PM
+    Author     : bagouc
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -17,19 +17,24 @@
         <style>
         html,body,h1,h2,h3,h4,h5,h6 {font-family: "Luckiest Guy", cursive;}
         </style>
-        <title>Voyance</title>
+        <title>Decision</title>
     </head>
     <body>
-        <h1>Choisissez le joueur dont vous voulez connaître le rôle et le pouvoir.</h1>
+        <h1>Il est temps de prendre une décision ! </h1>
+        <p>Vous êtes dans le repaire des loups...
         <form action="controleurPartie" accept-charset="utf-8">
-        <SELECT name="choixVoyance" size="1">
-                    <c:forEach items="${vivants}" var="vivants"> 
-                        <OPTION><c:out value="${vivants.getPseudo()}" />
+        <ul>
+            <li> Choisissez un joueur à éliminer : 
+                <SELECT name="decision" size="1">
+                    <c:forEach items="${villageoisList}" var="villageois"> 
+                        <OPTION><c:out value="${villageois.pseudo}" />
                     </c:forEach>
-         </SELECT>
-        <button type="submit" class="button"><span>Valider la décision</span></button><br>
-        <input type="hidden" name="action" value="addChoixVoyant"/>
-        <input type="hidden" name="choixVoyance" value="choixVoyance"/>
+                </SELECT>
+            </li>
+        </ul>
+        <button type="submit" class="button"><span>Valider</span></button><br>
+        <input type="hidden" name="action" value="addDecision"/>
+        <input type="hidden" name="decision" value="decision"/>
         </form>
     </body>
 </html>

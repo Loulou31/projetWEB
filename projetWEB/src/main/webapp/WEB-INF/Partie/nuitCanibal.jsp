@@ -1,8 +1,9 @@
 <%-- 
-    Document   : placeDuVillage
-    Created on : Mar 24, 2017, 6:14:59 PM
-    Author     : gaunetc
+    Document   : nuitCanibal
+    Created on : Apr 5, 2017, 3:16:42 PM
+    Author     : nicolasl
 --%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -10,21 +11,18 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="css/place.css"/>
+        <link rel="stylesheet" type="text/css" href="css/repaire.css"/>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-        <link href="https://fonts.googleapis.com/css?family=Revalia" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
         <style>
-        html,body,h1,h2,h3,h4,h5,h6 {font-family: "Revalia", cursive;}
+        html,body,h1,h2,h3,h4,h5,h6 {font-family: "Luckiest Guy", cursive;}
         </style>
-        <title>Place du village</title>
+        <title>Repaire</title>
     </head>
     <body>
-        <h1 align="center">Bienvenue sur la place du village !</h1>
-        <h2> ${morts} </h2>
-        <p></p>
-        <h2> Désignez le villageois à éliminer aujoud'hui... </h2>
-        <p></p>
+        <h1 align="center">Vous entrez dans le repaire des Loups-Garou</h1>
+        <h2> Qui allez-vous dévorer ce soir...?  </h2>
         <table id="customers">
             <tr>
                 <th> Joueur désigné  </th>
@@ -46,16 +44,19 @@
             </c:forEach>
             </tr>
         </table>
+        <p></p>
         <a href="controleurPartie?action=newDecision">Proposer une décision</a>
-        <h2> Discutez avec les autres villageois... </h2>
+        <p></p>
+        <a href="controleurPartie?action=newDecisionCanibal">Transformer un villageois en Loup-Garou</a>
+        <h2> Discutez avec les autres loups... </h2>
+        <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
         <table>
-            <c:forEach items="${messages}" var="message">
+            <c:forEach items="${messagesRepaire}" var="message">
                     <tr>
-                        <td><B>@${message.expediteur}  :   </B></td><td>  ${message.contenu}</td>
+                        <td><B>@${message.expediteur}  :  </B></td><td>  ${message.contenu}</td>
                     </tr>
             </c:forEach>
         </table>
-        <p></p>
         <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
         <button type="submit" class="button"><span>Poster</span></button><br>

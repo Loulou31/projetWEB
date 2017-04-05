@@ -90,6 +90,6 @@ public class Villageois {
     
     @Override
     public String toString() {
-        return "Villageois{" + "pouvoir=" + pouvoir + ", vivant=" + vivant + '}';
+        return "Villageois{"+ "pseudo=" + pseudo + ", pouvoir=" + pouvoir + ", vivant=" + vivant + '}';
     }
 }
