@@ -230,6 +230,7 @@ public class ControleurPartie extends HttpServlet {
                 //request.getRequestDispatcher("/WEB-INF/Partie/repaire.jsp").forward(request, response);
                 //goToVoyance(request, response, idPartie, villageoisDAO) ; 
             } else {
+                System.out.println("ll");
                 request.getRequestDispatcher("/WEB-INF/Partie/placeRatifie.jsp").forward(request, response);
             }
         } else if (villageois.getRole() == 1) {
@@ -300,7 +301,7 @@ public class ControleurPartie extends HttpServlet {
             decisionDAO.ajouteDecisionHumain(request.getParameter("decision"), idPartie, pseudoJoueur) ; 
             int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
             int limiteRatifie = (nbJoueurs / 2) + 1;
-            int nbVoteActuel = decisionDAO.getDecisionHumain(request.getParameter("decision"), idPartie).getNbVote(); 
+            int nbVoteActuel = decisionDAO.getDecisionHumain(request.getParameter("decision"), idPartie).getNbVote();
             decisionDAO.ratifieDecisionHumainSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);
         } else {
             request.setAttribute("lieu", "dans Repaire des Loups") ; 
@@ -338,6 +339,8 @@ public class ControleurPartie extends HttpServlet {
         if (vote) {
         int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
         int limiteRatifie = (nbJoueurs / 2) + 1;
+        System.out.println("limite="+limiteRatifie);
+        System.out.println("nbJoueurs="+nbJoueurs);
         int nbVoteActuel = decisionDAO.getDecisionHumain(request.getParameter("joueurConcerne"), idPartie).getNbVote(); 
         decisionDAO.ratifieDecisionHumainSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("joueurConcerne"), idPartie);
         } 
