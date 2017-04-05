@@ -162,9 +162,12 @@ public class PartieDAO extends AbstractDatabaseDAO {
         ResultSet rs;
         int nbJoueurs = 0;
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("SELECT DureeJour, DureeNuit, HeureDebut FROM Joueur WHERE idPartie = ?");
+            PreparedStatement st = conn.prepareStatement("SELECT DureeJour, DureeNuit, HeureDebut FROM Partie WHERE idPartie = ?");
             st.setInt(1, idPartie);
+            System.out.println("111111");
             rs = st.executeQuery();
+            rs.next();
+            System.out.println("222222");
             int dureeJour = rs.getInt("DureeJour");
             int dureeNuit = rs.getInt("DureeNuit");
             int heureDebut = rs.getInt("HeureDebut");
