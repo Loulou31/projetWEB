@@ -200,7 +200,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         }
     }
 
-    public void ajouteVoteLoup(Decision decision, String votant, int idPartie) {
+    public boolean ajouteVoteLoup(Decision decision, String votant, int idPartie) {
         try (Connection conn = getConn()) {
             /* On vérifie que la personne n'a pas déjà voté pour cette décision */
             if (!decision.getVotants().contains(votant)) {
@@ -214,7 +214,9 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                 st.executeUpdate();
                 int nbVote = decision.getNbVote() + 1;
                 decision.setNbVote(nbVote);
+                return true;
                 }
+            return false; 
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
@@ -264,6 +266,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                     votants.add(rs.getString("votant"+i));
                 }
                 decision = new Decision(joueurConcerne, votants);
+                return decision;
             }
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);

@@ -14,7 +14,7 @@
     </head>
     <body>
         <h1>Il est temps de prendre une décision ! </h1>
-        <p>Vous êtes ${lieu}...
+        <p>Vous êtes sur la place du village...
         <form action="controleurPartie" accept-charset="utf-8">
         <ul>
             <li> Choisissez un joueur à éliminer : 
