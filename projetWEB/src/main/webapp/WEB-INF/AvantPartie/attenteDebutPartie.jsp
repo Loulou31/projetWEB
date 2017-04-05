@@ -54,10 +54,15 @@
             Elle en contient actuellement : <%= nbJoueurs %>.<br>
             <%= stringVillageois %>
         </p>
+
+        <% if (request.getAttribute("partiePrete") != null) { %>
+            <a href="controleur?action=debutPartie&id=${partie.idPartie}">Démarrer Partie</a>
+        <%}%>
         
         <form action="controleur" method="get" align="center">
             <button type="submit" class="button"><span>Quitter la salle d'attente et retourner au menu principal</span></button><br>
             <input type="hidden" name="action" value="quitteAttentePartie"/>
         </form>
+        
     </body>
 </html>
