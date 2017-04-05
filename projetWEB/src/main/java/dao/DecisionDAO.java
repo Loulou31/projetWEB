@@ -78,15 +78,17 @@ public class DecisionDAO extends AbstractDatabaseDAO{
     }
 
     public void ratifieDecisionHumainSiBesoin(int limiteRatifie, int nbVote, String pseudo, int idPartie) {
+        System.out.println("dans ratifie");
         if (nbVote >= limiteRatifie) {
+            System.out.println("dans ratIFie");
             try (Connection conn = getConn()) {
-                PreparedStatement st = conn.prepareStatement("Update Decision_Humain set"
-                        + "ratifie = 1 Where login_joueur_concerne = ? and id_partie = ?");
+                PreparedStatement st = conn.prepareStatement("Update Decision_Humain Set"
+                        + " ratifie = 1 Where login_joueur_concerne = ? and id_partie = ?");
                 st.setString(1, pseudo);
                 st.setInt(2, idPartie);
                 st.executeQuery();
             } catch (SQLException e) {
-                throw new DAOException("Erreur BD " + e.getMessage(), e);
+                throw new DAOException("Erreur BD dans ratifie" + e.getMessage(), e);
             }
         }
     }
@@ -198,7 +200,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         }
     }
 
-    public void ajouteVoteLoup(Decision decision, String votant, int idPartie) {
+    public boolean ajouteVoteLoup(Decision decision, String votant, int idPartie) {
         try (Connection conn = getConn()) {
             /* On vérifie que la personne n'a pas déjà voté pour cette décision */
             if (!decision.getVotants().contains(votant)) {
@@ -212,7 +214,9 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                 st.executeUpdate();
                 int nbVote = decision.getNbVote() + 1;
                 decision.setNbVote(nbVote);
+                return true;
                 }
+            return false; 
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
@@ -221,6 +225,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
     public Decision getDecisionHumain(String joueurConcerne, int idPartie) {
         Decision decision = null;
         System.out.println(joueurConcerne);
+         System.out.println(idPartie);
         try (Connection conn = getConn()) {	     
 	    PreparedStatement st = conn.prepareStatement
                     ("SELECT * FROM DECISION_HUMAIN WHERE login_joueur_concerne = ? and id_partie = ?") ; 
@@ -261,6 +266,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                     votants.add(rs.getString("votant"+i));
                 }
                 decision = new Decision(joueurConcerne, votants);
+                return decision;
             }
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
