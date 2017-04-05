@@ -25,6 +25,8 @@
         <h2> ${morts} </h2>
         <p></p>
         <h2> Désignez le villageois à éliminer aujoud'hui... </h2>
+        <p>Vous êtes ${roleJoueurEnCours}. Votre pouvoir est : ${pouvoirJoueurEnCours}.</p>
+        <p> Il y a ${nbJoueurs} villageois vivants. Il y a ${nbLoups} loups-garou qui rodent parmi vous ! Faites attention...</p>
         <p></p>
         <table id="customers">
             <tr>

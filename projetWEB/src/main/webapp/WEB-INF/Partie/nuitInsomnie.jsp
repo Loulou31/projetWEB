@@ -37,8 +37,7 @@
             </c:forEach>
             </tr>
         </table>
-        <h2> Discutez avec les autres loups... </h2>
-        <p> Mais faites attention aux oreilles indiscètes qui pourraient vous écouter....</p>
+        <p> Ecoutez discrètement ce qu'il se dit...</p>
         <table>
             <c:forEach items="${messagesRepaireInsomnie}" var="message">
                     <tr>

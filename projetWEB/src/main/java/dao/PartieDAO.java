@@ -161,7 +161,6 @@ public class PartieDAO extends AbstractDatabaseDAO {
     public Boolean decisionHumainRatifie(int idPartie){
         //A partir de l'id d'une partie: retourne si oui ou non la partie contient une décision ratifiée
         ResultSet rs;
-        int nbJoueurs = 0;
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("SELECT * FROM Decision_Humain WHERE id_partie = ? and ratifie = 1");
             st.setInt(1, idPartie);
@@ -171,40 +170,63 @@ public class PartieDAO extends AbstractDatabaseDAO {
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
-        
-
+    }
+    
+    public String pseudoDecisionHumainRatifie(int idPartie){
+        ResultSet rs;
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Decision_Humain WHERE id_partie = ? and ratifie = 1");
+            st.setInt(1, idPartie);
+            rs = st.executeQuery();
+            rs.next() ; 
+            return rs.getString("login_joueur_concerne") ; 
+             
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
     }
     
     public Boolean decisionLoupRatifie(int idPartie){
         //A partir de l'id d'une partie: retourne si oui ou non la partie contient une décision ratifiée
         ResultSet rs;
-        int nbJoueurs = 0;
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("SELECT * FROM Decision_Loup WHERE id_partie = ? and ratifie = 1");
             st.setInt(1, idPartie);
             rs = st.executeQuery();
             return rs.next();
-             
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
-        
-
     }
-    
-    public int getIdDispo(){
+
+    public int getIdDispo() {
         ResultSet rs;
         try (Connection conn = getConn()) {
             int resultat = 1;
             PreparedStatement st = conn.prepareStatement("SELECT IdPartie FROM Partie");
             rs = st.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 int inter = rs.getInt("IdPartie");
-                if (inter > resultat)
+                if (inter > resultat) {
                     resultat = inter;
+                }
             }
             System.out.println(resultat);
-            return (resultat+1);
+            return (resultat + 1);
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+
+    public String pseudoDecisionLoupRatifie(int idPartie) {
+        ResultSet rs;
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Decision_Loup WHERE id_partie = ? and ratifie = 1");
+            st.setInt(1, idPartie);
+            rs = st.executeQuery();
+            rs.next();
+            return rs.getString("login_joueur_concerne");
+
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
