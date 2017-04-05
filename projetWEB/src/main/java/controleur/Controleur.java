@@ -164,7 +164,7 @@ public class Controleur extends HttpServlet {
                 actionWaitGame(request, response);
             } else {
                 request.setAttribute("action", "rejoindreJeu");
-                request.getRequestDispatcher("ControleurPartie.java").forward(request, response);
+                request.getRequestDispatcher("controleurPartie").forward(request, response);
             }
         } else {
             request.getRequestDispatcher("/WEB-INF/AvantPartie/choseGame.jsp").forward(request, response);

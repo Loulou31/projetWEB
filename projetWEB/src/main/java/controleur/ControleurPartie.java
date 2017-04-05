@@ -60,7 +60,7 @@ public class ControleurPartie extends HttpServlet {
         System.out.println("ACTION : " + action) ; 
         try {
             if (action == null && action2 == null) {
-                request.getRequestDispatcher("Controleur.java").forward(request, response);
+                request.getRequestDispatcher("controleur").forward(request, response);
             } else if (action.equals("newDecision")) {
                 actionNewDecision(request, response);
             } else if (action.equals("addDecision")) {
