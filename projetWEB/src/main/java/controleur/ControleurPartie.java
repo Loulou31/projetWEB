@@ -71,10 +71,10 @@ public class ControleurPartie extends HttpServlet {
                 actionRejoindreSalleDiscussion(request, response);
             } else if (action.equals("addChoixVoyant")) {
                 actionAddChoixVoyant(request, response) ; 
-            } else if (action.equals("newDecisionCanibal")){
+            } else if (action.equals("newDecisionContamination")){
                 actionChoseVillageoisTransformer(request, response) ; 
-            } else if (action.equals("addDecisionCanibal")) {
-                actionAddDecisionCanibal(request, response) ; 
+            } else if (action.equals("addDecisionContamination")) {
+                actionAddDecisionContamination(request, response) ; 
             } else {
                 invalidParameters(request, response);
             }
@@ -218,6 +218,14 @@ public class ControleurPartie extends HttpServlet {
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
         DecisionDAO decisionDAO = new DecisionDAO(ds);
         int idPartie = villageois.getPartie();
+        int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size() ; 
+        int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size() ; 
+        
+        request.setAttribute("pseudoJoueurEnCours", pseudo) ;
+        request.setAttribute("roleJoueurEnCours", villageois.getRoleString()) ; 
+        request.setAttribute("pouvoirJoueurEnCours", villageois.getPouvoir()) ; 
+        request.setAttribute("nbJoueurs", nbJoueursVivants) ; 
+        request.setAttribute("nbLoups", nbLoupsVivants) ; 
         
         if (partieDAO.estJour(idPartie)) {
             List<Message> messagesVillage = messageDAO.getListeMessagesSalleDiscussion(idPartie);
@@ -226,11 +234,15 @@ public class ControleurPartie extends HttpServlet {
             request.setAttribute("decisions", decisions);
             request.setAttribute("nbJoueurs", villageoisDAO.getListVillageoisVivants(idPartie).size());
             if (!partieDAO.decisionHumainRatifie(idPartie)) {
+                
                 request.getRequestDispatcher("/WEB-INF/Partie/placeDuVillage.jsp").forward(request, response);
                 //request.getRequestDispatcher("/WEB-INF/Partie/repaire.jsp").forward(request, response);
                 //goToVoyance(request, response, idPartie, villageoisDAO) ; 
             } else {
-                System.out.println("ll");
+                String pseudoJoueurElimine = partieDAO.pseudoDecisionHumainRatifie(idPartie) ; 
+                Villageois joueurElimine = villageoisDAO.getVillageois(pseudoJoueurElimine) ; 
+                request.setAttribute("pseudoJoueurElimine", joueurElimine.getPseudo()) ; 
+                request.setAttribute("roleJoueurElimine", joueurElimine.getRoleString()) ; 
                 request.getRequestDispatcher("/WEB-INF/Partie/placeRatifie.jsp").forward(request, response);
             }
         } else if (villageois.getRole() == 1) {
@@ -258,7 +270,7 @@ public class ControleurPartie extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/Partie/repaireRatifie.jsp").forward(request, response);
                 }
             }
-
+        // Humains pendant la nuit
         } else if (villageois.getPouvoir().equals("voyance")) {
             goToVoyance(request, response, idPartie, villageoisDAO);
         } else if (villageois.getPouvoir().equals("insomnie")) {
@@ -438,11 +450,11 @@ public class ControleurPartie extends HttpServlet {
         int idPartie = villageois.getPartie();
         List<Villageois> vivants = villageoisDAO.getListHumainsVivants(idPartie) ;
         request.setAttribute("vivants", vivants) ;
-        request.getRequestDispatcher("/WEB-INF/Partie/decisionCanibal.jsp").forward(request, response); 
+        request.getRequestDispatcher("/WEB-INF/Partie/decisionContamination.jsp").forward(request, response); 
     }
     
     // Confirmer la décision et transformer l'humain en loup
-    public void actionAddDecisionCanibal(HttpServletRequest request, 
+    public void actionAddDecisionContamination(HttpServletRequest request, 
             HttpServletResponse response)
             throws IOException, ServletException {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 

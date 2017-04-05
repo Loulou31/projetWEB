@@ -47,7 +47,7 @@
         <p></p>
         <a href="controleurPartie?action=newDecision">Proposer une décision</a>
         <p></p>
-        <a href="controleurPartie?action=newDecisionCanibal">Transformer un villageois en Loup-Garou</a>
+        <a href="controleurPartie?action=newDecisionContamination">Transformer un villageois en Loup-Garou</a>
         <h2> Discutez avec les autres loups... </h2>
         <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
         <table>

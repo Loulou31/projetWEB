@@ -21,6 +21,6 @@
     <body>
         <h1>Une sieste s'impose ! </h1>
         <p></p>
-        <h2>Mais attention... les loups-garou rôdent autour du village....</h2>
+        <h2>Mais attention... ${nbLoups} loups-garou rôdent autour du village....</h2>
     </body>
 </html>

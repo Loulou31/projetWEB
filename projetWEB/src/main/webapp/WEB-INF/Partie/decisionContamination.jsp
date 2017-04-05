@@ -24,7 +24,7 @@
         <form action="controleurPartie" accept-charset="utf-8">
         <ul>
             <li> Choisissez un joueur à éliminer : 
-                <SELECT name="decisionCanibal" size="1">
+                <SELECT name="decisionContamination" size="1">
                     <c:forEach items="${vivants}" var="vivants"> 
                         <OPTION><c:out value="${vivants.pseudo}" />
                     </c:forEach>
@@ -32,8 +32,8 @@
             </li>
         </ul>
         <button type="submit" class="button"><span>Valider</span></button><br>
-        <input type="hidden" name="action" value="addDecisionCanibal"/>
-        <input type="hidden" name="decision" value="decisionCanibal"/>
+        <input type="hidden" name="action" value="addDecisionContamination"/>
+        <input type="hidden" name="decision" value="decisionContamination"/>
         </form>
     </body>
 </html>

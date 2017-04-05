@@ -21,30 +21,10 @@
     </head>
     <body>
         <h1 align="center">Bienvenue sur la place du village !</h1>
+        <p>Vous êtes ${roleJoueurEnCours}. Votre pouvoir est : ${pouvoirJoueurEnCours}.</p>
+        <p> Il y a ${nbJoueurs} villageois vivants. Il y a ${nbLoups} loups-garou qui rodent parmi vous ! Faites attention...</p>
         <h2> La décision est ratifiée !</h2>
-        <p></p>
-        <table id="customers">
-            <tr>
-                <th> Joueur désigné  </th>
-                <th> Nombre de votes </th>
-                <th> Nombre de joueurs : ${nbJoueurs} </th>
-            </tr>
-            <c:forEach items="${decisions}" var="decision">
-                <tr>
-                    <td>${decision.joueurConcerne}</td>
-                    <td>${decision.getNbVote()}</td>
-                </tr>   
-            </c:forEach>
-            </tr>
-        </table>
-        <h2> Discutez avec les autres villageois... </h2>
-        <table>
-            <c:forEach items="${messages}" var="message">
-                    <tr>
-                        <td><B>@${message.expediteur}  :   </B></td><td>  ${message.contenu}</td>
-                    </tr>
-            </c:forEach>
-        </table>
+        <p>Le joueur @{pseudoJoueurElimine} nous a quitté aujourd'hui.... Et c'était un ${roleJoueurElimine} ! </p>
         <p></p>
         <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>

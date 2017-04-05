@@ -1,11 +1,10 @@
 <%-- 
-    Document   : repaireRatifie
-    Created on : Apr 5, 2017, 4:48:43 PM
-    Author     : bagouc
+    Document   : repaireContaminationRatifie
+    Created on : Apr 5, 2017, 8:01:13 PM
+    Author     : nicolasl
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,6 +21,8 @@
     <body>
         <h1 align="center">Vous êtes dans le repaire des Loups-Garou</h1>
         <h2> Vous avez fait votre choix... ${pseudoJoueurElimine} sera dévoré cette nuit !   </h2>
+        <p></p>
+        <a href="controleurPartie?action=newDecisionContamination">Transformer un villageois en Loup-Garou</a>
         <p></p>
         <h2> Discutez avec les autres loups... </h2>
         <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>

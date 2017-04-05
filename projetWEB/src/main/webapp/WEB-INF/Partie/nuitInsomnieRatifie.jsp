@@ -1,12 +1,11 @@
 <%-- 
-    Document   : nuitVoyanceReponse
-    Created on : Apr 5, 2017, 2:57:53 PM
+    Document   : nuitInsomnieRatifie
+    Created on : Apr 5, 2017, 8:03:45 PM
     Author     : nicolasl
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,14 +17,20 @@
         <style>
         html,body,h1,h2,h3,h4,h5,h6 {font-family: "Luckiest Guy", cursive;}
         </style>
-        <title>Resultat Voyance</title>
+        <title>Repaire</title>
     </head>
     <body>
-        <h1>Vous avez fait votre choix...</h1>
-        <h2> Le villageois  @${pseudo}  est un ${role}.</h2>
-        <h2> Son pouvoir est : ${pouvoir}</h2>
+        <h1 align="center">Vous êtes dans le repaire des Loups-Garou</h1>
+        <h2> Restez discrêt... Ils ne doivent pas vous voir... </h2>
+        <h2> Les loups ont fait leur choix... ${pseudoJoueurElimine} sera dévoré cette nuit !   </h2>
         <p></p>
-        <p>Peut-être aurez-vous la chance de découvrir d'autres secrets demain.... si vous survivez à la nuit ! </p>
-        <a href="controleur?action=rejoindreSalleDiscussion">Au dodo...</a>
+        <p> Ecoutez discrètement ce qu'il se dit...</p>
+        <table>
+            <c:forEach items="${messagesRepaire}" var="message">
+                    <tr>
+                        <td><B>@${message.expediteur}  :  </B></td><td>  ${message.contenu}</td>
+                    </tr>
+            </c:forEach>
+        </table>
     </body>
 </html>
