@@ -39,7 +39,6 @@
             </c:forEach>
             </tr>
         </table>
-        <a href="controleurPartie?action=newDecision">Proposer une décision</a>
         <h2> Discutez avec les autres villageois... </h2>
         <table>
             <c:forEach items="${messages}" var="message">

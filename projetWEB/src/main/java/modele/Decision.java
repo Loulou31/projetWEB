@@ -58,7 +58,7 @@ public class Decision {
     }
 
     public int getNbVote() {
-        return this.nbVote;
+        return this.votants.size();
     }
     
     
