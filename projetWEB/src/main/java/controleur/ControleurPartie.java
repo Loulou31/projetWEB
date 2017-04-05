@@ -69,6 +69,12 @@ public class ControleurPartie extends HttpServlet {
                 actionDebutPartie(request, response);
             } else if (action.equals("rejoindreJeu")) {
                 actionRejoindreSalleDiscussion(request, response);
+            } else if (action.equals("addChoixVoyant")) {
+                actionAddChoixVoyant(request, response) ; 
+            } else if (action.equals("newDecisionCanibal")){
+                actionChoseVillageoisTransformer(request, response) ; 
+            } else if (action.equals("addDecisionCanibal")) {
+                actionAddDecisionCanibal(request, response) ; 
             } else {
                 invalidParameters(request, response);
             }
@@ -271,9 +277,8 @@ public class ControleurPartie extends HttpServlet {
     private void goToVoyance(HttpServletRequest request, HttpServletResponse response,
             int idPartie, VillageoisDAO villageoisDAO)
             throws IOException, ServletException {
-        List<Villageois> vivants = villageoisDAO.getListVillageois(idPartie);
-        System.out.println("BLBL : " + vivants.toString());
-        request.setAttribute("vivants", vivants);
+        List<Villageois> vivants = villageoisDAO.getListVillageoisVivants(idPartie) ; 
+        request.setAttribute("vivants", vivants) ;
         request.getRequestDispatcher("/WEB-INF/Partie/nuitVoyance.jsp").forward(request, response);
     }
 
@@ -406,6 +411,47 @@ public class ControleurPartie extends HttpServlet {
         actionRejoindreSalleDiscussion(request, response);
 
     }
+    
+    // Choisir de voir le rôle + pouvoir d'un villageois
+    public void actionAddChoixVoyant(HttpServletRequest request, 
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
+        String choixVoyant = request.getParameter("choixVoyance") ; 
+        Villageois villageois = villageoisDAO.getVillageois(choixVoyant) ; 
+        String role = villageois.getRoleString() ;
+        String pouvoir = villageois.getPouvoir() ;
+        request.setAttribute("pseudo", choixVoyant) ;
+        request.setAttribute("role", role) ;
+        request.setAttribute("pouvoir", pouvoir) ;
+        request.getRequestDispatcher("/WEB-INF/Partie/nuitVoyanceReponse.jsp").forward(request, response) ; 
+    }
+    
+    // Choisir un villageois a transformer en loup
+    public void actionChoseVillageoisTransformer(HttpServletRequest request, 
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        HttpSession session = request.getSession();
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
+        String pseudo = session.getAttribute("membre").toString() ;
+        Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        int idPartie = villageois.getPartie();
+        List<Villageois> vivants = villageoisDAO.getListHumainsVivants(idPartie) ;
+        request.setAttribute("vivants", vivants) ;
+        request.getRequestDispatcher("/WEB-INF/Partie/decisionCanibal.jsp").forward(request, response); 
+    }
+    
+    // Confirmer la décision et transformer l'humain en loup
+    public void actionAddDecisionCanibal(HttpServletRequest request, 
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
+        String pseudo = request.getParameter("decision") ; 
+        villageoisDAO.updatePlayerRole(pseudo, 1);
+        actionRejoindreSalleDiscussion(request, response) ; 
+    }
+    
+
 
     /**
      * Actions possibles en POST
@@ -419,9 +465,6 @@ public class ControleurPartie extends HttpServlet {
             invalidParameters(request, response);
             return;
         }
-        MembreDAO membreDAO = new MembreDAO(ds);
-        PartieDAO partieDAO = new PartieDAO(ds);
-
         try {
             if (action.equals("ajouterUnMessage")) {
                 actionAddMessage(request, response);
