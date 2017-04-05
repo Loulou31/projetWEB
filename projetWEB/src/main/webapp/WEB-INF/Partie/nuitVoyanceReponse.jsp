@@ -1,6 +1,6 @@
 <%-- 
-    Document   : nuitVoyance
-    Created on : Apr 4, 2017, 4:38:20 PM
+    Document   : nuitVoyanceReponse
+    Created on : Apr 5, 2017, 2:57:53 PM
     Author     : nicolasl
 --%>
 
@@ -19,19 +19,13 @@
         <style>
         html,body,h1,h2,h3,h4,h5,h6 {font-family: "Luckiest Guy", cursive;}
         </style>
-        <title>Voyance</title>
+        <title>Resultat Voyance</title>
     </head>
     <body>
-        <h1>Choisissez le joueur dont vous voulez connaître le rôle et le pouvoir.</h1>
-        <form action="controleurPartie" accept-charset="utf-8">
-        <SELECT name="choixVoyance" size="1">
-                    <c:forEach items="${vivants}" var="vivants"> 
-                        <OPTION><c:out value="${vivants.getPseudo()}" />
-                    </c:forEach>
-         </SELECT>
-        <button type="submit" class="button"><span>Valider la décision</span></button><br>
-        <input type="hidden" name="action" value="addChoixVoyant"/>
-        <input type="hidden" name="choixVoyance" value="choixVoyance"/>
-        </form>
+        <h1>Vous avez fait votre choix...</h1>
+        <h2> Le villageois  @${pseudo}  est un ${role}.</h2>
+        <h2> Son pouvoir est : ${pouvoir}</h2>
+        <p></p>
+        <p>Peut-être aurez-vous la chance de découvrir d'autres secrets demain.... si vous survivez à la nuit ! </p>
     </body>
 </html>
