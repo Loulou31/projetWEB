@@ -227,20 +227,30 @@ public class ControleurPartie extends HttpServlet {
                 System.out.println("ll");
                 request.getRequestDispatcher("/WEB-INF/Partie/placeRatifie.jsp").forward(request, response);
             }
-            //////!!!\\\\ a rajouter : si c'est la nuit je vais ds repaireRatifie si ratifie sinon ds repaire
         } else if (villageois.getRole() == 1) {
+            // je suis un loup garou et que c'est la nuit 
+            System.out.println("je suis un loup garou et c'est la nuit");
             List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
             request.setAttribute("messages", messagesRepaire);
             List<Decision> decisions = decisionDAO.getListDecisionLoup(idPartie);
             request.setAttribute("decisions", decisions);
             request.setAttribute("nbJoueurs", villageoisDAO.getListLoupsVivants(idPartie).size());
-
+            
             if (villageois.getPouvoir().equals("contamination")) {
-                request.getRequestDispatcher("/WEB-INF/Partie/repaireContamination.jsp").forward(request, response);
+                if (!partieDAO.decisionHumainRatifie(idPartie)) {
+                    request.getRequestDispatcher("/WEB-INF/Partie/repaireContamination.jsp").forward(request, response);
+                } else  {
+                    request.getRequestDispatcher("/WEB-INF/Partie/repaireContaminationRatifie.jsp").forward(request, response);
+                }
             } else if (villageois.getPouvoir().equals("voyance")) {
                 goToVoyance(request, response, idPartie, villageoisDAO);
             } else {
-                request.getRequestDispatcher("/WEB-INF/Partie/repaire.jsp").forward(request, response);
+                if (!partieDAO.decisionLoupRatifie(idPartie)) {
+                    request.getRequestDispatcher("/WEB-INF/Partie/repaire.jsp").forward(request, response);
+                } else {
+                    System.out.println("partie ratifie dc je vais ds le repaire ratifie");
+                    request.getRequestDispatcher("/WEB-INF/Partie/repaireRatifie.jsp").forward(request, response);
+                }
             }
 
         } else if (villageois.getPouvoir().equals("voyance")) {
@@ -248,7 +258,11 @@ public class ControleurPartie extends HttpServlet {
         } else if (villageois.getPouvoir().equals("insomnie")) {
             List<Message> messagesRepaireInsomnie = messageDAO.getListMessageRepaire(idPartie);
             request.setAttribute("messages", messagesRepaireInsomnie);
-            request.getRequestDispatcher("/WEB-INF/Partie/nuitInsomnie.jsp").forward(request, response);
+            if (!partieDAO.decisionHumainRatifie(idPartie)) {
+                request.getRequestDispatcher("/WEB-INF/Partie/nuitInsomnie.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("/WEB-INF/Partie/nuitInsomnieRatifie.jsp").forward(request, response);
+            }
         } else {
             request.getRequestDispatcher("/WEB-INF/Partie/nuit.jsp").forward(request, response);
         }
@@ -273,7 +287,12 @@ public class ControleurPartie extends HttpServlet {
         int idPartie = villageois.getPartie();
         List<Villageois> villageoisList = villageoisDAO.getListVillageois(idPartie);
         request.setAttribute("villageoisList", villageoisList);
-        request.getRequestDispatcher("/WEB-INF/Partie/decision.jsp").forward(request, response);
+        Temps temps = new Temps(); 
+        if (temps.estJour(idPartie)) {
+            request.getRequestDispatcher("/WEB-INF/Partie/decision.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/WEB-INF/Partie/decisionLoup.jsp").forward(request, response);
+        }
     }
 
     private void actionNewDecisionLoup(HttpServletRequest request,
@@ -294,11 +313,14 @@ public class ControleurPartie extends HttpServlet {
             throws IOException, ServletException {
 
         HttpSession session = request.getSession();
+        if (session == null) {
+            System.out.println("session = null");
+        }
         String pseudoJoueur = session.getAttribute("membre").toString();
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         DecisionDAO decisionDAO = new DecisionDAO(ds);
         PartieDAO partieDAO = new PartieDAO(ds);
-
+        
         Villageois villageois = villageoisDAO.getVillageois(pseudoJoueur) ; 
         int idPartie = villageois.getPartie() ; 
         Temps temps = new Temps(); 
@@ -312,10 +334,14 @@ public class ControleurPartie extends HttpServlet {
         } else {
             //request.setAttribute("lieu", "dans Repaire des Loups") ; 
             decisionDAO.ajouteDecisionLoup(request.getParameter("decision"), idPartie, pseudoJoueur);
+            System.out.println("apres ajouteDecision");
             int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
+            System.out.println("apres get nb joueurs vivant");
             int limiteRatifie = (nbJoueurs / 2) + 1;
             int nbVoteActuel = decisionDAO.getDecisionLoup(request.getParameter("decision"), idPartie).getNbVote();
+            System.out.println("apres get decision");
             decisionDAO.ratifieDecisionLoupSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);
+            System.out.println("fin else");
         }
 
         /* On rejoint la salle de discussion */

@@ -310,7 +310,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
     public List<Villageois> getListHumainsVivants(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? and rolePartie = 0 and statut = 1");
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE idPartie = ? and rolePartie = 0 and statut = 1");
             st.setInt(1, idPartie);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -358,7 +358,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
     public List<Villageois> getListLoups(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? and rolePartie = 1");
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE idPartie = ? and rolePartie = 1");
             st.setInt(1, idPartie);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -382,7 +382,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
     public List<Villageois> getListLoupsVivants(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? and rolePartie = 1 and statut = 1");
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE IdPartie = ? and rolePartie = 1 and statut = 1");
             st.setInt(1, idPartie);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -406,7 +406,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
     public List<Villageois> getListLoupsMorts(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? and rolePartie = 1 and statut = 0");
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE idPartie = ? and rolePartie = 1 and statut = 0");
             st.setInt(1, idPartie);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
