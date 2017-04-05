@@ -23,9 +23,7 @@
     </head>
     <body>
         <h1 align="center">Bienvenue sur la place du village !</h1>
-        <h2> ${morts} </h2>
-        <p></p>
-        <h2> Désignez le villageois à éliminer aujoud'hui... </h2>
+        <h2> La décision est ratifiée !</h2>
         <p></p>
         <table id="customers">
             <tr>
@@ -37,18 +35,11 @@
                 <tr>
                     <td>${decision.joueurConcerne}</td>
                     <td>${decision.getNbVote()}</td>
-                    <td>
-                    <form action="controleur" accept-charset="UTF-8">    
-                        <input type="submit" value="Voter"/>
-                        <input type="hidden" name="action" value="addVote"/>
-                        <input type="hidden" name="joueurConcerne" value="${decision.joueurConcerne}"/>
-                    </form>
-                    </td>
                 </tr>   
             </c:forEach>
             </tr>
         </table>
-        <a href="controleur?action=newDecision">Proposer une décision</a>
+        <a href="controleurPartie?action=newDecision">Proposer une décision</a>
         <h2> Discutez avec les autres villageois... </h2>
         <table>
             <c:forEach items="${messages}" var="message">
@@ -58,7 +49,7 @@
             </c:forEach>
         </table>
         <p></p>
-        <form action="controleur" method="post" accept-charset="UTF-8">
+        <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
         <button type="submit" class="button"><span>Poster</span></button><br>
         <input type="hidden" name="action" value="ajouterUnMessage" />

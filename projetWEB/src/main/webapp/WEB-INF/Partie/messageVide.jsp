@@ -13,6 +13,6 @@
     </head>
     <body>
         <h1>Erreur, écrivez un message non vide.</h1>
-        <a href="controleur?action=choseGame">Retour vers le salon de discussion.</a>
+        <a href="controleurPartie?action=choseGame">Retour vers le salon de discussion.</a>
     </body>
 </html>

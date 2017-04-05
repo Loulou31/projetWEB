@@ -12,20 +12,7 @@
         <p> Veuillez saisir les parametres de la nouvelle partie </p>
         <form action="controleur" method="post" accept-charset="UTF-8">
         <ul>
-            <%--<li> Nombre de participants entre  
-            <SELECT name="JMin" size="1">
-                <c:forEach var="i" begin="1" end="20" step="1"> 
-                    <OPTION><c:out value="${ i }" />
-                </c:forEach>
-            </SELECT>
-            et 
-            <SELECT name="JMax" size="1">
-                <c:forEach var="i" begin="5" end="20" step="1"> 
-                    <OPTION><c:out value="${ i }" />
-                </c:forEach>
-            </SELECT>
-          </li>--%>
-          <li> Nombre de participants entre : <input type="number" name="JMin" value="5" min="2" max="20"/> et <input type="number" name="JMax" value="20" min="2" max="20"/></li>
+          <li> Nombre de participants entre : <input type="number" name="JMin" value="5" min="1" max="20"/> et <input type="number" name="JMax" value="20" min="2" max="20"/></li>
           <li> Duree d'une journee : <input type="number" name="dayHour" value="14" min="0" max="23"/> h <input type="number" name="dayMin" value="0" min="0" max="59"/></li>
           <li> Duree d'une nuit : <input type="number" name="nightHour" value="10" min="0" max="23"/> h <input type="number" name="nightMin" value="0" min="0" max="59"/></li>
           <li> A quelle heure commencera la partie aujourd'hui ? <input type="number" name="beginHour" value="8" min="0" max="23"/> h <input type="number" name="beginMin" value="0" min="0" max="59"/></li>
