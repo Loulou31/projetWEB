@@ -92,7 +92,7 @@ public class Controleur extends HttpServlet {
         if(session.getAttribute("membre") == null)
             request.getRequestDispatcher("/WEB-INF/AvantPartie/connexion.jsp").forward(request, response);
         else{
-            response.setIntHeader("Refresh",1);
+//            response.setIntHeader("Refresh",1);
             request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
         }
     }
