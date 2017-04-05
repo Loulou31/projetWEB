@@ -41,7 +41,7 @@
                     <td>${decision.joueurConcerne}</td>
                     <td>${decision.getNbVote()}</td>
                     <td>
-                    <form action="controleur" accept-charset="UTF-8">    
+                    <form action="controleurPartie" accept-charset="UTF-8">    
                         <input type="submit" value="Voter"/>
                         <input type="hidden" name="action" value="addVote"/>
                         <input type="hidden" name="joueurConcerne" value="${decision.joueurConcerne}"/>
@@ -51,7 +51,7 @@
             </c:forEach>
             </tr>
         </table>
-        <a href="controleur?action=newDecision">Proposer une décision</a>
+        <a href="controleurPartie?action=newDecision">Proposer une décision</a>
         <h2> Discutez avec les autres loups... </h2>
         <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
         <table>
@@ -61,7 +61,7 @@
                     </tr>
             </c:forEach>
         </table>
-        <form action="controleur" method="post" accept-charset="UTF-8">
+        <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
         <button type="submit" class="button"><span>Poster</span></button><br>
         <input type="hidden" name="action" value="ajouterUnMessage" />

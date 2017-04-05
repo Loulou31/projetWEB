@@ -23,6 +23,7 @@
     </head>
     <body>
         <h1>Choisissez le joueur dont vous voulez connaître le rôle et le pouvoir.</h1>
+        <form action="controleurPartie" accept-charset="utf-8">
         <SELECT name="choixVoyance" size="1">
                     <c:forEach items="${vivantsList}" var="vivants"> 
                         <OPTION><c:out value="${vivants.pseudo}" />
@@ -31,5 +32,6 @@
         <button type="submit" class="button"><span>Valider la décision</span></button><br>
         <input type="hidden" name="action" value="addChoixVoyant"/>
         <input type="hidden" name="voyant" value="voyant"/>
+        </form>
     </body>
 </html>
