@@ -62,7 +62,7 @@ public class Controleur extends HttpServlet {
             } else if (action.equals("connexion")) {
                 actionLogin(request, response);
             } else if (action.equals("inscription")) {
-                request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/AvantPartie/connexion.jsp").forward(request, response);
             } else if (action.equals("deconnexion")) {
                 actionDeconnexion(request, response);
             } else if (action.equals("debutPartie")) {
