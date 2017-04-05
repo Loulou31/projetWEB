@@ -212,20 +212,22 @@ public class ControleurPartie extends HttpServlet {
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
         DecisionDAO decisionDAO = new DecisionDAO(ds);
         int idPartie = villageois.getPartie();
-        if (partieDAO.estJour(idPartie)) {
+        Temps temps = new Temps();
+        if (temps.estJour(idPartie)) {
             List<Message> messagesVillage = messageDAO.getListeMessagesSalleDiscussion(idPartie);
             request.setAttribute("messages", messagesVillage);
             List<Decision> decisions = decisionDAO.getListDecisionHumains(idPartie);
             request.setAttribute("decisions", decisions);
             request.setAttribute("nbJoueurs", villageoisDAO.getListVillageoisVivants(idPartie).size());
             if (!partieDAO.decisionHumainRatifie(idPartie)) {
-                //request.getRequestDispatcher("/WEB-INF/Partie/placeDuVillage.jsp").forward(request, response);
-                request.getRequestDispatcher("/WEB-INF/Partie/repaire.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/Partie/placeDuVillage.jsp").forward(request, response);
+                //request.getRequestDispatcher("/WEB-INF/Partie/repaire.jsp").forward(request, response);
                 //goToVoyance(request, response, idPartie, villageoisDAO) ; 
             } else {
                 System.out.println("ll");
                 request.getRequestDispatcher("/WEB-INF/Partie/placeRatifie.jsp").forward(request, response);
             }
+            //////!!!\\\\ a rajouter : si c'est la nuit je vais ds repaireRatifie si ratifie sinon ds repaire
         } else if (villageois.getRole() == 1) {
             List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
             request.setAttribute("messages", messagesRepaire);
@@ -299,7 +301,8 @@ public class ControleurPartie extends HttpServlet {
 
         Villageois villageois = villageoisDAO.getVillageois(pseudoJoueur) ; 
         int idPartie = villageois.getPartie() ; 
-        if (partieDAO.estJour(idPartie)){
+        Temps temps = new Temps(); 
+        if (temps.estJour(idPartie)){
             //request.setAttribute("lieu", "sur la Place du village") ; 
             decisionDAO.ajouteDecisionHumain(request.getParameter("decision"), idPartie, pseudoJoueur) ; 
             int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
