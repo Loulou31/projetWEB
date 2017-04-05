@@ -210,7 +210,6 @@ public class ControleurPartie extends HttpServlet {
     
     private void actionRejoindreSalleDiscussion(HttpServletRequest request,
             HttpServletResponse response) throws IOException, ServletException {
-        Temps temps = new Temps();
         MessageDAO messageDAO = new MessageDAO(ds);
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         PartieDAO partieDAO = new PartieDAO(ds) ; 
@@ -219,7 +218,7 @@ public class ControleurPartie extends HttpServlet {
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
         DecisionDAO decisionDAO = new DecisionDAO(ds);
         int idPartie = villageois.getPartie();
-        if (temps.estJour(idPartie)) {
+        if (partieDAO.estJour(idPartie)) {
             List<Message> messagesVillage = messageDAO.getListeMessagesSalleDiscussion(idPartie);
             request.setAttribute("messages", messagesVillage);
             List<Decision> decisions = decisionDAO.getListDecisionHumains(idPartie);
@@ -289,7 +288,7 @@ public class ControleurPartie extends HttpServlet {
     private void actionAddDecision(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
-        Temps temps = new Temps();
+
         HttpSession session = request.getSession();
         String pseudoJoueur = session.getAttribute("membre").toString() ; 
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
@@ -297,7 +296,7 @@ public class ControleurPartie extends HttpServlet {
         PartieDAO partieDAO = new PartieDAO(ds);
         Villageois villageois = villageoisDAO.getVillageois(pseudoJoueur) ; 
         int idPartie = villageois.getPartie() ; 
-        if (temps.estJour(idPartie)){
+        if (partieDAO.estJour(idPartie)){
             request.setAttribute("lieu", "sur la Place du village") ; 
             decisionDAO.ajouteDecisionHumain(request.getParameter("decision"), idPartie, pseudoJoueur) ; 
             int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
