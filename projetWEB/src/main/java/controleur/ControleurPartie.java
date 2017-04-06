@@ -148,7 +148,21 @@ public class ControleurPartie extends HttpServlet {
                 System.out.println(insomnie);
                 System.out.println(voyance);
                 System.out.println(spiritisme);
+                
+                if (spiritisme != 0) {
+                    villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
+                    if (villageois.size() > 0) {
+                        int valSpirit = generateurAleatoire(-1, villageois.size());
+                        while (valSpirit == -1 || valSpirit == villageois.size()) {
+                            valSpirit = generateurAleatoire(-1, villageois.size());
+                        }
+                        villageoisDAO.updatePlayerStatus(villageois.get(valSpirit).getPseudo(), "spriritisme");
+                    } else {
+                        System.out.println("pas assez de villageois pr pouvoir spirit");
+                    }
+                }
                 /* attribution du pouvoir contamination à un loup */
+                /*
                 if (contamination != 0) {
                     List<Villageois> loups = villageoisDAO.getListLoupsSansPouvoir(idPartie);
                     if (loups.size() > 0) {
@@ -161,8 +175,10 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez de loups pr pouvoir contam");
                     }
-                }
+                }*/
+                
                 /* attribution du pouvoir insomnie à un humain */
+                /*
                 if (insomnie != 0) {
                     List<Villageois> humains = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                     if (humains.size() > 0) {
@@ -176,8 +192,9 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez d'humains pr pouvoir insom");
                     }
-                }
+                }*/
                 /* attribution du pouvoir voyance à un villageois */
+                /*
                 if (voyance != 0) {
                     villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
@@ -191,8 +208,9 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez de villageois pr pouvoir voyance");
                     }
-                }
+                }*/
                 /* attribution du pouvoir spiritisme à un villageois */
+                /*
                 if (spiritisme != 0) {
                     villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
@@ -204,7 +222,7 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez de villageois pr pouvoir spirit");
                     }
-                }
+                }*/
             }
         }
         request.setAttribute("partie", partie);
@@ -256,6 +274,7 @@ public class ControleurPartie extends HttpServlet {
             request.setAttribute("nbJoueurs", villageoisDAO.getListVillageoisVivants(idPartie).size());
             if (!partieDAO.decisionHumainRatifie(idPartie)) {
                 request.getRequestDispatcher("/WEB-INF/Partie/placeDuVillage.jsp").forward(request, response);
+                //request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response);
             } else {
                 String pseudoJoueurElimine = partieDAO.pseudoDecisionHumainRatifie(idPartie) ; 
                 Villageois joueurElimine = villageoisDAO.getVillageois(pseudoJoueurElimine) ; 
@@ -303,7 +322,14 @@ public class ControleurPartie extends HttpServlet {
             } else {
                 request.getRequestDispatcher("/WEB-INF/Partie/nuitInsomnieRatifie.jsp").forward(request, response);
             }
+        } else if (villageois.getPouvoir().equals("spriritisme")){
+            System.out.println("SPIRITISME" ); 
+            List<Villageois> morts = villageoisDAO.getListHumainsMorts(idPartie) ;
+            request.setAttribute("morts", morts) ;
+            request.getRequestDispatcher("/WEB-INF/Partie/nuitSpiritisme.jsp").forward(request, response);
         } else {
+            System.out.println("NUIT" ); 
+            System.out.println(villageois.getPouvoir()) ; 
             request.getRequestDispatcher("/WEB-INF/Partie/nuit.jsp").forward(request, response);
         }
     }
@@ -477,7 +503,12 @@ public class ControleurPartie extends HttpServlet {
     public void actionAddDecisionSpiritisme(HttpServletRequest request, 
             HttpServletResponse response)
             throws IOException, ServletException {
+        HttpSession session = request.getSession();
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
+        String pseudo = session.getAttribute("membre").toString() ;
+        Villageois villageois = villageoisDAO.getVillageois(pseudo);
         joueurChoisiSpiritisme = request.getParameter("decisionSpiritisme") ; 
+        request.setAttribute("view", villageois.getRoleString()) ; 
         request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response); 
     }
     
@@ -519,10 +550,18 @@ public class ControleurPartie extends HttpServlet {
         if (request.getParameter("contenu").toString().equals("")) {
             request.getRequestDispatcher("/WEB-INF/Partie/messageVide.jsp").forward(request, response);
         } else {
+            // Ajouter un message dans la place du village
             if (partie.estJour()){
                 messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString(), idPartie);
             } else {
-                messageDAO.ajouteMessageRepaire(pseudo, request.getParameter("contenu").toString(), idPartie);
+                // Ajouter un message dans la salle de discussion spiritisme
+                if(request.getParameter("spiritisme").toString().equals("true")){
+                    messageDAO.ajouteMessageSpiritisme(pseudo, request.getParameter("contenu").toString(), idPartie);
+                // Ajouter un message dans le repaire
+                } else {
+                    messageDAO.ajouteMessageRepaire(pseudo, request.getParameter("contenu").toString(), idPartie);
+                }
+                
             }
             actionRejoindreSalleDiscussion(request, response);
         }
