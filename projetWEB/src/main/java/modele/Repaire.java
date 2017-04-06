@@ -12,10 +12,15 @@ import java.util.HashSet;
  * @author gaunetc
  */
 public class Repaire extends SalleDiscussion{
+    
+    String nom = "Repaire des Loups-Garous";
 
     public Repaire(HashSet<Decision> decisions, HashSet<Message> messages) {
         super(decisions, messages);
     }
 
+    public String getNom(){
+        return this.nom;
+    }
     
 }

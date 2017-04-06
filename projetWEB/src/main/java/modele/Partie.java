@@ -7,10 +7,11 @@ package modele;
 
 import dao.PartieDAO;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 /**
  *
@@ -22,11 +23,18 @@ public class Partie {
     private int nbJoueursMax ; 
     private int dureeJour ; 
     private int dureeNuit ;
-    //Il faut absolument que l'heure de début soit en réalité une date avec l'heure du début :/
+    //Il faut absolument que l'heure de début soit en réalité une date avec l'heure du début
     private int heureDebut ; 
     private float probaPouvoir ; 
     private float proportionLG ; 
-    //private Set<Membre> joueursPresents;
+    
+    private Boolean enCours;
+    
+    //pour ne pas recharger toute la partie à chaque fois
+    //il faut faire des accès qui modifient que ces 3 champs
+    private List<Villageois> villageoisPresents;
+    private PlaceVillage placeVillage;
+    private Repaire repaire;
     
 
     public Partie(int idPartie, 
@@ -100,6 +108,7 @@ public class Partie {
         this.joueursPresents.add(m);
     }*/
     
+    //A SUPPRIMER DES QUE POSSIBLE
     //devenu useless je pense (Dorian)
     public Boolean enAttente(PartieDAO partieDAO){
 //        SimpleDateFormat d = new SimpleDateFormat ("dd/MM/yyyy" );
@@ -173,5 +182,74 @@ public class Partie {
         }
 
     }
+    
+    //retourne le nombre de joueurs vivants dans la partie
+    public int getNbJoueursVivants(int id) {
+        int nb = 0;
+        for(Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();){
+            if (it.next().getVivant() == 1){
+                nb++;
+            }
+        } 
+        return nb;
+    }
+    
+    //retourne le nombre de joueurs dans la partie
+    public int getNbJoueurs(int id){
+        return this.villageoisPresents.size();
+    }
+    
+        
+    public List<Villageois> getListVillageoisVivants() {
+        List<Villageois> result = new ArrayList<Villageois>();
+        for(Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();){
+            Villageois next = it.next();
+            if (next.getVivant() == 1){
+                result.add(next);
+            }
+        }
+        return result;
+    }
+    
+    public List<Villageois> getListVillageoisMorts() {
+        List<Villageois> result = new ArrayList<Villageois>();
+        for(Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();){
+            Villageois next = it.next();
+            if (next.getVivant() == 0){
+                result.add(next);
+            }
+        }
+        return result;
+    }
+    
+    public void mortVillageois(String login){
+        for(Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();){
+            Villageois next = it.next();
+            if (next.getPseudo().equals(login)){
+                next.setVivant(0);
+            }
+        }
+    }
+    
+    public List<Villageois> getListVillageoisSansPouvoir(){
+        List<Villageois> result = new ArrayList<Villageois>();
+        for(Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();){
+            Villageois next = it.next();
+            if (next.getPouvoir() == null){
+                result.add(next);
+            }
+        }
+        return result;
+    }
 
+    public List<Villageois> getListHumainsSansPouvoir(){
+        List<Villageois> result = new ArrayList<Villageois>();
+        for(Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();){
+            Villageois next = it.next();
+            if (next.getPouvoir() == null && next.getRole() == 0){
+                result.add(next);
+            }
+        }
+        return result;        
+    }
 }

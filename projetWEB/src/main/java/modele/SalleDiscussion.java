@@ -6,6 +6,7 @@
 package modele;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  *
@@ -36,4 +37,23 @@ public abstract class SalleDiscussion {
         decisions.add(d);
     }
     
+    public Boolean decisionRatifie() {
+        for (Iterator<Decision> it = this.decisions.iterator(); it.hasNext();) {
+            if (it.next().isEtat()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public String pseudoDecisionHumainRatifie(){
+        for (Iterator<Decision> it = this.decisions.iterator(); it.hasNext();) {
+            Decision next = it.next();
+            if (next.isEtat()) {
+                return next.getJoueurConcerne();
+            }
+        }
+        return null;
+    }
 }
+

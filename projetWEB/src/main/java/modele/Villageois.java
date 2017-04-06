@@ -5,17 +5,23 @@
  */
 package modele;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  *
  * @author gaunetc
  */
 public class Villageois {
     
-    protected String pseudo;
-    protected int role ; // = 0 humain , = 1 loup
-    protected int vivant; // 0 = mort , 1 = vivant
-    protected String pouvoir;
-    protected int partie ; 
+    private String pseudo;
+    private int role ; // = 0 humain , = 1 loup
+    private int vivant; // 0 = mort , 1 = vivant
+    private String pouvoir;
+    
+    //peut être utile mais à supprimer je pense
+    private int partie ; 
     
 
     public Villageois(String pseudo) {
@@ -87,6 +93,7 @@ public class Villageois {
     public Boolean estEnPartie(){
         return (this.partie != 0);
     }
+
     
     @Override
     public String toString() {

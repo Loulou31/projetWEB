@@ -12,9 +12,15 @@ import java.util.HashSet;
  * @author gaunetc
  */
 public class PlaceVillage extends SalleDiscussion{
+    
+    String nom = "Place du Village";
 
     public PlaceVillage(HashSet<Decision> decisions, HashSet<Message> messages) {
         super(decisions, messages);
+    }
+    
+    public String getNom(){
+        return this.nom;
     }
     
 }
