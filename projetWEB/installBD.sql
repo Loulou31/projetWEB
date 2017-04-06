@@ -49,6 +49,16 @@ CREATE TABLE MESSAGE_REPAIRE (
     
 );
 
+CREATE TABLE MESSAGE_SPIRITISME (
+    idPartie int NOT NULL,
+    login_expediteur varchar(10) NOT NULL, 
+    contenu varchar(100) NOT NULL, 
+    date_envoi date, 
+    CONSTRAINT login_expediteurForeign3 FOREIGN KEY 
+        (login_expediteur) REFERENCES JOUEUR(login) ,
+    PRIMARY KEY (login_expediteur, date_envoi)
+);
+
 CREATE TABLE DECISION_LOUP (
     login_joueur_concerne varchar(10) NOT NULL PRIMARY KEY, 
     id_partie int, 
