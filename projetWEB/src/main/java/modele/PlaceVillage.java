@@ -5,7 +5,7 @@
  */
 package modele;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,9 +15,10 @@ public class PlaceVillage extends SalleDiscussion{
     
     String nom = "Place du Village";
 
-    public PlaceVillage(HashSet<Decision> decisions, HashSet<Message> messages) {
+    public PlaceVillage(ArrayList<Decision> decisions, ArrayList<Message> messages) {
         super(decisions, messages);
     }
+
     
     public String getNom(){
         return this.nom;

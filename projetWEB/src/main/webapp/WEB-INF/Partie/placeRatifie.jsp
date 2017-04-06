@@ -26,10 +26,21 @@
         <h2> La décision est ratifiée !</h2>
         <p>Le joueur ${pseudoJoueurElimine} nous a quitté aujourd'hui.... Et c'était un ${roleJoueurElimine} ! </p>
         <p></p>
+        <table>
+            <c:forEach items="${messages}" var="message">
+                    <tr>
+                        <td><B>@${message.expediteur}  :   </B></td><td>  ${message.contenu}</td>
+                    </tr>
+            </c:forEach>
+        </table>
         <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
         <button type="submit" class="button"><span>Poster</span></button><br>
         <input type="hidden" name="action" value="ajouterUnMessage" />
+        </form>
+        <form action="controleurPartie" method="get" align="center">
+                <button type="submit" class="button"><span>Actualiser la page</span></button><br>
+                <input type="hidden" name="action" value="reloadMessages"/>
         </form>
     </body>
 </html>

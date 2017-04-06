@@ -22,6 +22,9 @@
     </head>
     <body>
         <h1 id="header">En espérant vous revoir très vite !</h1>
-        <a href="controleur?">Retour vers l'écran de connexion</a>
+        <form action="controleur" method="get" align="center">
+             <button type="submit" class="button"><span>Retour vers l'écran de connexion</span></button><br>
+             <input type="hidden" name="action" value="accueil"/>
+         </form>
     </body>
 </html>

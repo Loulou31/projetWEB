@@ -5,7 +5,7 @@
  */
 package modele;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,12 +15,16 @@ public class Repaire extends SalleDiscussion{
     
     String nom = "Repaire des Loups-Garous";
 
-    public Repaire(HashSet<Decision> decisions, HashSet<Message> messages) {
+    public Repaire(ArrayList<Decision> decisions, ArrayList<Message> messages) {
         super(decisions, messages);
     }
 
+<<<<<<< HEAD
     public String getNom(){
         return this.nom;
     }
     
+=======
+  
+>>>>>>> a9ca23303040dcc27697dd97784eb06dafeb98a5
 }

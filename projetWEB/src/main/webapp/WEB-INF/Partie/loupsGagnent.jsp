@@ -1,7 +1,7 @@
 <%-- 
-    Document   : messageVide
-    Created on : Mar 31, 2017, 11:40:58 AM
-    Author     : gaunetc
+    Document   : loupsGagnent
+    Created on : Apr 6, 2017, 6:28:19 PM
+    Author     : bagouc
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,10 +16,13 @@
         <style>
         html,body,h1,h2,h3,h4,h5,h6 {font-family: "Revalia", cursive;}
         </style>
-        <title>Erreur message vide</title>
+        <title>Partie Terminée</title>
     </head>
     <body>
-        <h1>Erreur, écrivez un message non vide.</h1>
-        <a href="controleurPartie?action=choseGame">Retour vers le salon de discussion.</a>
+        <h1>Les loups garous ont gagné !!!!</h1>
+        <form action="controleur" method="get" align="center">
+                <button type="submit" class="button"><span>Voulez-vous rejouer ?</span></button><br>
+                <input type="hidden" name="action" value="quitteAttentePartie"/>
+        </form>
     </body>
 </html>

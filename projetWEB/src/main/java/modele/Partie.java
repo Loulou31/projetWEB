@@ -27,6 +27,7 @@ public class Partie {
     private int heureDebut ; 
     private float probaPouvoir ; 
     private float proportionLG ; 
+
     
     private Boolean enCours;
     
@@ -36,6 +37,7 @@ public class Partie {
     private PlaceVillage placeVillage;
     private Repaire repaire;
     
+
 
     public Partie(int idPartie, 
                   int nbJoueursMin, 
@@ -88,6 +90,35 @@ public class Partie {
     public float getProportionLG() {
         return proportionLG;
     }
+
+    public Partie(PlaceVillage placeVillage) {
+        this.placeVillage = placeVillage;
+    }
+
+    public Repaire getRepaire() {
+        return repaire;
+    }
+    
+    public ArrayList<Message> getMessagePlace(){
+        return(this.placeVillage.getMessages());
+    }
+    
+    public ArrayList<Message> getMessagePlaceDuJour(){
+        return(this.placeVillage.getMessagesDuJour());
+    }
+    
+    public ArrayList<Message> getMessageRepaire(){
+       return(this.repaire.getMessages());
+    }
+    
+    public void addMessagePlace(Message m){
+        this.placeVillage.addMessage(m);
+    }
+    
+    public void addMessageRepaire(Message m){
+        this.repaire.addMessage(m);
+    }
+    
     
     
     /*public int getNombreJoueursPresents(){
@@ -242,6 +273,7 @@ public class Partie {
         return result;
     }
 
+
     public List<Villageois> getListHumainsSansPouvoir(){
         List<Villageois> result = new ArrayList<Villageois>();
         for(Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();){
@@ -252,4 +284,17 @@ public class Partie {
         }
         return result;        
     }
+
+    
+    //Sera utilisé pour les message de le place du village pour savoir quels messages doivent être affichés
+    public Boolean dansJournee(Date date){
+        return true;
+    }
+    
+    
+    //Sera utilisé pour les message du repaire pour savoir quels messages doivent être affichés
+    public Boolean dansNuitee(Date date){
+        return true;
+    }
+
 }
