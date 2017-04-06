@@ -30,6 +30,7 @@ public class ControleurPartie extends HttpServlet {
 
     @Resource(name = "jdbc/loupGarou")
     private DataSource ds;
+    private String joueurChoisiSpiritisme ; 
 
     /* pages d’erreurs */
     private void invalidParameters(HttpServletRequest request,
@@ -75,6 +76,8 @@ public class ControleurPartie extends HttpServlet {
                 actionChoseVillageoisTransformer(request, response) ; 
             } else if (action.equals("addDecisionContamination")) {
                 actionAddDecisionContamination(request, response) ; 
+            } else if (action.equals("addDecisionSpiritisme")){
+                actionAddDecisionSpiritisme(request, response) ; 
             } else {
                 invalidParameters(request, response);
             }
@@ -231,8 +234,14 @@ public class ControleurPartie extends HttpServlet {
         request.setAttribute("pouvoirJoueurEnCours", villageois.getPouvoir()) ; 
         request.setAttribute("nbJoueurs", nbJoueursVivants) ; 
         request.setAttribute("nbLoups", nbLoupsVivants) ; 
-
         
+        // Si je suis mort
+        if (villageois.getVivant() == 0){
+            request.getRequestDispatcher("/WEB-INF/Partie/joueurMort.jsp").forward(request, response);
+        }
+        if (villageois.getPseudo().equals(joueurChoisiSpiritisme)){
+            request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response);
+        }
         if (partie.estJour()) {
             List<Message> messagesVillage = messageDAO.getListeMessagesSalleDiscussion(idPartie);
             request.setAttribute("messages", messagesVillage);
@@ -240,10 +249,7 @@ public class ControleurPartie extends HttpServlet {
             request.setAttribute("decisions", decisions);
             request.setAttribute("nbJoueurs", villageoisDAO.getListVillageoisVivants(idPartie).size());
             if (!partieDAO.decisionHumainRatifie(idPartie)) {
-                
                 request.getRequestDispatcher("/WEB-INF/Partie/placeDuVillage.jsp").forward(request, response);
-                //request.getRequestDispatcher("/WEB-INF/Partie/repaire.jsp").forward(request, response);
-                //goToVoyance(request, response, idPartie, villageoisDAO) ; 
             } else {
                 String pseudoJoueurElimine = partieDAO.pseudoDecisionHumainRatifie(idPartie) ; 
                 Villageois joueurElimine = villageoisDAO.getVillageois(pseudoJoueurElimine) ; 
@@ -268,6 +274,10 @@ public class ControleurPartie extends HttpServlet {
                 }
             } else if (villageois.getPouvoir().equals("voyance")) {
                 goToVoyance(request, response, idPartie, villageoisDAO);
+            } else if (villageois.getPouvoir().equals("spiritisme")){
+                List<Villageois> morts = villageoisDAO.getListHumainsVivants(idPartie) ;
+                request.setAttribute("morts", morts) ;
+                request.getRequestDispatcher("/WEB-INF/Partie/repaireSpiritismmeDecision.jsp").forward(request, response);
             } else {
                 if (!partieDAO.decisionLoupRatifie(idPartie)) {
                     request.getRequestDispatcher("/WEB-INF/Partie/repaire.jsp").forward(request, response);
@@ -352,14 +362,12 @@ public class ControleurPartie extends HttpServlet {
         Partie partie = partieDAO.getPartie(idPartie);
         request.setAttribute("partie", partie);
         if (partie.estJour()){
-            //request.setAttribute("lieu", "sur la Place du village") ; 
             decisionDAO.ajouteDecisionHumain(request.getParameter("decision"), idPartie, pseudoJoueur) ; 
             int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
             int limiteRatifie = (nbJoueurs / 2) + 1;
             int nbVoteActuel = decisionDAO.getDecisionHumain(request.getParameter("decision"), idPartie).getNbVote();
             decisionDAO.ratifieDecisionHumainSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);
         } else {
-            //request.setAttribute("lieu", "dans Repaire des Loups") ; 
             decisionDAO.ajouteDecisionLoup(request.getParameter("decision"), idPartie, pseudoJoueur);
             System.out.println("apres ajouteDecision");
             int nbJoueurs = villageoisDAO.getListLoupsVivants(idPartie).size();
@@ -401,7 +409,6 @@ public class ControleurPartie extends HttpServlet {
             vote = decisionDAO.ajouteVoteLoup(decision, votant, idPartie);
         }
 
-        Villageois villageois = villageoisDAO.getVillageois(votant);
 
         /* On vérifie si la decision doit être ratifiée */
         if (vote) {
@@ -418,24 +425,7 @@ public class ControleurPartie extends HttpServlet {
                 decisionDAO.ratifieDecisionLoupSiBesoin(limiteRatifie, nbVoteActuel, joueurConcerne, idPartie);
             }
         }
-
-        /*
-        int nbJoueurs = partieDAO.getNbJoueursVivants(idPartie);
-        System.out.println("apres get NbJoueursVivants"); 
-        int limiteRatifie = (nbJoueurs / 2) + 1;
-         /*On vérifie si la decision doit être ratifiée */
- /*if (temps.estJour(idPartie)){
-            System.out.println("if temps est jour"); 
-            int nbVoteActuel = decisionDAO.getDecisionHumain(request.getParameter("decision"), idPartie).getNbVote(); 
-            System.out.println("apres get DecisionHumain ds if"); 
-            decisionDAO.ratifieDecisionHumainSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);
-        } else {
-            System.out.println("if temps nest pas jour"); 
-            int nbVoteActuel = decisionDAO.getDecisionLoup(request.getParameter("decision"), idPartie).getNbVote(); 
-            decisionDAO.ratifieDecisionLoupSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);
-        }*/
         actionRejoindreSalleDiscussion(request, response);
-
     }
     
     // Choisir de voir le rôle + pouvoir d'un villageois
@@ -472,9 +462,17 @@ public class ControleurPartie extends HttpServlet {
             HttpServletResponse response)
             throws IOException, ServletException {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
-        String pseudo = request.getParameter("decision") ; 
+        String pseudo = request.getParameter("decisionContamination") ; 
         villageoisDAO.updatePlayerRole(pseudo, 1);
         actionRejoindreSalleDiscussion(request, response) ; 
+    }
+    
+    // Choisir la personne avec qui communiquer en tant que spiritueux
+    public void actionAddDecisionSpiritisme(HttpServletRequest request, 
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        joueurChoisiSpiritisme = request.getParameter("decisionSpiritisme") ; 
+        request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response); 
     }
     
 
@@ -505,15 +503,21 @@ public class ControleurPartie extends HttpServlet {
             HttpServletResponse response)
             throws IOException, ServletException {
         MessageDAO messageDAO = new MessageDAO(ds);
+        PartieDAO partieDAO = new PartieDAO(ds) ; 
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString();
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
         int idPartie = villageois.getPartie();
+        Partie partie = partieDAO.getPartie(idPartie);
         if (request.getParameter("contenu").toString().equals("")) {
             request.getRequestDispatcher("/WEB-INF/Partie/messageVide.jsp").forward(request, response);
         } else {
-            messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString(), idPartie);
+            if (partie.estJour()){
+                messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString(), idPartie);
+            } else {
+                messageDAO.ajouteMessageRepaire(pseudo, request.getParameter("contenu").toString(), idPartie);
+            }
             actionRejoindreSalleDiscussion(request, response);
         }
     }

@@ -51,7 +51,7 @@
         <h2> Discutez avec les autres loups... </h2>
         <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
         <table>
-            <c:forEach items="${messagesRepaire}" var="message">
+            <c:forEach items="${messages}" var="message">
                     <tr>
                         <td><B>@${message.expediteur}  :  </B></td><td>  ${message.contenu}</td>
                     </tr>

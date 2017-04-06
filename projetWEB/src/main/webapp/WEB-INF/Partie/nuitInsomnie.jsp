@@ -39,7 +39,7 @@
         </table>
         <p> Ecoutez discrètement ce qu'il se dit...</p>
         <table>
-            <c:forEach items="${messagesRepaireInsomnie}" var="message">
+            <c:forEach items="${messages}" var="message">
                     <tr>
                         <td><B>@${message.expediteur}  :  </B></td><td>  ${message.contenu}</td>
                     </tr>
