@@ -337,6 +337,9 @@ public class ControleurPartie extends HttpServlet {
         } else if (villageois.getPouvoir().equals("spriritisme")){
             System.out.println("SPIRITISME" ); 
             List<Villageois> morts = villageoisDAO.getListVillageoisMorts(idPartie) ;
+            if (morts == null) {
+                System.out.println("morts null");
+            }
             request.setAttribute("morts", morts) ;
             request.getRequestDispatcher("/WEB-INF/Partie/nuitSpiritisme.jsp").forward(request, response);
         } else {
