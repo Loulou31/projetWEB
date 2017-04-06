@@ -33,7 +33,7 @@
         </ul>
         <button type="submit" class="button"><span>Valider</span></button><br>
         <input type="hidden" name="action" value="addDecisionContamination"/>
-        <input type="hidden" name="decision" value="decisionContamination"/>
+        <input type="hidden" name="decisionContamination" value="decisionContamination"/>
         </form>
     </body>
 </html>

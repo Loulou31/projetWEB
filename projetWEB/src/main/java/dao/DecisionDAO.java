@@ -87,6 +87,10 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                 st.setString(1, pseudo);
                 st.setInt(2, idPartie);
                 st.executeQuery();
+                PreparedStatement st1 = conn.prepareStatement
+                        ("UPDATE JOUEUR SET statut = 0 WHERE login = ?") ;
+                st1.setString(1, pseudo) ; 
+                st1.executeQuery() ; 
             } catch (SQLException e) {
                 throw new DAOException("Erreur BD dans ratifie" + e.getMessage(), e);
             }
@@ -101,6 +105,10 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                 st.setString(1, pseudo);
                 st.setInt(2, idPartie);
                 st.executeQuery();
+                PreparedStatement st1 = conn.prepareStatement
+                        ("UPDATE JOUEUR SET statut = 0 WHERE login = ?") ;
+                st1.setString(1, pseudo) ; 
+                st1.executeQuery() ; 
             } catch (SQLException e) {
                 throw new DAOException("Erreur BD " + e.getMessage(), e);
             }
@@ -113,9 +121,6 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         if (!decisionCorrecteHumain(login_joueur, idPartie)) {
             try (Connection conn = getConn()) {
                 PreparedStatement st = conn.prepareStatement("INSERT INTO Decision_Humain (login_joueur_concerne, id_partie, login_expeditaire, ratifie, date_envoi, nbreVote) VALUES (?, ?, ?, 0, SYSDATE, 0)");
-                System.out.println("JOUEUR CONCERNE : " + login_joueur);
-                System.out.println("ID PARTIE : " + idPartie);
-                System.out.println("EXPEDITAIRE : " + login_expeditaire);
                 st.setString(1, login_joueur);
                 st.setInt(2, idPartie);
                 st.setString(3, login_expeditaire);
@@ -191,7 +196,6 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                 st.executeUpdate();
                 int nbVote = decision.getNbVote() + 1;
                 decision.setNbVote(nbVote);
-                System.out.println("NBVOTE : " + decision.getNbVote());  
                 return true; 
             }
             return false;

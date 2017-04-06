@@ -62,6 +62,27 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         }
         return result;
     }
+    
+    public List<Villageois> getListVillageoisMorts(int idPartie) {
+        List<Villageois> result = new ArrayList<Villageois>();
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM JOUEUR WHERE IdPartie = ? and Statut = 0");
+            st.setInt(1, idPartie);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Villageois villageois
+                        = new Villageois(rs.getString("login"),
+                                rs.getInt("rolePartie"),
+                                rs.getInt("Statut"),
+                                rs.getString("Pouvoir"),
+                                rs.getInt("IdPartie"));
+                result.add(villageois);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD Liste villageois" + e.getMessage(), e);
+        }
+        return result;
+    }
 
     public Villageois getVillageois(String pseudo) {
         Villageois villageois;
@@ -148,7 +169,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
     /* Defini le role (humain ou LG) du joueur en début de partie */
     public void updatePlayerRole(String pseudo, int role) {
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("UPDATE JOUEUR SET rolePartie = ? WHERE login = ?");
+            PreparedStatement st = conn.prepareStatement("UPDATE JOUEUR SET rolePartie = ?, pouvoir = 'rien' WHERE login = ?");
             st.setInt(1, role);
             st.setString(2, pseudo);
             st.executeUpdate();

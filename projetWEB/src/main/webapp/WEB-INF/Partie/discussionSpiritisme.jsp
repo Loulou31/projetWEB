@@ -1,9 +1,10 @@
 <%-- 
-    Document   : placeDuVillage
-    Created on : Mar 24, 2017, 6:14:59 PM
-    Author     : gaunetc
+    Document   : discussionSpiritisme
+    Created on : Apr 6, 2017, 5:44:30 PM
+    Author     : nicolasl
 --%>
 
+<%@page import="modele.Partie"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -20,16 +21,29 @@
         <title>Place du village</title>
     </head>
     <body>
-        <h1 align="center">Bienvenue sur la place du village !</h1>
-        <p>Vous êtes ${roleJoueurEnCours}. Votre pouvoir est : ${pouvoirJoueurEnCours}.</p>
-        <p> Il y a ${nbJoueurs} villageois vivants. Il y a ${nbLoups} loups-garou qui rodent parmi vous ! Faites attention...</p>
-        <h2> La décision est ratifiée !</h2>
-        <p>Le joueur ${pseudoJoueurElimine} nous a quitté aujourd'hui.... Et c'était un ${roleJoueurElimine} ! </p>
+        <h1 align="center">Bienvenue sur la salle de discussions privée</h1>
+        <p></p>
+        <p>Un vivant... un mort... Arriverez-vous à obtenir des informations ? </p>
+        <p> Ou bien, saurez-vous gardez vos secrets ? </p>
+        <p></p>
+        <table>
+            <c:forEach items="${messages}" var="message">
+                    <tr>
+                        <td><B>@${message.expediteur}  :   </B></td><td>  ${message.contenu}</td>
+                    </tr>
+            </c:forEach>
+        </table>
         <p></p>
         <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
         <button type="submit" class="button"><span>Poster</span></button><br>
         <input type="hidden" name="action" value="ajouterUnMessage" />
+        <input type="hidden" name="spiritisme" value="true" />
         </form>
+        
+        <% Partie partie = (Partie) request.getAttribute("partie");
+           String tempsChangement = partie.tempsAvantChangement(1);
+        %>
+        <p><%=tempsChangement%></p>
     </body>
 </html>
