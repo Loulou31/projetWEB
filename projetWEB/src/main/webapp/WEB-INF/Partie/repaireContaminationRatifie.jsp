@@ -38,5 +38,9 @@
         <button type="submit" class="button"><span>Poster</span></button><br>
         <input type="hidden" name="action" value="ajouterUnMessage" />
         </form>
+        <form action="controleurPartie" method="get" align="center">
+            <button type="submit" class="button"><span>Actualiser les messages</span></button><br>
+            <input type="hidden" name="action" value="reloadMessages"/>
+        </form>
     </body>
 </html>
