@@ -30,7 +30,7 @@
             <li> Choisissez un joueur avec qui discuter : 
                 <SELECT name="decisionSpiritisme" size="1">
                     <c:forEach items="${morts}" var="villageois"> 
-                        <OPTION><c:out value="${morts.pseudo}" />
+                        <OPTION><c:out value="${villageois.pseudo}" />
                     </c:forEach>
                 </SELECT>
             </li>
