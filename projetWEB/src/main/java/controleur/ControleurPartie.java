@@ -274,12 +274,11 @@ public class ControleurPartie extends HttpServlet {
             request.setAttribute("nbJoueurs", villageoisDAO.getListVillageoisVivants(idPartie).size());
             if (!partieDAO.decisionHumainRatifie(idPartie)) {
                 request.getRequestDispatcher("/WEB-INF/Partie/placeDuVillage.jsp").forward(request, response);
-                //request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response);
             } else {
                 String pseudoJoueurElimine = partieDAO.pseudoDecisionHumainRatifie(idPartie) ; 
                 Villageois joueurElimine = villageoisDAO.getVillageois(pseudoJoueurElimine) ; 
                 request.setAttribute("pseudoJoueurElimine", joueurElimine.getPseudo()) ; 
-                request.setAttribute("roleJoueurElimine", joueurElimine.getRoleString()) ; 
+                request.setAttribute("roleJoueurElimine", joueurElimine.getRoleString()) ;
                 request.getRequestDispatcher("/WEB-INF/Partie/placeRatifie.jsp").forward(request, response);
             }
         } else if (villageois.getRole() == 1) {
