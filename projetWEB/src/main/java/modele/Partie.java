@@ -7,6 +7,7 @@ package modele;
 
 import dao.PartieDAO;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,7 +28,8 @@ public class Partie {
     private float probaPouvoir ; 
     private float proportionLG ; 
     //private Set<Membre> joueursPresents;
-    
+    private PlaceVillage placeVillage;
+    private Repaire repaire;
 
     public Partie(int idPartie, 
                   int nbJoueursMin, 
@@ -80,6 +82,35 @@ public class Partie {
     public float getProportionLG() {
         return proportionLG;
     }
+
+    public Partie(PlaceVillage placeVillage) {
+        this.placeVillage = placeVillage;
+    }
+
+    public Repaire getRepaire() {
+        return repaire;
+    }
+    
+    public ArrayList<Message> getMessagePlace(){
+        return(this.placeVillage.getMessages());
+    }
+    
+    public ArrayList<Message> getMessagePlaceDuJour(){
+        return(this.placeVillage.getMessagesDuJour());
+    }
+    
+    public ArrayList<Message> getMessageRepaire(){
+       return(this.repaire.getMessages());
+    }
+    
+    public void addMessagePlace(Message m){
+        this.placeVillage.addMessage(m);
+    }
+    
+    public void addMessageRepaire(Message m){
+        this.repaire.addMessage(m);
+    }
+    
     
     
     /*public int getNombreJoueursPresents(){
@@ -174,4 +205,16 @@ public class Partie {
 
     }
 
+    
+    //Sera utilisé pour les message de le place du village pour savoir quels messages doivent être affichés
+    public Boolean dansJournee(Date date){
+        return true;
+    }
+    
+    
+    //Sera utilisé pour les message du repaire pour savoir quels messages doivent être affichés
+    public Boolean dansNuitee(Date date){
+        return true;
+    }
+    
 }

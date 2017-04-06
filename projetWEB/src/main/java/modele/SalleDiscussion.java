@@ -5,26 +5,34 @@
  */
 package modele;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  *
  * @author gaunetc
  */
 public abstract class SalleDiscussion {
-    protected HashSet<Decision> decisions;
-    protected HashSet<Message> messages;
+    protected ArrayList<Decision> decisions;
+    protected ArrayList<Message> messages;
 
-    public SalleDiscussion(HashSet<Decision> decisions, HashSet<Message> messages) {
+    public SalleDiscussion(ArrayList<Decision> decisions, ArrayList<Message> messages) {
         this.decisions = decisions;
         this.messages = messages;
     }
 
-    public HashSet<Decision> getDecisions() {
+    public ArrayList<Decision> getDecisions() {
         return decisions;
     }
 
-    public HashSet<Message> getMessages() {
+    public ArrayList<Message> getMessages() {
+        return messages;
+    }
+    
+    public ArrayList<Message> getMessagesDuJour() {
+        return messages;
+    }
+    
+    public ArrayList<Message> getMessagesDeLaNuit() {
         return messages;
     }
 

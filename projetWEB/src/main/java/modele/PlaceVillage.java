@@ -5,7 +5,7 @@
  */
 package modele;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,8 +13,9 @@ import java.util.HashSet;
  */
 public class PlaceVillage extends SalleDiscussion{
 
-    public PlaceVillage(HashSet<Decision> decisions, HashSet<Message> messages) {
+    public PlaceVillage(ArrayList<Decision> decisions, ArrayList<Message> messages) {
         super(decisions, messages);
     }
-    
+
+   
 }

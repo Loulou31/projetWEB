@@ -5,7 +5,7 @@
  */
 package modele;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,9 +13,9 @@ import java.util.HashSet;
  */
 public class Repaire extends SalleDiscussion{
 
-    public Repaire(HashSet<Decision> decisions, HashSet<Message> messages) {
+    public Repaire(ArrayList<Decision> decisions, ArrayList<Message> messages) {
         super(decisions, messages);
     }
 
-    
+  
 }
