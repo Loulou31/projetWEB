@@ -71,7 +71,7 @@ public class MessageDAO extends AbstractDatabaseDAO {
      * Ajoute un message dans la tale MessageSalleDiscussion
      */
     public void ajouteMessageSalleDiscussion (String expediteur, String contenu, int idPartie) {
-        try (Connection conn = getConn()) {	     
+        try (Connection conn = getConn()) {	
 	     PreparedStatement st = conn.prepareStatement
 	       ("INSERT INTO Message_Salle_Discussion VALUES (?, ?, ?, SYSDATE)");
             st.setInt(1, idPartie);

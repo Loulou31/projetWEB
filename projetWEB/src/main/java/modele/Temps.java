@@ -79,12 +79,16 @@ public class Temps {
         return 3600 * heures + 60 * minutes;
     }
     
-    public Boolean estJour(int idPartie){
-        return (true);
-    }
-    
-    public Boolean estNuit(int idPartie){
-        return (false);
+    public String tempsSecToString (int temps){
+        int heures;
+        int minutes;
+        int secondes;
+        heures = temps / 3600;
+        temps -= heures * 3600;
+        minutes = temps / 60;
+        temps -= minutes * 60;
+        secondes = temps;
+        return Integer.toString(heures) + " h " + Integer.toString(minutes) + " m " + Integer.toString(secondes) + " s ";   
     }
     
 }

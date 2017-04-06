@@ -62,7 +62,7 @@ public class Controleur extends HttpServlet {
             } else if (action.equals("connexion")) {
                 actionLogin(request, response);
             } else if (action.equals("inscription")) {
-                request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/AvantPartie/connexion.jsp").forward(request, response);
             } else if (action.equals("deconnexion")) {
                 actionDeconnexion(request, response);
             } else if (action.equals("debutPartie")) {
@@ -217,7 +217,8 @@ public class Controleur extends HttpServlet {
 
         if (!temps.estApres(intDeb, temps.getTempsLong())) {
             if (nombreJoueursMin <= nombreJoueurs) {
-                request.getRequestDispatcher("/WEB-INF/AvantPartie/attenteDebutPartiePrete.jsp").forward(request, response);
+                request.setAttribute("partiePrete", 1);
+                request.getRequestDispatcher("/WEB-INF/AvantPartie/attenteDebutPartie.jsp").forward(request, response);
             } else {
                 quitteAttentePartie(request, response);
             }
@@ -259,7 +260,6 @@ public class Controleur extends HttpServlet {
         }
     }
 
-    
     private void actionConnexionMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
@@ -287,69 +287,62 @@ public class Controleur extends HttpServlet {
     private void actionAddGame(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException {
-        
+
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+
         Temps temps = new Temps();
         int heureDeb = temps.calToInt(Integer.parseInt(request.getParameter("beginHour")), Integer.parseInt(request.getParameter("beginMin")));
 
-        //avant toute chose on vérifie que le nombre de joueurs minimum est plus petit que le nombre de j max
-        if (Integer.parseInt(request.getParameter("JMin")) > Integer.parseInt(request.getParameter("JMax"))) {
+        //si f5, il y a déjà une partie donc on ne la recréé pas
+        if (partieDAO.getIDPartieJoueur(pseudo) != -1) {
+            int idPartie = partieDAO.getIDPartieJoueur(pseudo);
+            Partie partie = partieDAO.getPartie(idPartie);
+            request.setAttribute("partie", partie);
+
+            int nombreJoueurs = villageoisDAO.nombreJoueursPartie(idPartie);
+            request.setAttribute("nombreJoueurs", nombreJoueurs);
+
+            List<Villageois> listeVillageois = villageoisDAO.getListVillageois(idPartie);
+            request.setAttribute("listeVillageois", listeVillageois);
+
+            actionWaitGame(request, response);
+        
+        //après on vérifie que le nombre de joueurs minimum est plus petit que le nombre de j max
+        } else if (Integer.parseInt(request.getParameter("JMin")) > Integer.parseInt(request.getParameter("JMax"))) {
             request.setAttribute("erreurNbJoueurs", 1);
-            request.getRequestDispatcher("/WEB-INF/AvantPartie/newPartie.jsp").forward(request, response);   
-        }
-        else if (!temps.estApres(heureDeb, temps.getTempsLong())){
+            request.getRequestDispatcher("/WEB-INF/AvantPartie/newPartie.jsp").forward(request, response);
+        } else if (!temps.estApres(heureDeb, temps.getTempsLong())) {
             request.setAttribute("erreurHeure", 1);
-            request.getRequestDispatcher("/WEB-INF/AvantPartie/newPartie.jsp").forward(request, response); 
-            
+            request.getRequestDispatcher("/WEB-INF/AvantPartie/newPartie.jsp").forward(request, response);
+
         } else {
 
-            HttpSession session = request.getSession();
+            int idPartie = partieDAO.getIdDispo();
+            int dureeDay = temps.dureeToInt(Integer.parseInt(request.getParameter("dayHour")), Integer.parseInt(request.getParameter("dayMin")));
+            int dureeNight = temps.dureeToInt(Integer.parseInt(request.getParameter("nightHour")), Integer.parseInt(request.getParameter("nightMin")));
+            partieDAO.ajouterPartie(idPartie,
+                    Integer.parseInt(request.getParameter("JMin")),
+                    Integer.parseInt(request.getParameter("JMax")),
+                    dureeDay,
+                    dureeNight,
+                    heureDeb,
+                    (float) Integer.parseInt(request.getParameter("power")) / (float) 100,
+                    (float) Integer.parseInt(request.getParameter("werewolf")) / (float) 100);
 
-            String pseudo = session.getAttribute("membre").toString();
+            Partie partie = partieDAO.getPartie(idPartie);
+            request.setAttribute("partie", partie);
 
-            VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+            villageoisDAO.addPlayer(pseudo, idPartie);
 
-            //si f5, il y a déjà une partie donc on ne la recréé pas
-            if (partieDAO.getIDPartieJoueur(pseudo) != -1) {
-                int idPartie = partieDAO.getIDPartieJoueur(pseudo);
-                Partie partie = partieDAO.getPartie(idPartie);
-                request.setAttribute("partie", partie);
+            int nombreJoueurs = villageoisDAO.nombreJoueursPartie(idPartie);
+            request.setAttribute("nombreJoueurs", nombreJoueurs);
 
-                int nombreJoueurs = villageoisDAO.nombreJoueursPartie(idPartie);
-                request.setAttribute("nombreJoueurs", nombreJoueurs);
+            List<Villageois> listeVillageois = villageoisDAO.getListVillageois(idPartie);
+            request.setAttribute("listeVillageois", listeVillageois);
 
-                List<Villageois> listeVillageois = villageoisDAO.getListVillageois(idPartie);
-                request.setAttribute("listeVillageois", listeVillageois);
-
-                actionWaitGame(request, response);
-            } //attention code redondant à factoriser !
-            else{
-                int idPartie = pseudo.hashCode();
-                int dureeDay = temps.dureeToInt(Integer.parseInt(request.getParameter("dayHour")), Integer.parseInt(request.getParameter("dayMin")));
-                int dureeNight = temps.dureeToInt(Integer.parseInt(request.getParameter("nightHour")), Integer.parseInt(request.getParameter("nightMin")));
-                partieDAO.ajouterPartie(idPartie,
-                        Integer.parseInt(request.getParameter("JMin")),
-                        Integer.parseInt(request.getParameter("JMax")),
-                        dureeDay,
-                        dureeNight,
-                        heureDeb,
-                        (float) Integer.parseInt(request.getParameter("power")) / (float) 100,
-                        (float) Integer.parseInt(request.getParameter("werewolf")) / (float) 100);
-
-                Partie partie = partieDAO.getPartie(idPartie);
-                request.setAttribute("partie", partie);
-
-                villageoisDAO.addPlayer(pseudo, idPartie);
-
-                int nombreJoueurs = villageoisDAO.nombreJoueursPartie(idPartie);
-                request.setAttribute("nombreJoueurs", nombreJoueurs);
-
-                List<Villageois> listeVillageois = villageoisDAO.getListVillageois(idPartie);
-                request.setAttribute("listeVillageois", listeVillageois);
-
-                actionWaitGame(request, response);
-            }
+            actionWaitGame(request, response);
         }
     }
-
-    
 }

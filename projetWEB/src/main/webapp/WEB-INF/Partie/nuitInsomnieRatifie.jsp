@@ -1,6 +1,6 @@
 <%-- 
-    Document   : nuitInsomnie
-    Created on : Apr 4, 2017, 4:32:51 PM
+    Document   : nuitInsomnieRatifie
+    Created on : Apr 5, 2017, 8:03:45 PM
     Author     : nicolasl
 --%>
 
@@ -17,29 +17,16 @@
         <style>
         html,body,h1,h2,h3,h4,h5,h6 {font-family: "Luckiest Guy", cursive;}
         </style>
-        <title>Repaire des loups</title>
+        <title>Repaire</title>
     </head>
     <body>
         <h1 align="center">Vous êtes dans le repaire des Loups-Garou</h1>
         <h2> Restez discrêt... Ils ne doivent pas vous voir... </h2>
+        <h2> Les loups ont fait leur choix... ${pseudoJoueurElimine} sera dévoré cette nuit !   </h2>
         <p></p>
-        <table id="customers">
-            <tr>
-                <th> Joueur désigné  </th>
-                <th> Nombre de votes </th>
-                <th> Nombre de joueurs : ${nbJoueurs} </th>
-            </tr>
-            <c:forEach items="${decisions}" var="decision">
-                <tr>
-                    <td>${decision.joueurConcerne}</td>
-                    <td>${decision.getNbVote()}</td>
-                </tr>   
-            </c:forEach>
-            </tr>
-        </table>
         <p> Ecoutez discrètement ce qu'il se dit...</p>
         <table>
-            <c:forEach items="${messages}" var="message">
+            <c:forEach items="${messagesRepaire}" var="message">
                     <tr>
                         <td><B>@${message.expediteur}  :  </B></td><td>  ${message.contenu}</td>
                     </tr>

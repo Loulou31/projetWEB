@@ -1,13 +1,7 @@
 <%-- 
-<<<<<<< HEAD
-    Document   : repaire
-    Created on : Apr 4, 2017, 2:49:57 PM
+    Document   : spiritisme
+    Created on : Apr 6, 2017, 3:45:26 PM
     Author     : nicolasl
-=======
-    Document   : placeDuVillage
-    Created on : Mar 24, 2017, 6:14:59 PM
-    Author     : gaunetc
->>>>>>> e5a58b960d1bcdfeb6b1c80bb504be2a43b2a887
 --%>
 
 <%@page import="modele.Partie"%>
@@ -16,7 +10,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="css/repaire.css"/>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
@@ -50,7 +44,26 @@
             </c:forEach>
             </tr>
         </table>
+        <p></p>
         <a href="controleurPartie?action=newDecision">Proposer une décision</a>
+        <p></p>
+        <p></p>
+        <h2> Choisissez le joueur éliminé avec qui vous souhaitez discutez... </h2>
+        <p></p>
+        <form action="controleurPartie" accept-charset="utf-8">
+        <ul>
+            <li> Choisissez un joueur avec qui discuter : 
+                <SELECT name="decisionSpiritisme" size="1">
+                    <c:forEach items="${morts}" var="villageois"> 
+                        <OPTION><c:out value="${morts.pseudo}" />
+                    </c:forEach>
+                </SELECT>
+            </li>
+        </ul>
+         <button type="submit" class="button"><span>Valider</span></button><br>
+        <input type="hidden" name="action" value="addDecisionSpiritisme"/>
+        <input type="hidden" name="decisionSpiritisme" value="decisionSpiritisme"/>
+        </form>
         <h2> Discutez avec les autres loups... </h2>
         <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
         <table>
@@ -64,10 +77,9 @@
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
         <button type="submit" class="button"><span>Poster</span></button><br>
         <input type="hidden" name="action" value="ajouterUnMessage" />
-        </form>
-        
+        </form>       
         <% Partie partie = (Partie) request.getAttribute("partie");
-           String tempsChangement = partie.tempsAvantChangement(0);
+           String tempsChangement = partie.tempsAvantChangement(1);
         %>
         <p><%=tempsChangement%></p>
     </body>

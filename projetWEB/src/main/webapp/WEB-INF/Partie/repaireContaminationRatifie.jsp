@@ -1,11 +1,10 @@
 <%-- 
-    Document   : nuitInsomnie
-    Created on : Apr 4, 2017, 4:32:51 PM
+    Document   : repaireContaminationRatifie
+    Created on : Apr 5, 2017, 8:01:13 PM
     Author     : nicolasl
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,27 +16,16 @@
         <style>
         html,body,h1,h2,h3,h4,h5,h6 {font-family: "Luckiest Guy", cursive;}
         </style>
-        <title>Repaire des loups</title>
+        <title>Repaire</title>
     </head>
     <body>
         <h1 align="center">Vous êtes dans le repaire des Loups-Garou</h1>
-        <h2> Restez discrêt... Ils ne doivent pas vous voir... </h2>
+        <h2> Vous avez fait votre choix... ${pseudoJoueurElimine} sera dévoré cette nuit !   </h2>
         <p></p>
-        <table id="customers">
-            <tr>
-                <th> Joueur désigné  </th>
-                <th> Nombre de votes </th>
-                <th> Nombre de joueurs : ${nbJoueurs} </th>
-            </tr>
-            <c:forEach items="${decisions}" var="decision">
-                <tr>
-                    <td>${decision.joueurConcerne}</td>
-                    <td>${decision.getNbVote()}</td>
-                </tr>   
-            </c:forEach>
-            </tr>
-        </table>
-        <p> Ecoutez discrètement ce qu'il se dit...</p>
+        <a href="controleurPartie?action=newDecisionContamination">Transformer un villageois en Loup-Garou</a>
+        <p></p>
+        <h2> Discutez avec les autres loups... </h2>
+        <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
         <table>
             <c:forEach items="${messages}" var="message">
                     <tr>
@@ -45,5 +33,10 @@
                     </tr>
             </c:forEach>
         </table>
+        <form action="controleurPartie" method="post" accept-charset="UTF-8">
+            Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
+        <button type="submit" class="button"><span>Poster</span></button><br>
+        <input type="hidden" name="action" value="ajouterUnMessage" />
+        </form>
     </body>
 </html>

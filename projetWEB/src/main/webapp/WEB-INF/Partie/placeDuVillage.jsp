@@ -4,6 +4,7 @@
     Author     : gaunetc
 --%>
 
+<%@page import="modele.Partie"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -13,9 +14,7 @@
         <link rel="stylesheet" type="text/css" href="css/place.css"/>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">-->
         <link href="https://fonts.googleapis.com/css?family=Revalia" rel="stylesheet"> 
-        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
         <style>
         html,body,h1,h2,h3,h4,h5,h6 {font-family: "Revalia", cursive;}
         </style>
@@ -26,6 +25,8 @@
         <h2> ${morts} </h2>
         <p></p>
         <h2> Désignez le villageois à éliminer aujoud'hui... </h2>
+        <p>Vous êtes ${roleJoueurEnCours}. Votre pouvoir est : ${pouvoirJoueurEnCours}.</p>
+        <p> Il y a ${nbJoueurs} villageois vivants. Il y a ${nbLoups} loups-garou qui rodent parmi vous ! Faites attention...</p>
         <p></p>
         <table id="customers">
             <tr>
@@ -63,5 +64,10 @@
         <button type="submit" class="button"><span>Poster</span></button><br>
         <input type="hidden" name="action" value="ajouterUnMessage" />
         </form>
+        
+        <% Partie partie = (Partie) request.getAttribute("partie");
+           String tempsChangement = partie.tempsAvantChangement(1);
+        %>
+        <p><%=tempsChangement%></p>
     </body>
 </html>
