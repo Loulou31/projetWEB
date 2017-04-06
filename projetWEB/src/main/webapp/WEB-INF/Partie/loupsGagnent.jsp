@@ -13,7 +13,6 @@
     </head>
     <body>
         <h1>Les loups garous ont gagné !!!!</h1>
-        <a href="controleur?action=quitteAttentePartie">----> Vous voulez rejouer? <----</a>
-        <a href="controleur?action=deconnexion">----> Déconnexion <----</a>
+        <a href="controleur?action=quitteAttentePartie">Vous voulez rejouer?</a>
     </body>
 </html>
