@@ -54,7 +54,11 @@
         </p>
 
         <% if (request.getAttribute("partiePrete") != null) { %>
-            <a href="controleur?action=debutPartie&id=${partie.idPartie}">Démarrer Partie</a>
+            <form action="controleurPartie" method="get" align="center">
+                <button type="submit" class="button"><span>Démarrer Partie</span></button><br>
+                <input type="hidden" name="action" value="debutPartie"/>
+                <input type="hidden" name="id" value="${partie.idPartie}"/>
+            </form>
         <%}%>
         <p></p>
         <form action="controleur" method="get" align="center">

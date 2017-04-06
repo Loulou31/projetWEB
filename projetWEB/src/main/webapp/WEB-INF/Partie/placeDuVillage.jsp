@@ -27,7 +27,7 @@
               <a href="controleur?action=deconnexion" class="w3-bar-item w3-button w3-hide-small w3-hover-white bspec">Déconnexion</a>
             </div>
         </div>
-        <h1 align="center">Bienvenue sur la place du village !</h1>
+        <h1 align="center" style="margin-top: 50px">Bienvenue sur la place du village !</h1>
         <h2> ${morts} </h2>
         <p></p>
         <h2> Désignez le villageois à éliminer aujoud'hui... </h2>
@@ -70,7 +70,10 @@
         <button type="submit" class="button"><span>Poster</span></button><br>
         <input type="hidden" name="action" value="ajouterUnMessage" />
         </form>
-        
+        <form action="controleurPartie" method="get" align="center">
+                <button type="submit" class="button"><span>Actualiser les messages</span></button><br>
+                <input type="hidden" name="action" value="reloadMessages"/>
+        </form>
         <% Partie partie = (Partie) request.getAttribute("partie");
            String tempsChangement = partie.tempsAvantChangement(1);
         %>

@@ -49,7 +49,7 @@ public class Controleur extends HttpServlet {
         PartieDAO partieDAO = new PartieDAO(ds);
         System.out.println("ACTION : " + action) ; 
         try {
-            if (action == null) {
+            if (action == null || action.equals("accueil")) {
                 actionAccueil(request, response);
             } else if (action.equals("index")) {
                 actionIndex(request, response);
