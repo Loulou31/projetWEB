@@ -312,7 +312,7 @@ public class ControleurPartie extends HttpServlet {
             } else if (villageois.getPouvoir().equals("voyance")) {
                 goToVoyance(request, response, idPartie, villageoisDAO);
             } else if (villageois.getPouvoir().equals("spiritisme")){
-                List<Villageois> morts = villageoisDAO.getListHumainsVivants(idPartie) ;
+                List<Villageois> morts = villageoisDAO.getListVillageoisMorts(idPartie) ;
                 request.setAttribute("morts", morts) ;
                 request.getRequestDispatcher("/WEB-INF/Partie/repaireSpiritismmeDecision.jsp").forward(request, response);
             } else {
@@ -336,7 +336,7 @@ public class ControleurPartie extends HttpServlet {
             }
         } else if (villageois.getPouvoir().equals("spriritisme")){
             System.out.println("SPIRITISME" ); 
-            List<Villageois> morts = villageoisDAO.getListHumainsMorts(idPartie) ;
+            List<Villageois> morts = villageoisDAO.getListVillageoisMorts(idPartie) ;
             request.setAttribute("morts", morts) ;
             request.getRequestDispatcher("/WEB-INF/Partie/nuitSpiritisme.jsp").forward(request, response);
         } else {
