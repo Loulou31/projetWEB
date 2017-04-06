@@ -261,13 +261,13 @@ public class ControleurPartie extends HttpServlet {
         request.setAttribute("nbLoups", nbLoupsVivants) ; 
         
         /* On vérifie si la partie n'est pas finie */
-        if (nbLoupsVivants == 0) {
+        /*if (nbLoupsVivants == 0) {
             /* Les loups ont perdu */
             request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
-        } else if (nbLoupsVivants == nbJoueursVivants) {
+        /*} else if (nbLoupsVivants == nbJoueursVivants) {
             /* Les loups ont gagné */
             request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
-        }
+        /*}*/
         
         
         // Si je suis mort
@@ -310,7 +310,7 @@ public class ControleurPartie extends HttpServlet {
             } else if (villageois.getPouvoir().equals("voyance")) {
                 goToVoyance(request, response, idPartie, villageoisDAO);
             } else if (villageois.getPouvoir().equals("spiritisme")){
-                List<Villageois> morts = villageoisDAO.getListHumainsVivants(idPartie) ;
+                List<Villageois> morts = villageoisDAO.getListVillageoisMorts(idPartie) ;
                 request.setAttribute("morts", morts) ;
                 request.getRequestDispatcher("/WEB-INF/Partie/repaireSpiritismmeDecision.jsp").forward(request, response);
             } else {
@@ -334,7 +334,7 @@ public class ControleurPartie extends HttpServlet {
             }
         } else if (villageois.getPouvoir().equals("spriritisme")){
             System.out.println("SPIRITISME" ); 
-            List<Villageois> morts = villageoisDAO.getListHumainsMorts(idPartie) ;
+            List<Villageois> morts = villageoisDAO.getListVillageoisMorts(idPartie) ;
             request.setAttribute("morts", morts) ;
             request.getRequestDispatcher("/WEB-INF/Partie/nuitSpiritisme.jsp").forward(request, response);
         } else {
