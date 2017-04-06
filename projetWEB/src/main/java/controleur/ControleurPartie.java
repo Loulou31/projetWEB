@@ -228,11 +228,19 @@ public class ControleurPartie extends HttpServlet {
             System.out.println("jj");
             if (!partieDAO.decisionHumainRatifie(idPartie)){
                 System.out.println("jjkk");
-                request.getRequestDispatcher("/WEB-INF/Partie/placeDuVillage.jsp").forward(request, response);
+                if (villageois.getVivant()==1){
+                    request.getRequestDispatcher("/WEB-INF/Partie/placeDuVillage.jsp").forward(request, response);
+                }else{
+                    request.getRequestDispatcher("/WEB-INF/Partie/placeDuVillageMort.jsp").forward(request, response);
+                }
                 //goToVoyance(request, response, idPartie, villageoisDAO) ; 
             } else {
                 System.out.println("ll");
-                request.getRequestDispatcher("/WEB-INF/Partie/placeRatifie.jsp").forward(request, response);
+                if (villageois.getVivant()==1){
+                    request.getRequestDispatcher("/WEB-INF/Partie/placeRatifie.jsp").forward(request, response);
+                }else{
+                    request.getRequestDispatcher("/WEB-INF/Partie/placeRatifieMort.jsp").forward(request, response);
+                }
             }
         } else if (villageois.getRole() == 1) {
             List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
