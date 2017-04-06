@@ -67,6 +67,25 @@ public class MessageDAO extends AbstractDatabaseDAO {
 	return result;
     }
     
+    
+    public List<Message> getListMessageSpiritisme(int idPartie) {
+        List<Message> result = new ArrayList<Message>();
+        try (
+	     Connection conn = getConn();
+	     Statement st = conn.createStatement();
+	     ) {
+            ResultSet rs = st.executeQuery("SELECT * FROM Message_Spiritisme WHERE idPartie = "+idPartie);
+            while (rs.next()) {
+                Message message =
+                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"), idPartie);
+                result.add(message);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+	}
+	return result;
+    }
+    
     /**
      * Ajoute un message dans la tale MessageSalleDiscussion
      */
@@ -89,6 +108,18 @@ public class MessageDAO extends AbstractDatabaseDAO {
     public void ajouteMessageRepaire(String expediteur, String contenu, int idPartie) {
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("INSERT INTO Message_Repaire VALUES (?, ?, ?, SYSDATE)");
+            st.setInt(1, idPartie);
+            st.setString(2, expediteur);
+            st.setString(3, contenu);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+    
+    public void ajouteMessageSpiritisme(String expediteur, String contenu, int idPartie) {
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("INSERT INTO Message_Spiritisme VALUES (?, ?, ?, SYSDATE)");
             st.setInt(1, idPartie);
             st.setString(2, expediteur);
             st.setString(3, contenu);
