@@ -28,12 +28,17 @@
         <form action="controleurPartie" accept-charset="utf-8">
         <ul>
             <li> Choisissez un joueur avec qui discuter : 
+                <form action="controleurPartie" accept-charset="utf-8">
                 <SELECT name="decisionSpiritisme" size="1">
                     <c:forEach items="${morts}" var="villageois"> 
                         <OPTION><c:out value="${villageois.pseudo}" />
-                    </c:forEach>
+                        </c:forEach>
                 </SELECT>
+                <button type="submit" class="button"><span>Valider</span></button><br>
+                <input type="hidden" name="action" value="addDecisionSpiritisme"/>
+                <input type="hidden" name="decisionSpiritisme" value="decisionSpiritisme"/>
+                </form>
             </li>
         </ul>
-    </body>
+        </body>
 </html>
