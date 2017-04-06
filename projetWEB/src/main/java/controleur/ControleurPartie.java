@@ -255,21 +255,13 @@ public class ControleurPartie extends HttpServlet {
             request.setAttribute("decisions", decisions);
             request.setAttribute("nbJoueurs", villageoisDAO.getListVillageoisVivants(idPartie).size());
             if (!partieDAO.decisionHumainRatifie(idPartie)) {
-                if (villageois.getVivant()==1){
                     request.getRequestDispatcher("/WEB-INF/Partie/placeDuVillage.jsp").forward(request, response);
-                }else{
-                    request.getRequestDispatcher("/WEB-INF/Partie/placeDuVillageMort.jsp").forward(request, response);
-                }
             } else {
                 String pseudoJoueurElimine = partieDAO.pseudoDecisionHumainRatifie(idPartie) ; 
                 Villageois joueurElimine = villageoisDAO.getVillageois(pseudoJoueurElimine) ; 
                 request.setAttribute("pseudoJoueurElimine", joueurElimine.getPseudo()) ; 
-                request.setAttribute("roleJoueurElimine", joueurElimine.getRoleString()) ; 
-                 if (villageois.getVivant()==1){
-                    request.getRequestDispatcher("/WEB-INF/Partie/placeRatifie.jsp").forward(request, response);
-                }else{
-                    request.getRequestDispatcher("/WEB-INF/Partie/placeRatifieMort.jsp").forward(request, response);
-                }
+                request.setAttribute("roleJoueurElimine", joueurElimine.getRoleString()) ;
+                request.getRequestDispatcher("/WEB-INF/Partie/placeRatifie.jsp").forward(request, response);
             }
         } else if (villageois.getRole() == 1) {
             // je suis un loup garou et que c'est la nuit 
