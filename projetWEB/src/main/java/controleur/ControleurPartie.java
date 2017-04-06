@@ -86,14 +86,19 @@ public class ControleurPartie extends HttpServlet {
 
     private void actionDebutPartie(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-
+        /* on récupère l'Id de la partie */
         int idPartie = Integer.parseInt(request.getParameter("id"));
+        /* préparation accés BD */
         PartieDAO partieDAO = new PartieDAO(ds);
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        /* recupération des listes de villageois */
         List<Villageois> testVillageois = villageoisDAO.getListVillageois(idPartie);
         List<Villageois> villageois = villageoisDAO.getListJoueurs(idPartie);
+        /* on récupère la partie */
         Partie partie = partieDAO.getPartie(idPartie);
+        /* on récupère le nombre de joueurs */
         int nbJoueurs = partieDAO.getNbJoueurs(idPartie);
+        /* on récupère la proportion des loups */
         float proportionLoup = partie.getProportionLG();
         int nbLoup;
         if (proportionLoup == 0) {
@@ -101,6 +106,7 @@ public class ControleurPartie extends HttpServlet {
         } else {
             nbLoup = (int) ceil(nbJoueurs * proportionLoup);
         }
+        /* on récupère la probabilité d'avoir un pouvoir */
         float probaPouvoir = partie.getProbaPouvoir();
 
         /* si les roles ont deja été attribué: ne rien faire*/

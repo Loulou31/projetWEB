@@ -24,7 +24,7 @@
         <p>Vous êtes ${roleJoueurEnCours}. Votre pouvoir est : ${pouvoirJoueurEnCours}.</p>
         <p> Il y a ${nbJoueurs} villageois vivants. Il y a ${nbLoups} loups-garou qui rodent parmi vous ! Faites attention...</p>
         <h2> La décision est ratifiée !</h2>
-        <p>Le joueur @{pseudoJoueurElimine} nous a quitté aujourd'hui.... Et c'était un ${roleJoueurElimine} ! </p>
+        <p>Le joueur @${pseudoJoueurElimine} nous a quitté aujourd'hui.... Et c'était un ${roleJoueurElimine} ! </p>
         <p></p>
         <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
