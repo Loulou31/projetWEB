@@ -525,6 +525,9 @@ public class ControleurPartie extends HttpServlet {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds) ; 
         String pseudo = session.getAttribute("membre").toString() ;
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        PartieDAO partieDAO = new PartieDAO(ds);
+        Partie partie = partieDAO.getPartie(villageois.getPartie());
+        request.setAttribute("partie", partie);
         joueurChoisiSpiritisme = request.getParameter("decisionSpiritisme") ; 
         request.setAttribute("view", villageois.getRoleString()) ; 
         request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response); 
