@@ -202,7 +202,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
     public int getIdDispo() {
         ResultSet rs;
         try (Connection conn = getConn()) {
-            int resultat = 1;
+            int resultat = 0;
             PreparedStatement st = conn.prepareStatement("SELECT IdPartie FROM Partie");
             rs = st.executeQuery();
             while (rs.next()) {
@@ -211,7 +211,6 @@ public class PartieDAO extends AbstractDatabaseDAO {
                     resultat = inter;
                 }
             }
-            System.out.println(resultat);
             return (resultat + 1);
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
