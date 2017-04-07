@@ -27,10 +27,14 @@
         <p> Ecoutez discrètement ce qu'il se dit...</p>
         <table>
             <c:forEach items="${messagesRepaire}" var="message">
-                    <tr>
-                        <td><B>@${message.expediteur}  :  </B></td><td>  ${message.contenu}</td>
-                    </tr>
+                <tr>
+                    <td><B>@${message.expediteur}  :  </B></td><td>  ${message.contenu}</td>
+                </tr>
             </c:forEach>
         </table>
+        <form action="controleurPartie" method="get" align="center">
+            <button type="submit" class="button"><span>Actualiser la page</span></button><br>
+            <input type="hidden" name="action" value="reloadMessages"/>
+        </form>
     </body>
 </html>
