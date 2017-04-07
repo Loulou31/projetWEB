@@ -38,6 +38,7 @@
                 <th>Proportion de LG  </th>
                 <th><!-- Rejoindre --></th>
             </tr>
+        
         <c:forEach items="${parties}" var="partie">
                 <tr>
                     <td>${partie.idPartie}</td>

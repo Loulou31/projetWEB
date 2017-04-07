@@ -352,6 +352,13 @@ public class ControleurPartie extends HttpServlet {
             partieDAO.passerContamination(idPartie, 0);
             request.setAttribute("enDiscussion", 0);
             partie = partieDAO.getPartie(idPartie);
+            if (partie.decisionsCorrompues(decisionDAO.getListDecisionHumains(idPartie))){
+                decisionDAO.supprimerToutesDecisionsJour(idPartie);
+            }
+        }else{
+            if (partie.decisionsCorrompues(decisionDAO.getListDecisionLoup(idPartie))){
+                decisionDAO.supprimerToutesDecisionsNuit(idPartie);
+            }
         }
         /* On donne les infos à la prochaine page jsp appelée */
         request.setAttribute("partie", partie);
