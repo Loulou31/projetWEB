@@ -22,7 +22,7 @@
         <h1>Les loup-garous ont gagné !!!!</h1>
         <form action="controleur" method="get" align="center">
                 <button type="submit" class="button"><span>Voulez-vous rejouer ?</span></button><br>
-                <input type="hidden" name="action" value="quitteAttentePartie"/>
+                <input type="hidden" name="action" value="quittePartie"/>
         </form>
     </body>
 </html>

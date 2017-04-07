@@ -47,7 +47,7 @@ public class Controleur extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         PartieDAO partieDAO = new PartieDAO(ds);
-        System.out.println("ACTION : " + action);
+        System.out.println("ACTION : " + action) ; 
         try {
             if (action == null || action.equals("accueil")) {
                 actionAccueil(request, response);
@@ -67,8 +67,10 @@ public class Controleur extends HttpServlet {
                 actionDeconnexion(request, response);
             } else if (action.equals("debutPartie")) {
                 request.getRequestDispatcher("controleurPartie").forward(request, response);
-            } else if (action.equals("quitteAttentePartie")) {
-                quittePartie(request, response);
+            } else if (action.equals("quitteAttentePartie")){
+                quitteAttentePartie(request, response);
+            } else if (action.equals("quittePartie")){
+                quittePartie(request, response) ; 
             } else if (action.equals("rejoindreJeu")) {
                 request.setAttribute("action", action);
                 request.getRequestDispatcher("/controleurPartie").forward(request, response);
@@ -89,9 +91,10 @@ public class Controleur extends HttpServlet {
             HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        if (session.getAttribute("membre") == null) {
+        if(session.getAttribute("membre") == null)
             request.getRequestDispatcher("/WEB-INF/AvantPartie/connexion.jsp").forward(request, response);
-        } else {
+        else{
+//            response.setIntHeader("Refresh",1);
             request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
         }
     }
@@ -99,28 +102,46 @@ public class Controleur extends HttpServlet {
     private void quittePartie(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("QUITTE PARTIE") ; 
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString();
         PartieDAO partieDAO = new PartieDAO(ds);
+        MessageDAO messageDAO = new MessageDAO(ds) ; 
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        //si dernier joueur de partie : on détruit tout
         int idPartie = partieDAO.getIDPartieJoueur(pseudo);
         if (partieDAO.getNbJoueurs(idPartie) == 1) {
-            System.out.println("JE SUIS DERNIER JOUEUR") ; 
-            MessageDAO messageDAO = new MessageDAO(ds);
-            System.out.println("SUPRESSION MESSAGES") ;
-            messageDAO.supprimerTousMessages(idPartie);
-            System.out.println("SUPRESSION PARTIE") ;
+            System.out.println("DERNIER JOUEUR SUPP MESAGES") ; 
+            messageDAO.supprimerTousMessages(idPartie) ; 
+            System.out.println("SUPP VILLAGEOIS") ; 
+            villageoisDAO.supprimerVillageois(pseudo);
+            System.out.println("SUPP PARTIE") ; 
             partieDAO.supprimerPartie(idPartie);
-            System.out.println("SUPRESSION VILLAGEOIS") ;
-            villageoisDAO.supprimerVillageois(pseudo);
         } else {
-            villageoisDAO.supprimerVillageois(pseudo);
+         villageoisDAO.supprimerVillageois(pseudo);
+           
         }
         request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
+        
     }
+    
+    private void quitteAttentePartie(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        PartieDAO partieDAO = new PartieDAO(ds);
 
-
+        //si dernier joueur de partie : on détruit tout
+        int idPartie = partieDAO.getIDPartieJoueur(pseudo);
+        if (partieDAO.getNbJoueurs(idPartie) == 1) {
+            partieDAO.supprimerPartie(idPartie);
+        }
+        
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        villageoisDAO.supprimerVillageois(pseudo);
+        request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
+    }
+    
 
     private void actionIndex(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
@@ -130,11 +151,10 @@ public class Controleur extends HttpServlet {
     private void actionLogin(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if (session.getAttribute("membre") == null) {
+        if(session.getAttribute("membre") == null)
             request.getRequestDispatcher("/WEB-INF/AvantPartie/login.jsp").forward(request, response);
-        } else {
+        else
             request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
-        }
     }
 
     private void actionDeconnexion(HttpServletRequest request,
@@ -178,6 +198,8 @@ public class Controleur extends HttpServlet {
         }
     }
 
+       
+
     private void actionNewGame(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
@@ -219,20 +241,26 @@ public class Controleur extends HttpServlet {
         int nombreJoueurs = (int) request.getAttribute("nombreJoueurs");
         int nombreJoueursMin = partie.getNbJoueursMin();
 
+
         if (!temps.estApres(intDeb, temps.getTempsLong())) {
             if (nombreJoueursMin <= nombreJoueurs) {
                 request.setAttribute("partiePrete", 1);
                 request.getRequestDispatcher("/WEB-INF/AvantPartie/attenteDebutPartie.jsp").forward(request, response);
             } else {
-                quittePartie(request, response);
+                quitteAttentePartie(request, response);
             }
         } else {
-            request.getRequestDispatcher("/WEB-INF/AvantPartie/attenteDebutPartie.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/AvantPartie/attenteDebutPartie.jsp").forward(request, response);
         }
     }
 
+
+   
+
+    
+
     /**
-     * Actions possibles en POST
+     * Actions possibles en POST 
      */
     public void doPost(HttpServletRequest request,
             HttpServletResponse response)
@@ -307,8 +335,8 @@ public class Controleur extends HttpServlet {
             request.setAttribute("listeVillageois", listeVillageois);
 
             actionWaitGame(request, response);
-
-            //après on vérifie que le nombre de joueurs minimum est plus petit que le nombre de j max
+        
+        //après on vérifie que le nombre de joueurs minimum est plus petit que le nombre de j max
         } else if (Integer.parseInt(request.getParameter("JMin")) > Integer.parseInt(request.getParameter("JMax"))) {
             request.setAttribute("erreurNbJoueurs", 1);
             request.getRequestDispatcher("/WEB-INF/AvantPartie/newPartie.jsp").forward(request, response);
