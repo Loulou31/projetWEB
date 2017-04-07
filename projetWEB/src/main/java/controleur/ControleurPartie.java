@@ -371,22 +371,22 @@ public class ControleurPartie extends HttpServlet {
         request.setAttribute("nbLoups", nbLoupsVivants);
 
         /* On vérifie si la partie n'est pas finie */
-        if (nbLoupsVivants == 0) {
-            /* Les loups ont perdu */
-            System.out.println("La partie est finie");
-            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
-        } else if (nbLoupsVivants == nbJoueursVivants) {
-            /* Les loups ont gagné */
-            System.out.println("La partie est finieLoup");
-            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
-        }
+//        if (nbLoupsVivants == 0) {
+//            /* Les loups ont perdu */
+//            System.out.println("La partie est finie");
+//            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
+//        } else if (nbLoupsVivants == nbJoueursVivants) {
+//            /* Les loups ont gagné */
+//            System.out.println("La partie est finieLoup");
+//            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
+//        }
         // Si je suis mort
         if (villageois.getVivant() == 0) {
             if (villageois.getPseudo().equals(joueurChoisiSpiritisme)) {
                 System.out.println("je suis le joueur avec qui le spirit veut parler");
                 List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
                 //Une fois que les messages contiendront les dates.
-                //messageDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
+                messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
                 request.setAttribute("messages", messagesDiscussionSpiritisme);
                 request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response);
             } else {
@@ -395,7 +395,7 @@ public class ControleurPartie extends HttpServlet {
         } else if (partie.estJour()) {
             List<Message> messagesVillage = messageDAO.getListeMessagesSalleDiscussion(idPartie);
             //Une fois que les messages contiendront les dates.
-            //messagesVillage = partie.messageDuJour(messagesVillage);
+            messagesVillage = partie.messageDuJour(messagesVillage);
             request.setAttribute("messages", messagesVillage);
             List<Decision> decisions = decisionDAO.getListDecisionHumains(idPartie);
             request.setAttribute("decisions", decisions);
@@ -414,7 +414,7 @@ public class ControleurPartie extends HttpServlet {
             System.out.println("je suis un loup garou et c'est la nuit");
             List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
             //Une fois que les messages contiendront les dates.
-            //messagesRepaire = partie.messageDuJour(messagesRepaire);
+            messagesRepaire = partie.messageDuJour(messagesRepaire);
             request.setAttribute("messages", messagesRepaire);
             List<Decision> decisions = decisionDAO.getListDecisionLoup(idPartie);
             request.setAttribute("decisions", decisions);
