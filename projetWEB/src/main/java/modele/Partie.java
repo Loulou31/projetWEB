@@ -38,6 +38,7 @@ public class Partie {
     private Repaire repaire;
 
     private int discussionSpiritisme; 
+    private int contamination; 
 
 
 
@@ -51,7 +52,8 @@ public class Partie {
                   int heureDebut, 
                   float probaPouvoir, 
                   float proportionLG,
-                  int discussionSpirit) {
+                  int discussionSpirit, 
+                  int contamination) {
         this.idPartie = idPartie;
         this.nbJoueursMin = nbJoueursMin;
         this.nbJoueursMax = nbJoueursMax;
@@ -61,11 +63,20 @@ public class Partie {
         this.probaPouvoir = probaPouvoir;
         this.proportionLG = proportionLG;
         this.discussionSpiritisme = discussionSpirit; 
+        this.contamination = contamination; 
         //this.joueursPresents = new HashSet<Membre>();
        
         this.villageoisPresents = new ArrayList<Villageois>();
         this.placeVillage = new PlaceVillage(new ArrayList<Decision>(), new ArrayList<Message>());
         this.repaire = new Repaire(new ArrayList<Decision>(), new ArrayList<Message>());
+    }
+
+    public int getContamination() {
+        return contamination;
+    }
+
+    public void setContamination(int contamination) {
+        this.contamination = contamination;
     }
     
     public void setVillageoisPresents(List<Villageois> villageois){
