@@ -12,11 +12,13 @@ import java.util.HashSet;
  * @author gaunetc
  */
 public class Decision {
-    private int idPartie; 
-    private String joueurConcerne;
-    private boolean etat;
-    private HashSet<String> votants;
-    private int nbVote ; 
+    
+    private int idPartie; // car besoin nb joueurs total
+    private int date;
+    private String joueurConcerne; // il faut mettre type villageois pas string
+    private boolean etat; 
+    private HashSet<String> votants; // same
+    private int nbVote ; //à supprimer 
 
     public Decision(String joueurConcerne, HashSet<String> votants) {
         this.joueurConcerne = joueurConcerne;
@@ -60,8 +62,9 @@ public class Decision {
     public int getNbVote() {
         return this.votants.size();
     }
-    
-    
+
+
+
 
     @Override
     public String toString() {

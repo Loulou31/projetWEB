@@ -23,6 +23,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         super(ds);
     }
 
+    //OK
     public List<Partie> getListeParties() {
         List<Partie> result = new ArrayList<Partie>();
         try (
@@ -38,7 +39,8 @@ public class PartieDAO extends AbstractDatabaseDAO {
                                 rs.getInt("DureeNuit"),
                                 rs.getInt("HeureDebut"),
                                 rs.getFloat("ProbaPouvoir"),
-                                rs.getFloat("ProportionLG"));
+                                rs.getFloat("ProportionLG"),
+                                rs.getInt("discussionSpiritisme"));;
                 result.add(partie);
             }
         } catch (SQLException e) {
@@ -48,6 +50,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
     }
 
 
+    //à tuer bye bye, casse toi
     public int getNbJoueursVivants(int id) {
         try (Connection conn = this.getConn()) {
             PreparedStatement st = conn.prepareStatement
@@ -60,9 +63,11 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
+
+    //OK
     public void passerSpiritisme(int idPartie, int u) {
         try (
-              Connection conn = getConn();) {
+                Connection conn = getConn();) {
             PreparedStatement st = conn.prepareStatement("UPDATE Partie set discussionSpiritisme = ? Where idPartie = ?");
             st.setInt(1, u);
             st.setInt(2, idPartie);
@@ -71,7 +76,19 @@ public class PartieDAO extends AbstractDatabaseDAO {
             throw new DAOException("Erreur BD passer spirit" + e.getMessage(), e);
         }
     }
-    
+
+    public void updateEnCours(int idPartie, boolean b) {
+        try (
+                Connection conn = getConn();) {
+            PreparedStatement st = conn.prepareStatement("UPDATE Partie set enCours = ? Where idPartie = ?");
+            st.setBoolean(1, b);
+            st.setInt(2, idPartie);
+            ResultSet rs = st.executeQuery();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD passer spirit" + e.getMessage(), e);
+        }
+    }
+
     public void ajouterPartie(int idPartie,
             int nbJoueursMin,
             int nbJoueursMax,
@@ -98,6 +115,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
+    //OK
     public Partie getPartie(int id) {
         Partie partie;
         try (Connection conn = getConn()) {
@@ -120,7 +138,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         return partie;
     }
 
-
+    //à revoir :(
     //return -1 s'il n'y a pas de partie à retourner
     public int getIDPartieJoueur(String login) {
         ResultSet rs;
@@ -137,10 +155,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
-
-    /**
-     * Supprime une partie après qu'elle soit terminée *
-     */
+    //OK
     public void supprimerPartie(int id) {
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("DELETE FROM Partie WHERE IdPartie = ?");
@@ -151,6 +166,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
+    //à tuer bye bye c'est triste
     public int getNbJoueurs(int id) {
         ResultSet rs;
         int nbJoueurs = 0;
@@ -166,12 +182,29 @@ public class PartieDAO extends AbstractDatabaseDAO {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
     }
-
-    public Boolean decisionRatifie(int idPartie){
-        //A partir de l'id d'une partie: retourne si oui ou non la partie contient une décision ratifiée
-        return false;
+    
+    
+    //pas le choix je pense
+    public int getIdDispo() {
+        ResultSet rs;
+        try (Connection conn = getConn()) {
+            int resultat = 0;
+            PreparedStatement st = conn.prepareStatement("SELECT IdPartie FROM Partie");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                int inter = rs.getInt("IdPartie");
+                if (inter > resultat) {
+                    resultat = inter;
+                }
+            }
+            return (resultat + 1);
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
     }
 
+    
+    //bye bye dans place village et pareil pour les autres
     public Boolean decisionHumainRatifie(int idPartie){
         //A partir de l'id d'une partie: retourne si oui ou non la partie contient une décision ratifiée
         ResultSet rs;
@@ -208,25 +241,6 @@ public class PartieDAO extends AbstractDatabaseDAO {
             st.setInt(1, idPartie);
             rs = st.executeQuery();
             return rs.next();
-        } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
-        }
-    }
-
-    public int getIdDispo() {
-        ResultSet rs;
-        try (Connection conn = getConn()) {
-            int resultat = 1;
-            PreparedStatement st = conn.prepareStatement("SELECT IdPartie FROM Partie");
-            rs = st.executeQuery();
-            while (rs.next()) {
-                int inter = rs.getInt("IdPartie");
-                if (inter > resultat) {
-                    resultat = inter;
-                }
-            }
-            System.out.println(resultat);
-            return (resultat + 1);
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
