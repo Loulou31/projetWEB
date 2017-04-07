@@ -419,7 +419,7 @@ public class ControleurPartie extends HttpServlet {
             request.setAttribute("nbJoueurs", villageoisDAO.getListLoupsVivants(idPartie).size());
 
             if (villageois.getPouvoir().equals("contamination")) {
-                if (!partieDAO.decisionHumainRatifie(idPartie)) {
+                if (!partieDAO.decisionLoupRatifie(idPartie)) {
                     if (partie.getContamination() == 1) {
                         request.getRequestDispatcher("/WEB-INF/Partie/repaire.jsp").forward(request, response);
                     } else {
