@@ -29,7 +29,6 @@
                 out.print("<h1>Vous ne possedez aucun pouvoir.</h1>");
             }
         %>
-        <li><a href="controleurPartie?action=rejoindreJeu">Rejoindre Salle Discussion</a></li>
         <form action="controleurPartie" method="get" align="center">
                 <button type="submit" class="button"><span>Rejoindre Salle Discussion</span></button><br>
                 <input type="hidden" name="action" value="rejoindreJeu"/>
