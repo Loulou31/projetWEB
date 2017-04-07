@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Message;
+import modele.Temps;
 
 /**
  *
@@ -91,26 +92,31 @@ public class MessageDAO extends AbstractDatabaseDAO {
      */
     public void ajouteMessageSalleDiscussion (String expediteur, String contenu, int idPartie) {
         try (Connection conn = getConn()) {	
-	     PreparedStatement st = conn.prepareStatement
-	       ("INSERT INTO Message_Salle_Discussion VALUES (?, ?, ?, SYSDATE)");
+	     PreparedStatement st = conn.prepareStatement("INSERT INTO Message_Salle_Discussion VALUES (?, ?, ?, ?)");
             st.setInt(1, idPartie);
             st.setString(2, expediteur);
             st.setString(3, contenu);
+            Temps temps = new Temps();
+            int date = temps.getTempsInt();
+            st.setInt(4, date);
             st.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
     }
-    
+
     /**
      * Ajoute un message dans la tale MessageRepaire
      */
     public void ajouteMessageRepaire(String expediteur, String contenu, int idPartie) {
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("INSERT INTO Message_Repaire VALUES (?, ?, ?, SYSDATE)");
+            PreparedStatement st = conn.prepareStatement("INSERT INTO Message_Repaire VALUES (?, ?, ?, ?)");
             st.setInt(1, idPartie);
             st.setString(2, expediteur);
             st.setString(3, contenu);
+            Temps temps = new Temps();
+            int date = temps.getTempsInt();
+            st.setInt(4, date);
             st.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
@@ -119,10 +125,13 @@ public class MessageDAO extends AbstractDatabaseDAO {
     
     public void ajouteMessageSpiritisme(String expediteur, String contenu, int idPartie) {
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("INSERT INTO Message_Spiritisme VALUES (?, ?, ?, SYSDATE)");
+            PreparedStatement st = conn.prepareStatement("INSERT INTO Message_Spiritisme VALUES (?, ?, ?, ?)");
             st.setInt(1, idPartie);
             st.setString(2, expediteur);
             st.setString(3, contenu);
+            Temps temps = new Temps();
+            int date = temps.getTempsInt();
+            st.setInt(4, date);
             st.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
