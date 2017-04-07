@@ -276,6 +276,7 @@ public class ControleurPartie extends HttpServlet {
 //        }
         // Si je suis mort
         if (villageois.getVivant() == 0) {
+            System.out.println("je suis mort");
             request.getRequestDispatcher("/WEB-INF/Partie/joueurMort.jsp").forward(request, response);
         }
         if (villageois.getPseudo().equals(joueurChoisiSpiritisme)) {
