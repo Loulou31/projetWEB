@@ -146,7 +146,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
             st.setString(1, pseudo);
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
+            throw new DAOException("Erreur BD supp villageois " + e.getMessage(), e);
         }
     }
     

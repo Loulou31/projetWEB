@@ -108,8 +108,11 @@ public class Controleur extends HttpServlet {
         if (partieDAO.getNbJoueurs(idPartie) == 1) {
             System.out.println("JE SUIS DERNIER JOUEUR") ; 
             MessageDAO messageDAO = new MessageDAO(ds);
+            System.out.println("SUPRESSION MESSAGES") ;
             messageDAO.supprimerTousMessages(idPartie);
+            System.out.println("SUPRESSION VILLAGEOIS") ;
             villageoisDAO.supprimerVillageois(pseudo);
+            System.out.println("SUPRESSION PARTIE") ;
             partieDAO.supprimerPartie(idPartie);
         } else {
             villageoisDAO.supprimerVillageois(pseudo);
