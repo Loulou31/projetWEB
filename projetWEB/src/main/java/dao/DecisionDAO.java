@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import javax.annotation.Resource;
+import modele.Temps;
 
 /**
  *
@@ -121,10 +122,13 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         /* on vérifie que une decision n'est pas en cours sur le joueur concerné */
         if (!decisionCorrecteHumain(login_joueur, idPartie)) {
             try (Connection conn = getConn()) {
-                PreparedStatement st = conn.prepareStatement("INSERT INTO Decision_Humain (login_joueur_concerne, id_partie, login_expeditaire, ratifie, date_envoi, nbreVote) VALUES (?, ?, ?, 0, SYSDATE, 0)");
+                PreparedStatement st = conn.prepareStatement("INSERT INTO Decision_Humain (login_joueur_concerne, id_partie, login_expeditaire, ratifie, date_envoi, nbreVote) VALUES (?, ?, ?, 0, ?, 0)");
                 st.setString(1, login_joueur);
                 st.setInt(2, idPartie);
                 st.setString(3, login_expeditaire);
+                Temps temps = new Temps();
+                int date = temps.getTempsInt();
+                st.setInt(5, date);
                 st.executeUpdate();
                 HashSet<String> votants = new HashSet();
                 Decision decision = new Decision(login_joueur, votants, 0, idPartie);
@@ -168,10 +172,13 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         if (!decisionCorrecteLoup(login_joueur, idPartie)) {
             System.out.println("je vais ajouter la dec");
             try (Connection conn = getConn()) {
-                PreparedStatement st = conn.prepareStatement("INSERT INTO Decision_Loup (login_joueur_concerne, id_partie, login_expeditaire, ratifie, date_envoi, nbreVote) VALUES (?, ?, ?, 0, SYSDATE, 0)");
+                PreparedStatement st = conn.prepareStatement("INSERT INTO Decision_Loup (login_joueur_concerne, id_partie, login_expeditaire, ratifie, date_envoi, nbreVote) VALUES (?, ?, ?, 0, ?, 0)");
                 st.setString(1, login_joueur);
                 st.setInt(2, idPartie);
                 st.setString(3, login_expeditaire);
+                Temps temps = new Temps();
+                int date = temps.getTempsInt();
+                st.setInt(5, date);
                 st.executeUpdate();
                 HashSet<String> votants = new HashSet();
                 Decision decision = new Decision(login_joueur, votants, 0, idPartie);
