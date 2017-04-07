@@ -139,6 +139,14 @@ span.psw {
 p, .colspec{
     text-shadow: 4px 4px 4px #aaa;
 }
+
+.formi{
+    left: 50%;
+    top: 50%;
+}
+
+
+
 @-webkit-keyframes animatezoom {
     from {-webkit-transform: scale(0)} 
     to {-webkit-transform: scale(1)}
