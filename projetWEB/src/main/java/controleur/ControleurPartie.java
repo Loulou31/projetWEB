@@ -96,6 +96,12 @@ public class ControleurPartie extends HttpServlet {
                 actionRejoindreArchivageJour(request, response);
             } else if (action.equals("archivageNuit")) {
                 actionRejoindreArchivageNuit(request, response);
+            } else if (action.equals("rejoindreNuitLoupVoyanceUtilise")) {
+                actionRejoindreNuitLoupVoyanceUtilise(request, response);
+            } else if (action.equals("reloadVoyanceLoup")) {
+                actionRejoindreSalleDiscussionVoyanceLoup(request, response);
+            } else if (action.equals("reloadVoyanceLoupRatifie")) {
+                actionRejoindreSalleDiscussionVoyanceLoup(request, response);
             } else {
                 invalidParameters(request, response);
             }
@@ -104,7 +110,61 @@ public class ControleurPartie extends HttpServlet {
         }
 
     }
+    
+    private void actionRejoindreSalleDiscussionVoyanceLoup(HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException {
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        PartieDAO partieDAO = new PartieDAO(ds);
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        DecisionDAO decisionDAO = new DecisionDAO(ds);
+        /* On récupère l'id Partie et la Partie */
+        int idPartie = villageois.getPartie();
+        Partie partie = partieDAO.getPartie(idPartie);
+        if (!partie.estJour()){
+            actionRejoindreNuitLoupVoyanceUtilise(request, response);
+        }else{
+            actionRejoindreSalleDiscussion(request, response);
+        }
+    }
+    
+    private void actionRejoindreNuitLoupVoyanceUtilise(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+        PartieDAO partieDAO = new PartieDAO(ds);
+        MessageDAO messageDAO = new MessageDAO(ds);
+        DecisionDAO decisionDAO = new DecisionDAO(ds);
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        /* On récupère le pseudi du joueur connecté, et le villageois correspondant */
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        /* On récupère l'id Partie et la Partie */
+        int idPartie = villageois.getPartie();
+        Partie partie = partieDAO.getPartie(idPartie);
+        int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
+        int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
+        List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
+        request.setAttribute("messages", messagesRepaire);
+        List<Decision> decisions = decisionDAO.getListDecisionLoup(idPartie);
+        request.setAttribute("decisions", decisions);
+        request.setAttribute("nbJoueurs", villageoisDAO.getListLoupsVivants(idPartie).size());
+        /* On donne les infos à la prochaine page jsp appelée */
+        request.setAttribute("partie", partie);
+        request.setAttribute("pseudoJoueurEnCours", pseudo);
+        request.setAttribute("roleJoueurEnCours", villageois.getRoleString());
+        request.setAttribute("pouvoirJoueurEnCours", villageois.getPouvoir());
+        request.setAttribute("nbJoueurs", nbJoueursVivants);
+        request.setAttribute("nbLoups", nbLoupsVivants);
+        if (partieDAO.decisionLoupRatifie(idPartie)) {
+            request.getRequestDispatcher("/WEB-INF/Partie/repaireRatifieVoyanceUtilise.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/WEB-INF/Partie/repaireVoyanceUtilise.jsp").forward(request, response);
 
+        }
+        
+    }
+    
     private void actionRejoindreNuit(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         /* Création des DAO */
@@ -358,9 +418,9 @@ public class ControleurPartie extends HttpServlet {
                 decisionDAO.supprimerToutesDecisionsJour(idPartie);
             }
         }else{
-            if (partie.decisionsCorrompues(decisionDAO.getListDecisionLoup(idPartie))){
-                decisionDAO.supprimerToutesDecisionsNuit(idPartie);
-            }
+//            if (partie.decisionsCorrompues(decisionDAO.getListDecisionLoup(idPartie))){
+//                decisionDAO.supprimerToutesDecisionsNuit(idPartie);
+//            }
         }
         /* On donne les infos à la prochaine page jsp appelée */
         request.setAttribute("partie", partie);
