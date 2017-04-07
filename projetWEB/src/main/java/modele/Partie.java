@@ -378,7 +378,7 @@ public class Partie{
         if (tempsPasse - journee * dureeJournee < dureeJour) {
             return (journee + 1);
         } else {
-            return -(journee + 1);
+            return -(journee - 1);
         }
     }
 
@@ -412,7 +412,7 @@ public class Partie{
     public Boolean decisionsCorrompuesNuit(List<Decision> d) {
         Boolean b = false;
         for (Decision decision : d) {
-            if (jourEntite(decision.getDate()) != Math.abs(journeeActuelle())+1) {
+            if (jourEntite(decision.getDate()) != Math.abs(journeeActuelle())) {
                 b = true;
             }
         }
