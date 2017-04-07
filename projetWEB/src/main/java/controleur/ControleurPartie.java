@@ -441,7 +441,7 @@ public class ControleurPartie extends HttpServlet {
                 if (partie.isDiscussionSpiritisme() == 1) {
                     List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
                     //Une fois que les messages contiendront les dates.
-                    //messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
+                    messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
                     request.setAttribute("messages", messagesDiscussionSpiritisme);
                     request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response);
                 } else {
@@ -461,7 +461,7 @@ public class ControleurPartie extends HttpServlet {
         } else if (villageois.getPouvoir().equals("insomnie")) {
             List<Message> messagesRepaireInsomnie = messageDAO.getListMessageRepaire(idPartie);
             //Une fois que les messages contiendront les dates.
-            //messagesRepaire = partie.messageDuJour(messagesRepaireInsomnie);
+            messagesRepaireInsomnie = partie.messageDuJour(messagesRepaireInsomnie);
             request.setAttribute("messages", messagesRepaireInsomnie);
             if (!partieDAO.decisionHumainRatifie(idPartie)) {
                 request.getRequestDispatcher("/WEB-INF/Partie/nuitInsomnie.jsp").forward(request, response);
@@ -475,7 +475,7 @@ public class ControleurPartie extends HttpServlet {
                 System.out.println("j'étais deja dans la salle de discussion, il faut que j'y retourne");
                 List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
                 //Une fois que les messages contiendront les dates.
-                //messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
+                messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
                 request.setAttribute("messages", messagesDiscussionSpiritisme);
                 request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response);
             } else {
