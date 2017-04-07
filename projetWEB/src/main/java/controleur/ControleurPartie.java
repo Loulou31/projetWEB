@@ -865,8 +865,9 @@ public class ControleurPartie extends HttpServlet {
         } else if (nbLoupsVivants == nbJoueursVivants) {
             /* Les loups ont gagné */
             request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
+        }else{
+            request.getRequestDispatcher("/WEB-INF/Partie/archive.jsp").forward(request, response);
         }
-        request.getRequestDispatcher("/WEB-INF/Partie/archive.jsp").forward(request, response);
     }
     
     public void actionRejoindreArchivageJour(HttpServletRequest request,
@@ -876,8 +877,20 @@ public class ControleurPartie extends HttpServlet {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         String pseudo = session.getAttribute("membre").toString();
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        int idPartie = villageois.getPartie();
         PartieDAO partieDAO = new PartieDAO(ds);
-        Partie partie = partieDAO.getPartie(villageois.getPartie());
+        Partie partie = partieDAO.getPartie(idPartie);
+        int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
+        int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
+        if (nbLoupsVivants == 0) {
+            /* Les loups ont perdu */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
+        } else if (nbLoupsVivants == nbJoueursVivants) {
+            /* Les loups ont gagné */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
+        }else{
+            request.getRequestDispatcher("/WEB-INF/Partie/archivePlace.jsp").forward(request, response);
+        }
     }
     
     public void actionRejoindreArchivageNuit(HttpServletRequest request,
@@ -887,8 +900,20 @@ public class ControleurPartie extends HttpServlet {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         String pseudo = session.getAttribute("membre").toString();
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        int idPartie = villageois.getPartie();
         PartieDAO partieDAO = new PartieDAO(ds);
-        Partie partie = partieDAO.getPartie(villageois.getPartie());
+        Partie partie = partieDAO.getPartie(idPartie);
+        int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
+        int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
+        if (nbLoupsVivants == 0) {
+            /* Les loups ont perdu */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
+        } else if (nbLoupsVivants == nbJoueursVivants) {
+            /* Les loups ont gagné */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
+        }else{
+            request.getRequestDispatcher("/WEB-INF/Partie/archiveRepaire.jsp").forward(request, response);
+        }
     }
     
     /**
