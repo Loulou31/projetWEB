@@ -80,6 +80,8 @@ public class ControleurPartie extends HttpServlet {
                 actionAddDecisionSpiritisme(request, response);
             } else if (action.equals("reloadMessages")) {
                 actionRejoindreSalleDiscussion(request, response);
+            } else if (action.equals("rejoindreNuitHumain")) {
+                actionRejoindreNuit(request, response);
             } else {
                 invalidParameters(request, response);
             }
@@ -87,6 +89,32 @@ public class ControleurPartie extends HttpServlet {
             erreurBD(request, response, e);
         }
 
+    }
+    
+    private void actionRejoindreNuit(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+        /* Création des DAO */
+        MessageDAO messageDAO = new MessageDAO(ds);
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        PartieDAO partieDAO = new PartieDAO(ds);
+        /* On récupère le pseudi du joueur connecté, et le villageois correspondant */
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        DecisionDAO decisionDAO = new DecisionDAO(ds);
+        /* On récupère l'id Partie et la Partie */
+        int idPartie = villageois.getPartie();
+        Partie partie = partieDAO.getPartie(idPartie);
+        int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
+        int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
+        /* On donne les infos à la prochaine page jsp appelée */
+        request.setAttribute("partie", partie);
+        request.setAttribute("pseudoJoueurEnCours", pseudo);
+        request.setAttribute("roleJoueurEnCours", villageois.getRoleString());
+        request.setAttribute("pouvoirJoueurEnCours", villageois.getPouvoir());
+        request.setAttribute("nbJoueurs", nbJoueursVivants);
+        request.setAttribute("nbLoups", nbLoupsVivants);
+        request.getRequestDispatcher("/WEB-INF/Partie/nuit.jsp").forward(request, response);
     }
 
     private void actionDebutPartie(HttpServletRequest request,

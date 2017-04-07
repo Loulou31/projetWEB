@@ -82,7 +82,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
             float proportionLG) {
         try (
                 Connection conn = getConn();
-                PreparedStatement st = conn.prepareStatement("INSERT INTO PARTIE (IdPartie, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG, nbJoueursVivants, discussionSpiritisme) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");) {
+                PreparedStatement st = conn.prepareStatement("INSERT INTO PARTIE (IdPartie, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG, nbJoueursVivants, discussionSpiritisme, contamination) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)");) {
             st.setInt(1, idPartie);
             st.setInt(2, nbJoueursMin);
             st.setInt(3, nbJoueursMax);

@@ -114,7 +114,8 @@ CREATE TABLE PARTIE (
     ProbaPouvoir float CONSTRAINT ProbaPos CHECK (ProbaPouvoir >= 0.0 AND ProbaPouvoir <= 1.0 ),
     ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0),
     nbJoueursVivants int, 
-    discussionSpiritisme int
+    discussionSpiritisme int, 
+    contamination int
 ) ; 
 
 
