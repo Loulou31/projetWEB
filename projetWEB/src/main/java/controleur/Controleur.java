@@ -92,7 +92,6 @@ public class Controleur extends HttpServlet {
         if(session.getAttribute("membre") == null)
             request.getRequestDispatcher("/WEB-INF/AvantPartie/connexion.jsp").forward(request, response);
         else{
-//            response.setIntHeader("Refresh",1);
             request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
         }
     }
@@ -103,7 +102,6 @@ public class Controleur extends HttpServlet {
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString();
         PartieDAO partieDAO = new PartieDAO(ds);
-
         //si dernier joueur de partie : on détruit tout
         int idPartie = partieDAO.getIDPartieJoueur(pseudo);
         if (partieDAO.getNbJoueurs(idPartie) == 1) {
