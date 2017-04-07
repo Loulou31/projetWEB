@@ -19,7 +19,7 @@
         <title>Partie Terminée</title>
     </head>
     <body>
-        <h1>Les loups garous ont gagné !!!!</h1>
+        <h1>Les loup-garous ont gagné !!!!</h1>
         <form action="controleur" method="get" align="center">
                 <button type="submit" class="button"><span>Voulez-vous rejouer ?</span></button><br>
                 <input type="hidden" name="action" value="quitteAttentePartie"/>

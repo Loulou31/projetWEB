@@ -12,8 +12,8 @@ and open the template in the editor.
 body {
 background-image: url("villag.jpg");
 background-attachment: fixed;
-background-size: auto;
-background-position: center center;
+background-size: cover;
+background-position: center;
 color: black;
 font-family: 'Press Start 2P', cursive;
 }
