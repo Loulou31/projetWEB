@@ -79,7 +79,7 @@ public class ControleurPartie extends HttpServlet {
             } else if (action.equals("addDecisionSpiritisme")) {
                 actionAddDecisionSpiritisme(request, response);
             } else if (action.equals("reloadMessages")) {
-                actionRejoindreSalleDiscussion(request, response, false, false );
+                actionRejoindreSalleDiscussion(request, response);
             } else {
                 invalidParameters(request, response);
             }
@@ -226,7 +226,7 @@ public class ControleurPartie extends HttpServlet {
     }
 
     private void actionRejoindreSalleDiscussion(HttpServletRequest request,
-            HttpServletResponse response, Boolean enDiscussion) throws IOException, ServletException {
+            HttpServletResponse response) throws IOException, ServletException {
         /* Création des DAO */
         MessageDAO messageDAO = new MessageDAO(ds);
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
