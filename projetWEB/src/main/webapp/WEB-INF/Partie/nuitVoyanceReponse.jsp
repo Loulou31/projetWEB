@@ -26,6 +26,6 @@
         <h2> Son pouvoir est : ${pouvoir}</h2>
         <p></p>
         <p>Peut-être aurez-vous la chance de découvrir d'autres secrets demain.... si vous survivez à la nuit ! </p>
-        <a href="controleurPartie?action=rejoindreNuitHumain">Au dodo...</a>
+        <a href="controleurPartie?action=rejoindreNuitVoyance">Au dodo...</a>
     </body>
 </html>
