@@ -21,7 +21,7 @@
         <h1 align="center">Vous avez perdu la partie</h1>
         <h2> Vous pouvez avoir accès aux discussions qui ont eu lieu durant la partie  </h2>
         <form action="controleurPartie" method="get" align="center">
-                <button type="submit" class="button"><span>Actualiser la page</span></button><br>
+                <button type="submit" class="button"><span>Actualiser la page au cas où vous seriez contacté par un esprit supérieur !</span></button><br>
                 <input type="hidden" name="action" value="reloadMessages"/>
         </form>
         <form action="controleurPartie" method="get" align="center">

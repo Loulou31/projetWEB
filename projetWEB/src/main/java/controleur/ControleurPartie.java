@@ -257,7 +257,7 @@ public class ControleurPartie extends HttpServlet {
                 System.out.println(spiritisme);
 
                 /* attribution du pouvoir contamination à un loup */
-                if (contamination != 0) {
+              /*  if (contamination != 0) {
                     List<Villageois> loups = villageoisDAO.getListLoupsSansPouvoir(idPartie);
                     if (loups.size() > 0) {
                         System.out.println("apres getListLoupsSansPouvoirs ds actionDebPartie");
@@ -269,7 +269,7 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez de loups pr pouvoir contam");
                     }
-                }
+                }*/
 
                 /* attribution du pouvoir insomnie à un humain */
                 if (insomnie != 0) {
@@ -443,7 +443,7 @@ public class ControleurPartie extends HttpServlet {
                 if (partie.isDiscussionSpiritisme() == 1) {
                     List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
                     //Une fois que les messages contiendront les dates.
-                    //messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
+                    messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
                     request.setAttribute("messages", messagesDiscussionSpiritisme);
                     request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response);
                 } else {
@@ -463,7 +463,7 @@ public class ControleurPartie extends HttpServlet {
         } else if (villageois.getPouvoir().equals("insomnie")) {
             List<Message> messagesRepaireInsomnie = messageDAO.getListMessageRepaire(idPartie);
             //Une fois que les messages contiendront les dates.
-            //messagesRepaire = partie.messageDuJour(messagesRepaireInsomnie);
+            messagesRepaireInsomnie = partie.messageDuJour(messagesRepaireInsomnie);
             request.setAttribute("messages", messagesRepaireInsomnie);
             if (!partieDAO.decisionHumainRatifie(idPartie)) {
                 request.getRequestDispatcher("/WEB-INF/Partie/nuitInsomnie.jsp").forward(request, response);
@@ -477,7 +477,7 @@ public class ControleurPartie extends HttpServlet {
                 System.out.println("j'étais deja dans la salle de discussion, il faut que j'y retourne");
                 List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
                 //Une fois que les messages contiendront les dates.
-                //messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
+                messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
                 request.setAttribute("messages", messagesDiscussionSpiritisme);
                 request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response);
             } else {
