@@ -23,14 +23,6 @@
     <body>
         <h1 align="center">Vous êtes dans le repaire des Loups-Garou</h1>
         <h2> Restez discret... Ils ne doivent pas vous voir... </h2>
-        <p>Liste des villageois vivants : </p>
-        <table>
-            <c:forEach items="${joueurs}" var="joueurs"> 
-                <tr>
-                    <td><B>@${joueurs.pseudo} </B></td>
-                </tr>
-            </c:forEach>
-        </table>
         <p> Ecoutez discrètement ce qu'il se dit au repaire...</p>
         <table>
             <c:forEach items="${messages}" var="message">

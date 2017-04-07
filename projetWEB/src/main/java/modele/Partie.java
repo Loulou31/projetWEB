@@ -408,6 +408,16 @@ public class Partie{
         }
         return (b);
     }
+    
+    public Boolean decisionsCorrompuesNuit(List<Decision> d) {
+        Boolean b = false;
+        for (Decision decision : d) {
+            if (jourEntite(decision.getDate()) != Math.abs(journeeActuelle())-1) {
+                b = true;
+            }
+        }
+        return (b);
+    }
 
     public ArrayList<String> messagesArchives(List<Message> m) {
         ArrayList<String> messages = new ArrayList<>();

@@ -27,14 +27,6 @@
         <h2> Son pouvoir est : ${pouvoir}</h2>
         <p></p>
         <p>Peut-être aurez-vous la chance de découvrir d'autres secrets demain.... si vous survivez à la nuit ! </p>
-        <p>Liste des villageois vivants : </p>
-        <table>
-            <c:forEach items="${joueurs}" var="joueurs"> 
-                <tr>
-                    <td><B>@${joueurs.pseudo} </B></td>
-                </tr>
-            </c:forEach>
-        </table>
         <a href="controleurPartie?action=rejoindreNuitVoyance">Retour...</a>
          <% Partie partie = (Partie) request.getAttribute("partie");
            String tempsChangement = partie.tempsAvantChangement(0);
