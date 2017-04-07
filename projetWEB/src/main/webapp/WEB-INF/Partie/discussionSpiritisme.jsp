@@ -34,6 +34,8 @@
             </c:forEach>
         </table>
         <p></p>
+        <% request.setAttribute("enDiscussion", 1);
+        %>
         <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
         <button type="submit" class="button"><span>Poster</span></button><br>
@@ -43,6 +45,7 @@
         
         <% Partie partie = (Partie) request.getAttribute("partie");
            String tempsChangement = partie.tempsAvantChangement(1);
+           partie.setDiscussionSpiritisme(true);
         %>
         <p><%=tempsChangement%></p>
     </body>
