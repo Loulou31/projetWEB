@@ -24,13 +24,6 @@ public class Villageois {
     private int partie ; 
     
 
-    public Villageois(String pseudo) {
-        this.pseudo = pseudo;
-        this.role = 0 ; 
-        this.vivant = 1 ;
-        this.pouvoir = null ;
-        this.partie = 0 ; 
-    }
 
     public Villageois(String pseudo, int role, int vivant, String pouvoir, int partie) {
         this.pseudo = pseudo;

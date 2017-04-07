@@ -39,7 +39,8 @@ public class PartieDAO extends AbstractDatabaseDAO {
                                 rs.getInt("DureeNuit"),
                                 rs.getInt("HeureDebut"),
                                 rs.getFloat("ProbaPouvoir"),
-                                rs.getFloat("ProportionLG"));
+                                rs.getFloat("ProportionLG"),
+                                rs.getInt("discussionSpiritisme"));;
                 result.add(partie);
             }
         } catch (SQLException e) {
@@ -66,7 +67,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
     //OK
     public void passerSpiritisme(int idPartie, int u) {
         try (
-              Connection conn = getConn();) {
+                Connection conn = getConn();) {
             PreparedStatement st = conn.prepareStatement("UPDATE Partie set discussionSpiritisme = ? Where idPartie = ?");
             st.setInt(1, u);
             st.setInt(2, idPartie);
@@ -75,7 +76,18 @@ public class PartieDAO extends AbstractDatabaseDAO {
             throw new DAOException("Erreur BD passer spirit" + e.getMessage(), e);
         }
     }
-    
+
+    public void updateEnCours(int idPartie, boolean b) {
+        try (
+                Connection conn = getConn();) {
+            PreparedStatement st = conn.prepareStatement("UPDATE Partie set enCours = ? Where idPartie = ?");
+            st.setBoolean(1, b);
+            st.setInt(2, idPartie);
+            ResultSet rs = st.executeQuery();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD passer spirit" + e.getMessage(), e);
+        }
+    }
 
     public void ajouterPartie(int idPartie,
             int nbJoueursMin,

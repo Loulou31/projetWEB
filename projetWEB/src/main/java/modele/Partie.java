@@ -41,24 +41,7 @@ public class Partie {
 
 
 
-    public Partie(int idPartie, 
-                  int nbJoueursMin, 
-                  int nbJoueursMax, 
-                  int dureeJour, 
-                  int dureeNuit, 
-                  int heureDebut, 
-                  float probaPouvoir, 
-                  float proportionLG) {
-        this.idPartie = idPartie;
-        this.nbJoueursMin = nbJoueursMin;
-        this.nbJoueursMax = nbJoueursMax;
-        this.dureeJour = dureeJour;
-        this.dureeNuit = dureeNuit;
-        this.heureDebut = heureDebut;
-        this.probaPouvoir = probaPouvoir;
-        this.proportionLG = proportionLG;
-        //this.joueursPresents = new HashSet<Membre>();
-    }
+
     
     public Partie(int idPartie, 
                   int nbJoueursMin, 
@@ -67,7 +50,8 @@ public class Partie {
                   int dureeNuit, 
                   int heureDebut, 
                   float probaPouvoir, 
-                  float proportionLG, int discussionSpirit) {
+                  float proportionLG,
+                  int discussionSpirit) {
         this.idPartie = idPartie;
         this.nbJoueursMin = nbJoueursMin;
         this.nbJoueursMax = nbJoueursMax;
@@ -78,7 +62,16 @@ public class Partie {
         this.proportionLG = proportionLG;
         this.discussionSpiritisme = discussionSpirit; 
         //this.joueursPresents = new HashSet<Membre>();
+       
+        this.villageoisPresents = new ArrayList<Villageois>();
+        this.placeVillage = new PlaceVillage(new ArrayList<Decision>(), new ArrayList<Message>());
+        this.repaire = new Repaire(new ArrayList<Decision>(), new ArrayList<Message>());
     }
+    
+    public void setVillageoisPresents(List<Villageois> villageois){
+        this.villageoisPresents = villageois;
+    }
+    
 
     public void setDiscussionSpiritisme(int discussionSpiritisme) {
         this.discussionSpiritisme = discussionSpiritisme;
@@ -121,33 +114,11 @@ public class Partie {
         return proportionLG;
     }
 
-    public Partie(PlaceVillage placeVillage) {
-        this.placeVillage = placeVillage;
-    }
-
     public Repaire getRepaire() {
         return repaire;
     }
     
-    public ArrayList<Message> getMessagePlace(){
-        return(this.placeVillage.getMessages());
-    }
-    
-    public ArrayList<Message> getMessagePlaceDuJour(){
-        return(this.placeVillage.getMessagesDuJour());
-    }
-    
-    public ArrayList<Message> getMessageRepaire(){
-       return(this.repaire.getMessages());
-    }
-    
-    public void addMessagePlace(Message m){
-        this.placeVillage.addMessage(m);
-    }
-    
-    public void addMessageRepaire(Message m){
-        this.repaire.addMessage(m);
-    }
+
     
     
     
