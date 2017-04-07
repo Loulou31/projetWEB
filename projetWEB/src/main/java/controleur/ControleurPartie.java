@@ -9,6 +9,7 @@ import dao.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.Math.ceil;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Resource;
@@ -398,6 +399,7 @@ public class ControleurPartie extends HttpServlet {
             List<Message> messagesVillage = messageDAO.getListeMessagesSalleDiscussion(idPartie);
             //Une fois que les messages contiendront les dates.
             messagesVillage = partie.messageDuJour(messagesVillage);
+            messagesVillage = partie.triListe(messagesVillage);
             request.setAttribute("messages", messagesVillage);
             List<Decision> decisions = decisionDAO.getListDecisionHumains(idPartie);
             request.setAttribute("decisions", decisions);
@@ -783,10 +785,13 @@ public class ControleurPartie extends HttpServlet {
             throws IOException, ServletException {
         HttpSession session = request.getSession();
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        MessageDAO messageDAO = new MessageDAO(ds) ; 
+        PartieDAO partieDAO = new PartieDAO(ds) ; 
         String pseudo = session.getAttribute("membre").toString();
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
         int idPartie = villageois.getPartie();
-        List<Villageois> joueurs = villageoisDAO.getListVillageoisVivants(idPartie) ; 
+        Partie partie = partieDAO.getPartie(idPartie);
+        List<Villageois> joueurs = villageoisDAO.getListVillageoisVivants(idPartie);
         int nbJoueursVivants = joueurs.size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
         request.setAttribute("joueurs", joueurs);
@@ -797,6 +802,10 @@ public class ControleurPartie extends HttpServlet {
             /* Les loups ont gagné */
             request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
         }else{
+            List<Message> messagesVillage = messageDAO.getListeMessagesSalleDiscussion(idPartie);
+            messagesVillage = partie.triListeArchive(messagesVillage);
+            ArrayList<String> archives= partie.messagesArchives(messagesVillage);
+            request.setAttribute("archives", archives);
             request.getRequestDispatcher("/WEB-INF/Partie/archivePlace.jsp").forward(request, response);
         }
     }
@@ -806,9 +815,11 @@ public class ControleurPartie extends HttpServlet {
             throws IOException, ServletException {
         HttpSession session = request.getSession();
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        PartieDAO partieDAO = new PartieDAO(ds) ; 
         String pseudo = session.getAttribute("membre").toString();
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
         int idPartie = villageois.getPartie();
+        Partie partie = partieDAO.getPartie(idPartie) ; 
         List<Villageois> joueurs = villageoisDAO.getListVillageoisVivants(idPartie) ;
         int nbJoueursVivants = joueurs.size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
@@ -820,6 +831,11 @@ public class ControleurPartie extends HttpServlet {
             /* Les loups ont gagné */
             request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
         }else{
+            MessageDAO messageDAO = new MessageDAO(ds);
+            List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
+            messagesRepaire = partie.triListeArchive(messagesRepaire);
+            ArrayList<String> archives= partie.messagesArchives(messagesRepaire);
+            request.setAttribute("archives", archives);
             request.getRequestDispatcher("/WEB-INF/Partie/archiveRepaire.jsp").forward(request, response);
         }
     }

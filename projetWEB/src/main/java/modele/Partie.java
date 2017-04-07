@@ -8,6 +8,8 @@ package modele;
 import dao.PartieDAO;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,7 +19,7 @@ import java.util.List;
  *
  * @author nicolasl
  */
-public class Partie {
+public class Partie{
 
     private int idPartie;
     private int nbJoueursMin;
@@ -416,11 +418,34 @@ public class Partie {
             message = it.next();
             if(Math.abs(jourEntite(message.getDate()))!=jour){
                 jour = Math.abs(jourEntite(message.getDate()));
-                messages.add("///////////////// JOUR " + jour + " ///////////////////");
+                messages.add("///////////////// JOUR " + jour + " ///////////////////\n");
             }
-            messages.add("@" + message.getExpediteur()+ " :  " + message.getContenu());
+            messages.add("@" + message.getExpediteur()+ " :  " + message.getContenu()+"\n");
         }
         return (messages);
     }
+    
+    public ArrayList<Message> triListe(List<Message> m) {
+        Collections.sort(m, new Comparator<Message>() {
+            @Override
+            public int compare(Message m1, Message m2) {
+                return (m2.getDate()-m1.getDate());
+            }
+    });
+        return new ArrayList<>(m);
+    }
+    
+    public ArrayList<Message> triListeArchive(List<Message> m) {
+        Collections.sort(m, new Comparator<Message>() {
+            @Override
+            public int compare(Message m1, Message m2) {
+                return (m1.getDate()-m2.getDate());
+            }
+    });
+        return new ArrayList<>(m);
+    }
+    
+    
+    
 
 }

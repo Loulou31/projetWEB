@@ -3,7 +3,7 @@
     Created on : Apr 7, 2017, 1:59:50 PM
     Author     : gaunetc
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -19,6 +19,11 @@
         <title>Archive Place</title>
     </head>
     <body>
+        <c:forEach items="${archives}" var="archive">
+                    <tr>
+                        <td>${archive}</td>
+                    </tr>
+        </c:forEach>
         <form action="controleurPartie" method="get" align="center">
                 <button type="submit" class="button"><span>Retentez d'être contacté !</span></button><br>
                 <input type="hidden" name="action" value="reloadMessages"/>
