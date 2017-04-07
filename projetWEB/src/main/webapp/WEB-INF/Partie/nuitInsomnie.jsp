@@ -21,22 +21,7 @@
     </head>
     <body>
         <h1 align="center">Vous êtes dans le repaire des Loups-Garou</h1>
-        <h2> Restez discrêt... Ils ne doivent pas vous voir... </h2>
-        <p></p>
-        <table id="customers">
-            <tr>
-                <th> Joueur désigné  </th>
-                <th> Nombre de votes </th>
-                <th> Nombre de joueurs : ${nbJoueurs} </th>
-            </tr>
-            <c:forEach items="${decisions}" var="decision">
-                <tr>
-                    <td>${decision.joueurConcerne}</td>
-                    <td>${decision.getNbVote()}</td>
-                </tr>   
-            </c:forEach>
-            </tr>
-        </table>
+        <h2> Restez discret... Ils ne doivent pas vous voir... </h2>
         <p> Ecoutez discrètement ce qu'il se dit...</p>
         <table>
             <c:forEach items="${messages}" var="message">

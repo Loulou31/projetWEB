@@ -20,6 +20,9 @@
     </head>
     <body>
         <h1>Erreur, écrivez un message non vide.</h1>
-        <a href="controleurPartie?action=choseGame">Retour vers le salon de discussion.</a>
+        <form action="controleurPartie" method="get" align="center">
+                <button type="submit" class="button"><span>Actualiser les messages</span></button><br>
+                <input type="hidden" name="action" value="reloadMessages"/>
+        </form>
     </body>
 </html>

@@ -191,18 +191,19 @@ public class Partie {
     }
     
     public Boolean estJour() {
-        Temps temps = new Temps();
-        int heureActuelle = temps.getTempsInt();
-        int tempsPasse = heureActuelle - heureDebut;
-        int dureeJournee = dureeJour + dureeNuit;
-        int joursPasses = tempsPasse / dureeJournee;
-        int heureJournee = tempsPasse - joursPasses * dureeJournee;
-
-        if (dureeJour >= heureJournee) {
-            return true;
-        } else {
-            return false;
-        }
+//        Temps temps = new Temps();
+//        int heureActuelle = temps.getTempsInt();
+//        int tempsPasse = heureActuelle - heureDebut;
+//        int dureeJournee = dureeJour + dureeNuit;
+//        int joursPasses = tempsPasse / dureeJournee;
+//        int heureJournee = tempsPasse - joursPasses * dureeJournee;
+//
+//        if (dureeJour >= heureJournee) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+    return false;
     }
     
     public Boolean estNuit() {
