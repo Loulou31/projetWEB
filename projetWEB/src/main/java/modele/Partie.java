@@ -385,7 +385,7 @@ public class Partie {
         return true;
     }
     
-    public int jourMessage(int date){
+    public int jourEntite(int date){
         int tempsPasse = date - heureDebut;
         int dureeJournee = dureeJour + dureeNuit;
         int journee = tempsPasse / dureeJournee;
@@ -406,12 +406,21 @@ public class Partie {
     public ArrayList<Message> messageDuJour(List<Message> m){
         ArrayList<Message> messages = new ArrayList<Message>();
         for (Message message : m){
-            if (jourMessage(message.getDate())==Math.abs(journeeActuelle())){
+            if (jourEntite(message.getDate())==Math.abs(journeeActuelle())){
                 messages.add(message);
             }
         }
         return (messages);
     }
     
+    public Boolean decisionsCorrompues(List<Decision> d){
+        Boolean b = false;
+        for (Decision decision : d){
+            if (jourEntite(decision.getDate())!=Math.abs(journeeActuelle())){
+                b = true;
+            }
+        }
+        return (b);
+    }
     
 }

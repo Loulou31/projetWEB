@@ -63,7 +63,11 @@ public class Decision {
         return this.votants.size();
     }
 
+    public int getDate() {
+        return date;
+    }
 
+    
 
 
     @Override
