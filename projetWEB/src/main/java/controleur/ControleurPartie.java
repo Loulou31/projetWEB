@@ -308,12 +308,14 @@ public class ControleurPartie extends HttpServlet {
         Partie partie = partieDAO.getPartie(idPartie);
         int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
+        /* on met à 0 contamination et spiritisme */
         if (partie.estJour()) {
             System.out.println("c'est le jour et je mets le discussioSpririt a false");
             System.out.println("c'est le jour je mets contamination a false ");
             partieDAO.passerSpiritisme(idPartie, 0);
             partieDAO.passerContamination(idPartie, 0);
             request.setAttribute("enDiscussion", 0);
+            partie = partieDAO.getPartie(idPartie);
         }
         /* On donne les infos à la prochaine page jsp appelée */
         request.setAttribute("partie", partie);
@@ -372,10 +374,12 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         request.getRequestDispatcher("/WEB-INF/Partie/repaireContamination.jsp").forward(request, response);
                     }
-                } else if (partie.getContamination() == 1) {
-                    request.getRequestDispatcher("/WEB-INF/Partie/repaireRatifie.jsp").forward(request, response);
                 } else {
+                    if (partie.getContamination() == 1) {
+                    request.getRequestDispatcher("/WEB-INF/Partie/repaireRatifie.jsp").forward(request, response);
+                    } else {
                     request.getRequestDispatcher("/WEB-INF/Partie/repaireContaminationRatifie.jsp").forward(request, response);
+                    }
                 }
             } else if (villageois.getPouvoir().equals("voyance")) {
                 goToVoyanceLoup(request, response, idPartie, villageoisDAO);
