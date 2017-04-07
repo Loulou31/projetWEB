@@ -28,14 +28,6 @@
         <p></p>
         <p>Peut-être aurez-vous la chance de découvrir d'autres secrets demain.... si vous survivez au vote sur la place du village... ! </p>
         <a href="controleurPartie?action=rejoindreNuitLoupVoyanceUtilise">Retour au repaire...</a>
-        <p>Liste des villageois vivants : </p>
-        <table>
-            <c:forEach items="${joueurs}" var="joueurs"> 
-                <tr>
-                    <td><B>@${joueurs.pseudo} </B></td>
-                </tr>
-            </c:forEach>
-        </table>
     </body>
      <% Partie partie = (Partie) request.getAttribute("partie");
            String tempsChangement = partie.tempsAvantChangement(0);

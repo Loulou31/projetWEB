@@ -26,14 +26,6 @@
         <h2>Mais attention... ${nbLoups} loups-garou rôdent autour du village....</h2>
         <h2> Choisissez le joueur éliminé avec qui vous souhaitez discutez... </h2>
         <p></p>
-        <p>Liste des villageois vivants : </p>
-        <table>
-            <c:forEach items="${joueurs}" var="joueurs"> 
-                <tr>
-                    <td><B>@${joueurs.pseudo} </B></td>
-                </tr>
-            </c:forEach>
-        </table>
         <form action="controleurPartie" accept-charset="utf-8">
         <ul>
             <li> Choisissez un joueur avec qui discuter : 

@@ -25,14 +25,6 @@
         <h2> Restez discrêt... Ils ne doivent pas vous voir... </h2>
         <h2> Les loups ont fait leur choix... ${pseudoJoueurElimine} sera dévoré cette nuit !   </h2>
         <p></p>
-        <p>Liste des villageois vivants : </p>
-        <table>
-            <c:forEach items="${joueurs}" var="joueurs"> 
-                <tr>
-                    <td><B>@${joueurs.pseudo} </B></td>
-                </tr>
-            </c:forEach>
-        </table>
         <p> Ecoutez discrètement ce qu'il se dit...</p>
         <table>
             <c:forEach items="${messagesRepaire}" var="message">
