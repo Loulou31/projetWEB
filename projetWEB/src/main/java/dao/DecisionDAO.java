@@ -292,7 +292,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
             st.setInt(1, idPartie);
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Erreur BD supp messages " + e.getMessage(), e);
+            throw new DAOException("Erreur BD supp decisions jour " + e.getMessage(), e);
         }
     }
      
@@ -302,7 +302,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
             st.setInt(1, idPartie);
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Erreur BD supp messages " + e.getMessage(), e);
+            throw new DAOException("Erreur BD supp decisions nuit" + e.getMessage(), e);
         }
     }
 }
