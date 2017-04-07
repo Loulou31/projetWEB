@@ -30,6 +30,7 @@ public class Partie {
     //private Set<Membre> joueursPresents;
     private PlaceVillage placeVillage;
     private Repaire repaire;
+    private boolean discussionSpiritisme; 
 
     public Partie(int idPartie, 
                   int nbJoueursMin, 
@@ -48,6 +49,15 @@ public class Partie {
         this.probaPouvoir = probaPouvoir;
         this.proportionLG = proportionLG;
         //this.joueursPresents = new HashSet<Membre>();
+        this.discussionSpiritisme = false; 
+    }
+
+    public void setDiscussionSpiritisme(boolean discussionSpiritisme) {
+        this.discussionSpiritisme = discussionSpiritisme;
+    }
+
+    public boolean isDiscussionSpiritisme() {
+        return discussionSpiritisme;
     }
 
     
