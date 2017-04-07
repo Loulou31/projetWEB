@@ -289,7 +289,7 @@ public class ControleurPartie extends HttpServlet {
                 /* attribution du pouvoir voyance à un villageois */
 
                 if (voyance != 0) {
-                    villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
+                    villageois = villageoisDAO.getListVillageoisSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
                         int valVoyance = generateurAleatoire(-1, villageois.size());
                         while (valVoyance == -1 || valVoyance == villageois.size()) {
@@ -305,7 +305,7 @@ public class ControleurPartie extends HttpServlet {
                 /* attribution du pouvoir spiritisme à un villageois */
 
  /*               if (spiritisme != 0) {
-                    villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
+                    villageois = villageoisDAO.getListVillageoisSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
                         int valSpirit = generateurAleatoire(-1, villageois.size());
                         while (valSpirit == -1 || valSpirit == villageois.size()) {
