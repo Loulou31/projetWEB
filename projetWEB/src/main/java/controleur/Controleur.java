@@ -68,7 +68,7 @@ public class Controleur extends HttpServlet {
             } else if (action.equals("debutPartie")) {
                 request.getRequestDispatcher("controleurPartie").forward(request, response);
             } else if (action.equals("quitteAttentePartie")) {
-                quitteAttentePartie(request, response);
+                quittePartie(request, response);
             } else if (action.equals("rejoindreJeu")) {
                 request.setAttribute("action", action);
                 request.getRequestDispatcher("/controleurPartie").forward(request, response);
@@ -95,23 +95,33 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
         }
     }
+    
+    private void quittePartie(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+        System.out.println("QUITTE PARTIE") ; 
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        PartieDAO partieDAO = new PartieDAO(ds);
+        int idPartie = partieDAO.getIDPartieJoueur(pseudo);
+        if (partieDAO.getNbJoueurs(idPartie) == 1) {
+            System.out.println("JE SUIS DERNIER JOUEUR") ; 
+            MessageDAO messageDAO = new MessageDAO(ds);
+            messageDAO.supprimerTousMessages(idPartie);
+            partieDAO.supprimerPartie(idPartie);
+        }
+        quitteAttentePartie(request, response) ; 
+        
+    }
 
     private void quitteAttentePartie(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("QUITTE ATTENTE PARTIE");
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString();
-        PartieDAO partieDAO = new PartieDAO(ds);
-        MessageDAO messageDAO = new MessageDAO(ds) ; 
         //si dernier joueur de partie : on détruit tout
-        int idPartie = partieDAO.getIDPartieJoueur(pseudo);
         System.out.println("AVANT DERNIER JOUEUR");
-        if (partieDAO.getNbJoueurs(idPartie) == 1) {
-            System.out.println("JE SUIS DERNIER JOUEUR");
-            partieDAO.supprimerPartie(idPartie);
-        }
-        System.out.println("SUPPRESSION MESSAGES");
-        messageDAO.supprimerTousMessages(idPartie);
         System.out.println("SUPPRESSION JOUEURS");
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         villageoisDAO.supprimerVillageois(pseudo);
