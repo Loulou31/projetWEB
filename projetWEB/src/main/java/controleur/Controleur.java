@@ -103,30 +103,21 @@ public class Controleur extends HttpServlet {
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString();
         PartieDAO partieDAO = new PartieDAO(ds);
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         int idPartie = partieDAO.getIDPartieJoueur(pseudo);
         if (partieDAO.getNbJoueurs(idPartie) == 1) {
             System.out.println("JE SUIS DERNIER JOUEUR") ; 
             MessageDAO messageDAO = new MessageDAO(ds);
             messageDAO.supprimerTousMessages(idPartie);
+            villageoisDAO.supprimerVillageois(pseudo);
             partieDAO.supprimerPartie(idPartie);
+        } else {
+            villageoisDAO.supprimerVillageois(pseudo);
         }
-        quitteAttentePartie(request, response) ; 
-        
-    }
-
-    private void quitteAttentePartie(HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
-        System.out.println("QUITTE ATTENTE PARTIE");
-        HttpSession session = request.getSession();
-        String pseudo = session.getAttribute("membre").toString();
-        //si dernier joueur de partie : on détruit tout
-        System.out.println("AVANT DERNIER JOUEUR");
-        System.out.println("SUPPRESSION JOUEURS");
-        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
-        villageoisDAO.supprimerVillageois(pseudo);
         request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
     }
+
+
 
     private void actionIndex(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
@@ -230,7 +221,7 @@ public class Controleur extends HttpServlet {
                 request.setAttribute("partiePrete", 1);
                 request.getRequestDispatcher("/WEB-INF/AvantPartie/attenteDebutPartie.jsp").forward(request, response);
             } else {
-                quitteAttentePartie(request, response);
+                quittePartie(request, response);
             }
         } else {
             request.getRequestDispatcher("/WEB-INF/AvantPartie/attenteDebutPartie.jsp").forward(request, response);
