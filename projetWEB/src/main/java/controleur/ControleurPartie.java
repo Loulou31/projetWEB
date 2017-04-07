@@ -103,6 +103,8 @@ public class ControleurPartie extends HttpServlet {
                 actionRejoindreSalleDiscussionVoyanceLoup(request, response);
             } else if (action.equals("reloadVoyanceLoupRatifie")) {
                 actionRejoindreSalleDiscussionVoyanceLoup(request, response);
+            } else if (action.equals("ajouterUnMessageVoyanceLoup")) {
+                actionAddMessageVoyanceLoup(request, response);
             } else {
                 invalidParameters(request, response);
             }
@@ -110,6 +112,25 @@ public class ControleurPartie extends HttpServlet {
             erreurBD(request, response, e);
         }
 
+    }
+    
+    private void actionAddMessageVoyanceLoup (HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException {
+        MessageDAO messageDAO = new MessageDAO(ds);
+        PartieDAO partieDAO = new PartieDAO(ds);
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        int idPartie = villageois.getPartie();
+        Partie partie = partieDAO.getPartie(idPartie);
+        partie.estJour();
+        if (request.getParameter("contenu").toString().equals("")) {
+            request.getRequestDispatcher("/WEB-INF/Partie/messageVide.jsp").forward(request, response);
+        } else {
+            messageDAO.ajouteMessageRepaire(pseudo, request.getParameter("contenu").toString(), idPartie);
+            actionRejoindreSalleDiscussionVoyanceLoup(request, response);
+        }
     }
     
     private void actionRejoindreSalleDiscussionVoyanceLoup(HttpServletRequest request,
@@ -350,7 +371,7 @@ public class ControleurPartie extends HttpServlet {
                     }
                 }
                 /* attribution du pouvoir voyance à un villageois */
-                /*
+                
                 if (voyance != 0) {
                     villageois = villageoisDAO.getListVillageoisSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
@@ -365,9 +386,9 @@ public class ControleurPartie extends HttpServlet {
                         System.out.println("pas assez de villageois pr pouvoir voyance");
                     }
                 }
-                */
+                
                 /* attribution du pouvoir spiritisme à un villageois */
-                if (spiritisme != 0) {
+                /*if (spiritisme != 0) {
                     villageois = villageoisDAO.getListVillageoisSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
                         int valSpirit = generateurAleatoire(-1, villageois.size());
@@ -378,7 +399,7 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez de villageois pr pouvoir spirit");
                     }
-                }
+                } */
             }
         }
         request.setAttribute("partie", partie);
