@@ -384,5 +384,19 @@ public class Partie {
     public Boolean dansNuitee(Date date){
         return true;
     }
+    
+    public int jourMessage(int date){
+        int tempsPasse = date - heureDebut;
+        int dureeJournee = dureeJour + dureeNuit;
+        int journee = tempsPasse / dureeJournee;
+        if (tempsPasse - journee * dureeJournee < dureeJour){
+            return(journee + 1);
+        }else{
+            return -(journee +  1);
+        }
+    }
+    public int journeeActuelle(int date){
+       Temps temps = new Temps();
+    }
 
 }
