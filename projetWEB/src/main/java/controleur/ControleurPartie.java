@@ -257,7 +257,7 @@ public class ControleurPartie extends HttpServlet {
                 System.out.println(spiritisme);
 
                 /* attribution du pouvoir contamination à un loup */
-                if (contamination != 0) {
+              /*  if (contamination != 0) {
                     List<Villageois> loups = villageoisDAO.getListLoupsSansPouvoir(idPartie);
                     if (loups.size() > 0) {
                         System.out.println("apres getListLoupsSansPouvoirs ds actionDebPartie");
@@ -269,7 +269,7 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez de loups pr pouvoir contam");
                     }
-                }
+                }*/
 
                 /* attribution du pouvoir insomnie à un humain */
                 if (insomnie != 0) {
