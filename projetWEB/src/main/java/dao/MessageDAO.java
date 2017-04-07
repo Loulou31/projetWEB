@@ -141,7 +141,7 @@ public class MessageDAO extends AbstractDatabaseDAO {
             st2.setInt(1, idPartie);
             st2.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
+            throw new DAOException("Erreur BD supp messages " + e.getMessage(), e);
         }
     }
 }

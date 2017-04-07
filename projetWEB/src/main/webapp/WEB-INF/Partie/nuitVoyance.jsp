@@ -4,6 +4,7 @@
     Author     : nicolasl
 --%>
 
+<%@page import="modele.Partie"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -32,5 +33,9 @@
         <input type="hidden" name="action" value="addChoixVoyant"/>
         <input type="hidden" name="choixVoyance" value="choixVoyance"/>
         </form>
+         <% Partie partie = (Partie) request.getAttribute("partie");
+           String tempsChangement = partie.tempsAvantChangement(0);
+        %>
+        <p><%=tempsChangement%></p>
     </body>
 </html>

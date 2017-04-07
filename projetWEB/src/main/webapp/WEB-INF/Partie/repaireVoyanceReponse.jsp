@@ -4,6 +4,7 @@
     Author     : nicolasl
 --%>
 
+<%@page import="modele.Partie"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -28,4 +29,8 @@
         <p>Peut-être aurez-vous la chance de découvrir d'autres secrets demain.... si vous survivez au vote sur la place du village... ! </p>
         <a href="controleurPartie?action=rejoindreNuitLoup">Retour au repaire...</a>
     </body>
+     <% Partie partie = (Partie) request.getAttribute("partie");
+           String tempsChangement = partie.tempsAvantChangement(0);
+        %>
+        <p><%=tempsChangement%></p>
 </html>

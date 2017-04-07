@@ -110,10 +110,10 @@ public class Controleur extends HttpServlet {
             MessageDAO messageDAO = new MessageDAO(ds);
             System.out.println("SUPRESSION MESSAGES") ;
             messageDAO.supprimerTousMessages(idPartie);
-            System.out.println("SUPRESSION VILLAGEOIS") ;
-            villageoisDAO.supprimerVillageois(pseudo);
             System.out.println("SUPRESSION PARTIE") ;
             partieDAO.supprimerPartie(idPartie);
+            System.out.println("SUPRESSION VILLAGEOIS") ;
+            villageoisDAO.supprimerVillageois(pseudo);
         } else {
             villageoisDAO.supprimerVillageois(pseudo);
         }

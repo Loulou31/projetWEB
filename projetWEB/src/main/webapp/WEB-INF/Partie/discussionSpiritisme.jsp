@@ -47,7 +47,7 @@
             <input type="hidden" name="action" value="reloadMessages"/>
         </form>
         <% Partie partie = (Partie) request.getAttribute("partie");
-           String tempsChangement = partie.tempsAvantChangement(1);
+           String tempsChangement = partie.tempsAvantChangement(0);
         %>
         <p><%=tempsChangement%></p>
     </body>
