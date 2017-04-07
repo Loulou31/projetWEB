@@ -421,9 +421,9 @@ public class ControleurPartie extends HttpServlet {
                 decisionDAO.supprimerToutesDecisionsJour(idPartie);
             }
         }else{
-//            if (partie.decisionsCorrompues(decisionDAO.getListDecisionLoup(idPartie))){
-//                decisionDAO.supprimerToutesDecisionsNuit(idPartie);
-//            }
+            if (partie.decisionsCorrompuesNuit(decisionDAO.getListDecisionLoup(idPartie))){
+                decisionDAO.supprimerToutesDecisionsNuit(idPartie);
+            }
         }
         /* On donne les infos à la prochaine page jsp appelée */
         request.setAttribute("partie", partie);
