@@ -28,14 +28,6 @@
                 <button type="submit" class="button"><span>Accéder aux archives</span></button><br>
                 <input type="hidden" name="action" value="archivage"/>
         </form>
-        <p>Liste des villageois encore vivants : </p>
-        <table>
-            <c:forEach items="${joueurs}" var="joueurs"> 
-                <tr>
-                    <td><B>@${joueurs.pseudo} </B></td>
-                </tr>
-            </c:forEach>
-        </table>
     </body>
 </html>
 
