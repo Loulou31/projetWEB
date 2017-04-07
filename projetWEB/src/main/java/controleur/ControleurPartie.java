@@ -682,6 +682,7 @@ public class ControleurPartie extends HttpServlet {
             throws IOException, ServletException {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         String choixVoyant = request.getParameter("choixVoyantLoup");
+        System.out.println("PSEUDO: "+choixVoyant);
         Villageois villageois = villageoisDAO.getVillageois(choixVoyant);
         String role = villageois.getRoleString();
         String pouvoir = villageois.getPouvoir();
@@ -702,6 +703,7 @@ public class ControleurPartie extends HttpServlet {
         HttpSession session = request.getSession();
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         String pseudo = session.getAttribute("membre").toString();
+        System.out.println("PSEUDO: "+pseudo);
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
         int idPartie = villageois.getPartie();
         List<Villageois> vivants = villageoisDAO.getListHumainsVivants(idPartie);

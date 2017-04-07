@@ -27,6 +27,14 @@
                 <button type="submit" class="button"><span>Actualiser la page</span></button><br>
                 <input type="hidden" name="action" value="reloadMessages"/>
         </form>
+        <p>Liste des villageois vivants : </p>
+        <table>
+            <c:forEach items="${joueurs}" var="joueurs"> 
+                <tr>
+                    <td><B>@${joueurs.pseudo} </B></td>
+                </tr>
+            </c:forEach>
+        </table>
          <% Partie partie = (Partie) request.getAttribute("partie");
            String tempsChangement = partie.tempsAvantChangement(0);
         %>

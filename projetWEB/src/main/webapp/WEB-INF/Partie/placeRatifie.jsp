@@ -27,6 +27,15 @@
         <h2> La décision est ratifiée !</h2>
         <p>Le joueur ${pseudoJoueurElimine} nous a quitté aujourd'hui.... Et c'était un ${roleJoueurElimine} ! </p>
         <p></p>
+        <p>Liste des villageois vivants : </p>
+        <table>
+            <c:forEach items="${joueurs}" var="joueurs"> 
+                <tr>
+                    <td><B>@${joueurs.pseudo} </B></td>
+                </tr>
+            </c:forEach>
+        </table>
+        <h2>Discutez avec les autres villageois...</h2>
         <table>
             <c:forEach items="${messages}" var="message">
                     <tr>

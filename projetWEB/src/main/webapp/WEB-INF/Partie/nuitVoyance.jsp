@@ -23,6 +23,14 @@
     <body>
         <h1>Choisissez le joueur dont vous voulez connaître le rôle et le pouvoir.</h1>
         <h2>Réfléchissez bien... ${nbLoups} loups-garou rôdent autour du village....</h2>
+        <p>Liste des villageois vivants : </p>
+        <table>
+            <c:forEach items="${joueurs}" var="joueurs"> 
+                <tr>
+                    <td><B>@${joueurs.pseudo} </B></td>
+                </tr>
+            </c:forEach>
+        </table>
         <form action="controleurPartie" accept-charset="utf-8">
         <SELECT name="choixVoyance" size="1">
                     <c:forEach items="${vivants}" var="vivants"> 

@@ -64,6 +64,14 @@
         <input type="hidden" name="action" value="addDecisionSpiritisme"/>
         <input type="hidden" name="decisionSpiritisme" value="decisionSpiritisme"/>
         </form>
+        <p>Liste des villageois vivants : </p>
+        <table>
+            <c:forEach items="${joueurs}" var="joueurs"> 
+                <tr>
+                    <td><B>@${joueurs.pseudo} </B></td>
+                </tr>
+            </c:forEach>
+        </table>
         <h2> Discutez avec les autres loups... </h2>
         <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
         <table>

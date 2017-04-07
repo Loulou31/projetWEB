@@ -95,7 +95,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
             PreparedStatement st = conn.prepareStatement("SELECT * FROM JOUEUR WHERE login = ?");
             st.setString(1, pseudo);
             ResultSet rs = st.executeQuery();
-            rs.next();
+            System.out.println("RS : "+rs.next());
             villageois = new Villageois(rs.getString("login"),
                     rs.getInt("rolePartie"),
                     rs.getInt("Statut"),

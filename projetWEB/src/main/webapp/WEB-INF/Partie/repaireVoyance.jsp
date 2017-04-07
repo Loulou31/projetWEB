@@ -50,7 +50,7 @@
         <h1>Choisissez le joueur dont vous voulez connaître le rôle et le pouvoir.</h1>
         <h2>Réfléchissez bien... ${nbLoups} loups-garou rôdent autour du village....</h2>
         <form action="controleurPartie" accept-charset="utf-8">
-        <SELECT name="choixVoyance" size="1">
+        <SELECT name="choixVoyantLoup" size="1">
                     <c:forEach items="${vivants}" var="vivants"> 
                         <OPTION><c:out value="${vivants.getPseudo()}" />
                     </c:forEach>
@@ -59,6 +59,14 @@
         <input type="hidden" name="action" value="addChoixVoyantLoup"/>
         <input type="hidden" name="choixVoyantLoup" value="choixVoyantLoup"/>
         </form>
+        <p>Liste des villageois vivants : </p>
+        <table>
+            <c:forEach items="${joueurs}" var="joueurs"> 
+                <tr>
+                    <td><B>@${joueurs.pseudo} </B></td>
+                </tr>
+            </c:forEach>
+        </table>
         <h2> Discutez avec les autres loups... </h2>
         <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
         <table>
