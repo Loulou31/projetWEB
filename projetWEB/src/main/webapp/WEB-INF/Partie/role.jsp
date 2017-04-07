@@ -38,5 +38,9 @@
             </c:forEach>
         </table>
         <li><a href="controleurPartie?action=rejoindreJeu">Rejoindre Salle Discussion</a></li>
+        <form action="controleurPartie" method="get" align="center">
+                <button type="submit" class="button"><span>Rejoindre Salle Discussion</span></button><br>
+                <input type="hidden" name="action" value="rejoindreJeu"/>
+        </form>
     </body>
 </html>
