@@ -352,6 +352,7 @@ public class ControleurPartie extends HttpServlet {
             } else {
                 System.out.println("je vais ds nuit spiritisme, c'est la premiere fois");
                 System.out.println("SPIRITISME");
+                partie.setDiscussionSpiritisme(true);
                 List<Villageois> morts = villageoisDAO.getListVillageoisMorts(idPartie);
                 if (morts == null) {
                     System.out.println("morts null");
