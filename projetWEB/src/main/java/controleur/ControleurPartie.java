@@ -506,7 +506,7 @@ public class ControleurPartie extends HttpServlet {
         int idPartie = villageois.getPartie();
         Partie partie = partieDAO.getPartie(idPartie);
         if (!partie.estJour()){
-            request.getRequestDispatcher("/WEB-INF/Partie/nuitVoyanceUtilise.jsp").forward(request, response);
+            actionRejoindreNuitVoyance(request, response);
         }else{
             actionRejoindreSalleDiscussion(request, response);
         }
