@@ -4,6 +4,7 @@
     Author     : nicolasl
 --%>
 
+<%@page import="modele.Partie"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,7 @@
         <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
         <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
         <style>
-        html,body,h1,h2,h3,h4,h5,h6 {font-family: "Luckiest Guy", cursive;}
+            html,body,h1,h2,h3,h4,h5,h6 {font-family: "Luckiest Guy", cursive;}
         </style>
         <title>Repaire</title>
     </head>
@@ -28,19 +29,23 @@
         <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
         <table>
             <c:forEach items="${messages}" var="message">
-                    <tr>
-                        <td><B>@${message.expediteur}  :  </B></td><td>  ${message.contenu}</td>
-                    </tr>
+                <tr>
+                    <td><B>@${message.expediteur}  :  </B></td><td>  ${message.contenu}</td>
+                </tr>
             </c:forEach>
         </table>
         <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
-        <button type="submit" class="button"><span>Poster</span></button><br>
-        <input type="hidden" name="action" value="ajouterUnMessage" />
+            <button type="submit" class="button"><span>Poster</span></button><br>
+            <input type="hidden" name="action" value="ajouterUnMessage" />
         </form>
         <form action="controleurPartie" method="get" align="center">
-                <button type="submit" class="button"><span>Actualiser la page</span></button><br>
-                <input type="hidden" name="action" value="reloadMessages"/>
+            <button type="submit" class="button"><span>Actualiser la page</span></button><br>
+            <input type="hidden" name="action" value="reloadMessages"/>
         </form>
+        <% Partie partie = (Partie) request.getAttribute("partie");
+            String tempsChangement = partie.tempsAvantChangement(0);
+        %>
+        <p><%=tempsChangement%></p>
     </body>
 </html>
