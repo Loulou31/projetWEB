@@ -285,4 +285,24 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         }
         return decision ; 
    }
+    
+     public void supprimerToutesDecisionsJour(int idPartie){
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("DELETE * FROM DECISION_HUMAIN WHERE idPartie = ?");
+            st.setInt(1, idPartie);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD supp messages " + e.getMessage(), e);
+        }
+    }
+     
+      public void supprimerToutesDecisionsNuit(int idPartie){
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("DELETE * FROM DECISION_LOUP WHERE idPartie = ?");
+            st.setInt(1, idPartie);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD supp messages " + e.getMessage(), e);
+        }
+    }
 }
