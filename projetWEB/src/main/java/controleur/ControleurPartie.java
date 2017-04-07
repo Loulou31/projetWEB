@@ -655,6 +655,9 @@ public class ControleurPartie extends HttpServlet {
         int idPartie = villageois.getPartie();
         List<Villageois> villageoisList = villageoisDAO.getListVillageois(idPartie);
         request.setAttribute("villageoisList", villageoisList);
+        PartieDAO partieDAO = new PartieDAO(ds);
+        Partie partie = partieDAO.getPartie(idPartie);
+        request.setAttribute("partie", ds);
         request.getRequestDispatcher("/WEB-INF/Partie/decisionLoup.jsp").forward(request, response);
     }
 
@@ -755,6 +758,10 @@ public class ControleurPartie extends HttpServlet {
         Villageois villageois = villageoisDAO.getVillageois(choixVoyant);
         String role = villageois.getRoleString();
         String pouvoir = villageois.getPouvoir();
+        int idPartie = villageois.getPartie();
+        PartieDAO partieDAO = new PartieDAO(ds);
+        Partie partie = partieDAO.getPartie(idPartie);
+        request.setAttribute("partie", ds);
         request.setAttribute("pseudo", choixVoyant);
         request.setAttribute("role", role);
         request.setAttribute("pouvoir", pouvoir);
@@ -769,6 +776,10 @@ public class ControleurPartie extends HttpServlet {
         Villageois villageois = villageoisDAO.getVillageois(choixVoyant);
         String role = villageois.getRoleString();
         String pouvoir = villageois.getPouvoir();
+        int idPartie = villageois.getPartie();
+        PartieDAO partieDAO = new PartieDAO(ds);
+        Partie partie = partieDAO.getPartie(idPartie);
+        request.setAttribute("partie", ds);
         request.setAttribute("pseudo", choixVoyant);
         request.setAttribute("role", role);
         request.setAttribute("pouvoir", pouvoir);
@@ -785,6 +796,9 @@ public class ControleurPartie extends HttpServlet {
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
         int idPartie = villageois.getPartie();
         List<Villageois> vivants = villageoisDAO.getListHumainsVivants(idPartie);
+        PartieDAO partieDAO = new PartieDAO(ds);
+        Partie partie = partieDAO.getPartie(idPartie);
+        request.setAttribute("partie", ds);
         request.setAttribute("vivants", vivants);
         request.getRequestDispatcher("/WEB-INF/Partie/decisionContamination.jsp").forward(request, response);
     }
