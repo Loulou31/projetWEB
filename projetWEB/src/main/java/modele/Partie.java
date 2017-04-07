@@ -284,7 +284,83 @@ public class Partie {
         }
         return result;        
     }
+    
+    public List<Villageois> getListLoupsSansPouvoir() {
+        List<Villageois> result = new ArrayList<Villageois>();
+        for(Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();){
+            Villageois next = it.next();
+            if (next.getPouvoir() == null && next.getRole() == 1){
+                result.add(next);
+            }
+        }
+        return result; 
+    }
+    
+    public List<Villageois> getListHumainsMorts(){
+         List<Villageois> result = new ArrayList<Villageois>();
+        for(Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();){
+            Villageois next = it.next();
+            if (next.getRole() == 0 && next.getVivant() == 0){
+                result.add(next);
+            }
+        }
+        return result;        
+    }
+    
+    public List<Villageois> getListHumainsVivants(){
+         List<Villageois> result = new ArrayList<Villageois>();
+        for(Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();){
+            Villageois next = it.next();
+            if (next.getRole() == 0 && next.getVivant() == 1){
+                result.add(next);
+            }
+        }
+        return result;                
+    }
+    
+    public List<Villageois> getListHumains(){
+         List<Villageois> result = new ArrayList<Villageois>();
+        for(Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();){
+            Villageois next = it.next();
+            if (next.getRole() == 0){
+                result.add(next);
+            }
+        }
+        return result;
+    }
 
+    public List<Villageois> getListLoups() {
+        List<Villageois> result = new ArrayList<Villageois>();
+        for (Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();) {
+            Villageois next = it.next();
+            if (next.getRole() == 1) {
+                result.add(next);
+            }
+        }
+        return result;
+    }
+    
+    public List<Villageois> getListLoupsVivants() {
+        List<Villageois> result = new ArrayList<Villageois>();
+        for (Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();) {
+            Villageois next = it.next();
+            if (next.getRole() == 1 && next.getVivant() == 1) {
+                result.add(next);
+            }
+        }
+        return result;
+    }
+
+    public List<Villageois> getListLoupsMorts() {
+        List<Villageois> result = new ArrayList<Villageois>();
+        for (Iterator<Villageois> it = this.villageoisPresents.iterator(); it.hasNext();) {
+            Villageois next = it.next();
+            if (next.getRole() == 1 && next.getVivant() == 0) {
+                result.add(next);
+            }
+        }
+        return result;
+    }
     
     //Sera utilisé pour les message de le place du village pour savoir quels messages doivent être affichés
     public Boolean dansJournee(Date date){

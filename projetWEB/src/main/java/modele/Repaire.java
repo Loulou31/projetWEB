@@ -19,12 +19,8 @@ public class Repaire extends SalleDiscussion{
         super(decisions, messages);
     }
 
-<<<<<<< HEAD
     public String getNom(){
         return this.nom;
     }
     
-=======
-  
->>>>>>> a9ca23303040dcc27697dd97784eb06dafeb98a5
 }

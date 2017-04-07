@@ -264,6 +264,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         return result;
     }
 
+    //on a deja cette fonction en haut
     public List<Villageois> getListJoueurs(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
@@ -289,6 +290,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
      * @param idPartie
      * @return
      */
+    //dans partie
     public List<Villageois> getListLoupsSansPouvoir(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
@@ -315,6 +317,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
      * @param idPartie
      * @return
      */
+    //dans partie
     public List<Villageois> getListHumainsMorts(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
