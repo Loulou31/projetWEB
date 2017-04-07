@@ -36,14 +36,6 @@
         <input type="hidden" name="action" value="addDecisionContamination"/>
         <input type="hidden" name="decisionContamination" value="decisionContamination"/>
         </form>
-        <p>Liste des villageois vivants : </p>
-        <table>
-            <c:forEach items="${joueurs}" var="joueurs"> 
-                <tr>
-                    <td><B>@${joueurs.pseudo} </B></td>
-                </tr>
-            </c:forEach>
-        </table>
          <% Partie partie = (Partie) request.getAttribute("partie");
            String tempsChangement = partie.tempsAvantChangement(0);
         %>

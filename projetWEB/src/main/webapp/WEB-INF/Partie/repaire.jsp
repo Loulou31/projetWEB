@@ -29,14 +29,6 @@
     <body>
         <h1 align="center">Vous entrez dans le repaire des Loups-Garou</h1>
         <h2> Qui allez-vous dévorer ce soir...?  </h2>
-        <p>Liste des villageois vivants : </p>
-        <table>
-            <c:forEach items="${joueurs}" var="joueurs"> 
-                <tr>
-                    <td><B>@${joueurs.pseudo} </B></td>
-                </tr>
-            </c:forEach>
-        </table>
         <table id="customers">
             <tr>
                 <th> Joueur désigné  </th>

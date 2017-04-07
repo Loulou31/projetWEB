@@ -23,14 +23,6 @@
     <body>
         <h1 align="center">Bienvenue sur la salle de discussions privée</h1>
         <p></p
-        <p>Liste des villageois vivants : </p>
-        <table>
-            <c:forEach items="${joueurs}" var="joueurs"> 
-                <tr>
-                    <td><B>@${joueurs.pseudo} </B></td>
-                </tr>
-            </c:forEach>
-        </table>
         <p>Un vivant... un mort... Arriverez-vous à obtenir des informations ? </p>
         <p> Ou bien, saurez-vous gardez vos secrets ? </p>
         <p></p>
