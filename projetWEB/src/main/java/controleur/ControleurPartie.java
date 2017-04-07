@@ -371,9 +371,11 @@ public class ControleurPartie extends HttpServlet {
         /* On vérifie si la partie n'est pas finie */
         if (nbLoupsVivants == 0) {
             /* Les loups ont perdu */
+            System.out.println("La partie est finie");
             request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
         } else if (nbLoupsVivants == nbJoueursVivants) {
             /* Les loups ont gagné */
+            System.out.println("La partie est finieLoup");
             request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
         }
         // Si je suis mort
