@@ -396,21 +396,22 @@ public class Partie {
         }
     }
     
-    public int journeeActuelle(int date){
+    public int journeeActuelle(){
        Temps temps = new Temps();
        int heureActuelle = temps.getTempsInt();
        int tempsPasse = heureActuelle - heureDebut;
        return(tempsPasse/(dureeJour+dureeNuit) +1 );
     }
 
-//    public ArrayList<Message> messageDuJour(List<Message> m){
-//        ArrayList<Message> messages = new ArrayList<Message>();
-//        for (Message message : m){
-//            if (jourMessage(message.getDate())){
-//                
-//            }
-//        }
-//    }
+    public ArrayList<Message> messageDuJour(List<Message> m){
+        ArrayList<Message> messages = new ArrayList<Message>();
+        for (Message message : m){
+            if (jourMessage(message.getDate())==Math.abs(journeeActuelle())){
+                messages.add(message);
+            }
+        }
+        return (messages);
+    }
     
     
 }
