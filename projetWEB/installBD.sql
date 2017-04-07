@@ -32,7 +32,7 @@ CREATE TABLE MESSAGE_SALLE_DISCUSSION (
     idPartie int NOT NULL,
     login_expediteur varchar(10) NOT NULL, 
     contenu varchar(100) NOT NULL, 
-    date_envoi date, 
+    date_envoi int, 
     CONSTRAINT login_expediteurForeign FOREIGN KEY 
         (login_expediteur) REFERENCES JOUEUR(login) ,
     PRIMARY KEY (login_expediteur, date_envoi)
@@ -42,7 +42,7 @@ CREATE TABLE MESSAGE_REPAIRE (
     idPartie int NOT NULL,
     login_expediteur varchar(10) NOT NULL, 
     contenu varchar(100) NOT NULL, 
-    date_envoi date, 
+    date_envoi int, 
     CONSTRAINT login_expediteurForeign2 FOREIGN KEY 
         (login_expediteur) REFERENCES JOUEUR(login) ,
     PRIMARY KEY (login_expediteur, date_envoi)
@@ -53,7 +53,7 @@ CREATE TABLE MESSAGE_SPIRITISME (
     idPartie int NOT NULL,
     login_expediteur varchar(10) NOT NULL, 
     contenu varchar(100) NOT NULL, 
-    date_envoi date, 
+    date_envoi int, 
     CONSTRAINT login_expediteurForeign3 FOREIGN KEY 
         (login_expediteur) REFERENCES JOUEUR(login) ,
     PRIMARY KEY (login_expediteur, date_envoi)
@@ -64,7 +64,7 @@ CREATE TABLE DECISION_LOUP (
     id_partie int, 
     login_expeditaire varchar(10) NOT NULL, 
     ratifie int CONSTRAINT EtatValide CHECK (ratifie = 0 OR ratifie = 1), 
-    date_envoi date, 
+    date_envoi int, 
     nbreVote int, 
     votant1 varchar(10),
     votant2 varchar(10),
@@ -86,7 +86,7 @@ CREATE TABLE DECISION_HUMAIN (
     id_partie int,
     login_expeditaire varchar(10) NOT NULL, 
     ratifie int CONSTRAINT EtatValide2 CHECK (ratifie = 0 OR ratifie = 1), 
-    date_envoi date, 
+    date_envoi int, 
     nbreVote int, 
     votant1 varchar(10),
     votant2 varchar(10),
@@ -114,8 +114,9 @@ CREATE TABLE PARTIE (
     ProbaPouvoir float CONSTRAINT ProbaPos CHECK (ProbaPouvoir >= 0.0 AND ProbaPouvoir <= 1.0 ),
     ProportionLG float CONSTRAINT PropPos CHECK (ProportionLG > 0.0),
     nbJoueursVivants int, 
-    discussionSpiritisme int, 
-    contamination int
+    discussionSpiritisme int,
+    contamination int,
+    enCours int
 ) ; 
 
 
