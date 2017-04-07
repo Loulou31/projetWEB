@@ -344,6 +344,8 @@ public class ControleurPartie extends HttpServlet {
         Partie partie = partieDAO.getPartie(idPartie);
         int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
+        List<Villageois> joueurs = villageoisDAO.getListVillageoisVivants(idPartie);
+        request.setAttribute("joueurs", joueurs) ; 
         /* on met à 0 contamination et spiritisme */
         if (partie.estJour()) {
             System.out.println("c'est le jour et je mets le discussioSpririt a false");
