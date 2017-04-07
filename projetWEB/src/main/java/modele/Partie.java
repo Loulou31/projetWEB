@@ -395,8 +395,22 @@ public class Partie {
             return -(journee +  1);
         }
     }
+    
     public int journeeActuelle(int date){
        Temps temps = new Temps();
+       int heureActuelle = temps.getTempsInt();
+       int tempsPasse = heureActuelle - heureDebut;
+       return(tempsPasse/(dureeJour+dureeNuit) +1 );
     }
 
+//    public ArrayList<Message> messageDuJour(List<Message> m){
+//        ArrayList<Message> messages = new ArrayList<Message>();
+//        for (Message message : m){
+//            if (jourMessage(message.getDate())){
+//                
+//            }
+//        }
+//    }
+    
+    
 }

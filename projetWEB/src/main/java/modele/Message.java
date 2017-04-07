@@ -14,7 +14,7 @@ public class Message {
     
     private String expediteur; //villageois
     private String contenu; 
-    private Date date; // long
+    private int date; // long
     private int idPartie;//non merci
 
     public int getIdPartie() {
@@ -24,7 +24,6 @@ public class Message {
     public Message(String expediteur, String contenu, int IdPartie) {
         this.expediteur = expediteur;
         this.contenu = contenu;
-        this.date = new Date();
         this.idPartie = idPartie;
     }
         
@@ -37,7 +36,7 @@ public class Message {
         return contenu;
     }
 
-    public Date getDate() {
+    public int getDate() {
         return date;
     }
     
