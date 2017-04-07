@@ -412,7 +412,7 @@ public class Partie{
     public Boolean decisionsCorrompuesNuit(List<Decision> d) {
         Boolean b = false;
         for (Decision decision : d) {
-            if (jourEntite(decision.getDate()) != Math.abs(journeeActuelle())-1) {
+            if (jourEntite(decision.getDate()) != Math.abs(journeeActuelle())+1) {
                 b = true;
             }
         }
@@ -439,7 +439,7 @@ public class Partie{
         Collections.sort(m, new Comparator<Message>() {
             @Override
             public int compare(Message m1, Message m2) {
-                return (m2.getDate()-m1.getDate());
+                return (m1.getDate()-m2.getDate());
             }
     });
         return new ArrayList<>(m);
