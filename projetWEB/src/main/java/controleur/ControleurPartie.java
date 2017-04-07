@@ -583,7 +583,7 @@ public class ControleurPartie extends HttpServlet {
             if (partie.estJour()) {
                 messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString(), idPartie);
             // Ajouter un message dans la salle de discussion spiritisme 
-            } else if (request.getParameter("spiritisme").toString().equals("true")) {
+            } else if (request.getParameter("spiritisme") != null && request.getParameter("spiritisme").toString().equals("true")) {
                 System.out.println("je rajoute un mess ds spirit");
                 messageDAO.ajouteMessageSpiritisme(pseudo, request.getParameter("contenu").toString(), idPartie);
                 // Ajouter un message dans le repaire
