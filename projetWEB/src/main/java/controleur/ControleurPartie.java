@@ -873,6 +873,7 @@ public class ControleurPartie extends HttpServlet {
     public void actionRejoindreArchivageJour(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
+        MessageDAO messageDAO = new MessageDAO(ds);
         HttpSession session = request.getSession();
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         String pseudo = session.getAttribute("membre").toString();
@@ -882,6 +883,7 @@ public class ControleurPartie extends HttpServlet {
         Partie partie = partieDAO.getPartie(idPartie);
         int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
+        List<Message> messagesVillage = messageDAO.getListeMessagesSalleDiscussion(idPartie);
         if (nbLoupsVivants == 0) {
             /* Les loups ont perdu */
             request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
