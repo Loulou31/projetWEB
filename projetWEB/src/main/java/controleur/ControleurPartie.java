@@ -151,20 +151,8 @@ public class ControleurPartie extends HttpServlet {
                 System.out.println(voyance);
                 System.out.println(spiritisme);
 
-                if (spiritisme != 0) {
-                    villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
-                    if (villageois.size() > 0) {
-                        int valSpirit = generateurAleatoire(-1, villageois.size());
-                        while (valSpirit == -1 || valSpirit == villageois.size()) {
-                            valSpirit = generateurAleatoire(-1, villageois.size());
-                        }
-                        villageoisDAO.updatePlayerStatus(villageois.get(valSpirit).getPseudo(), "spriritisme");
-                    } else {
-                        System.out.println("pas assez de villageois pr pouvoir spirit");
-                    }
-                }
                 /* attribution du pouvoir contamination à un loup */
- /*
+ 
                 if (contamination != 0) {
                     List<Villageois> loups = villageoisDAO.getListLoupsSansPouvoir(idPartie);
                     if (loups.size() > 0) {
@@ -177,10 +165,10 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez de loups pr pouvoir contam");
                     }
-                }*/
+                }
 
  /* attribution du pouvoir insomnie à un humain */
- /*
+ 
                 if (insomnie != 0) {
                     List<Villageois> humains = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                     if (humains.size() > 0) {
@@ -194,9 +182,9 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez d'humains pr pouvoir insom");
                     }
-                }*/
+                }
  /* attribution du pouvoir voyance à un villageois */
- /*
+ 
                 if (voyance != 0) {
                     villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
@@ -210,9 +198,9 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez de villageois pr pouvoir voyance");
                     }
-                }*/
+                }
  /* attribution du pouvoir spiritisme à un villageois */
- /*
+ 
                 if (spiritisme != 0) {
                     villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
@@ -224,7 +212,7 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez de villageois pr pouvoir spirit");
                     }
-                }*/
+                }
             }
         }
         request.setAttribute("partie", partie);
@@ -267,13 +255,13 @@ public class ControleurPartie extends HttpServlet {
         request.setAttribute("nbLoups", nbLoupsVivants);
 
         /* On vérifie si la partie n'est pas finie */
-//        if (nbLoupsVivants == 0) {
-//            /* Les loups ont perdu */
-//            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
-//        } else if (nbLoupsVivants == nbJoueursVivants) {
-//            /* Les loups ont gagné */
-//            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
-//        }
+        if (nbLoupsVivants == 0) {
+            /* Les loups ont perdu */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
+        } else if (nbLoupsVivants == nbJoueursVivants) {
+            /* Les loups ont gagné */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
+        }
         // Si je suis mort
         if (villageois.getVivant() == 0) {
             if (villageois.getPseudo().equals(joueurChoisiSpiritisme)) {
