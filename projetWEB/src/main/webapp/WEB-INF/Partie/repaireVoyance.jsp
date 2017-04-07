@@ -55,8 +55,8 @@
                     </c:forEach>
          </SELECT>
         <button type="submit" class="button"><span>Valider la décision</span></button><br>
-        <input type="hidden" name="action" value="addChoixVoyant"/>
-        <input type="hidden" name="choixVoyance" value="choixVoyanceLoup"/>
+        <input type="hidden" name="action" value="addChoixVoyantLoup"/>
+        <input type="hidden" name="choixVoyantLoup" value="choixVoyantLoup"/>
         </form>
         <h2> Discutez avec les autres loups... </h2>
         <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
