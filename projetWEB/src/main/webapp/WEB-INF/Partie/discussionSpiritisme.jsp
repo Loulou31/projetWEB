@@ -42,7 +42,10 @@
         <input type="hidden" name="action" value="ajouterUnMessage" />
         <input type="hidden" name="spiritisme" value="true" />
         </form>
-        
+        <form action="controleurPartie" method="get" align="center">
+            <button type="submit" class="button"><span>Actualiser la page</span></button><br>
+            <input type="hidden" name="action" value="reloadMessages"/>
+        </form>
         <% Partie partie = (Partie) request.getAttribute("partie");
            String tempsChangement = partie.tempsAvantChangement(1);
         %>

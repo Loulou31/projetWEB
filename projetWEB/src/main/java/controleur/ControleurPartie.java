@@ -88,7 +88,7 @@ public class ControleurPartie extends HttpServlet {
                 actionRejoindreRepaire(request, response);
             } else if (action.equals("rejoindreNuitVoyance")) {
                 actionRejoindreNuitVoyance(request, response);
-            } else if (action.equals("reloadMessagesVoyance")) {
+            } else if (action.equals("reloadVoyance")) {
                 actionRejoindreSalleDiscussionVoyance(request, response);
             } else {
                 invalidParameters(request, response);
