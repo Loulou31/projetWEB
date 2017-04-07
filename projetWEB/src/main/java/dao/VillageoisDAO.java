@@ -221,7 +221,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
     public List<Villageois> getListVillageoisSansPouvoir(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE id_partie = ? and pouvoir = ?");
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM Joueur WHERE idPartie = ? and pouvoir = ?");
             st.setInt(1, idPartie);
             st.setString(2, "rien");
             ResultSet rs = st.executeQuery();
