@@ -34,6 +34,15 @@ public class Decision {
         this.etat = false;
         this.nbVote = nbVote;
     }
+    
+    public Decision(String joueurConcerne, HashSet<String> votants, int nbVote, int idPartie, int date) {
+        this.idPartie = idPartie;
+        this.joueurConcerne = joueurConcerne;
+        this.votants = votants;
+        this.etat = false;
+        this.nbVote = nbVote;
+        this.date = date; 
+    }
 
     public int getIdPartie() {
         return idPartie;
