@@ -201,7 +201,7 @@ public class ControleurPartie extends HttpServlet {
                 }
  /* attribution du pouvoir spiritisme à un villageois */
  
-                if (spiritisme != 0) {
+ /*               if (spiritisme != 0) {
                     villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
                         int valSpirit = generateurAleatoire(-1, villageois.size());
@@ -212,7 +212,7 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez de villageois pr pouvoir spirit");
                     }
-                }
+                }*/
             }
         }
         request.setAttribute("partie", partie);
