@@ -68,7 +68,7 @@ public class Controleur extends HttpServlet {
             } else if (action.equals("debutPartie")) {
                 request.getRequestDispatcher("controleurPartie").forward(request, response);
             } else if (action.equals("quitteAttentePartie")) {
-                quitteAttentePartie(request, response);
+                quittePartie(request, response);
             } else if (action.equals("rejoindreJeu")) {
                 request.setAttribute("action", action);
                 request.getRequestDispatcher("/controleurPartie").forward(request, response);
@@ -95,28 +95,29 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
         }
     }
-
-    private void quitteAttentePartie(HttpServletRequest request,
+    
+    private void quittePartie(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("QUITTE PARTIE") ; 
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString();
         PartieDAO partieDAO = new PartieDAO(ds);
-        MessageDAO messageDAO = new MessageDAO(ds) ; 
-        //si dernier joueur de partie : on détruit tout
-        int idPartie = partieDAO.getIDPartieJoueur(pseudo);
-        System.out.println("AVANT DERNIER JOUEUR");
-        if (partieDAO.getNbJoueurs(idPartie) == 1) {
-            System.out.println("JE SUIS DERNIER JOUEUR");
-            partieDAO.supprimerPartie(idPartie);
-        }
-        System.out.println("SUPPRESSION MESSAGES");
-        messageDAO.supprimerTousMessages(idPartie);
-        System.out.println("SUPPRESSION JOUEURS");
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
-        villageoisDAO.supprimerVillageois(pseudo);
+        int idPartie = partieDAO.getIDPartieJoueur(pseudo);
+        if (partieDAO.getNbJoueurs(idPartie) == 1) {
+            System.out.println("JE SUIS DERNIER JOUEUR") ; 
+            MessageDAO messageDAO = new MessageDAO(ds);
+            messageDAO.supprimerTousMessages(idPartie);
+            villageoisDAO.supprimerVillageois(pseudo);
+            partieDAO.supprimerPartie(idPartie);
+        } else {
+            villageoisDAO.supprimerVillageois(pseudo);
+        }
         request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
     }
+
+
 
     private void actionIndex(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
@@ -220,7 +221,7 @@ public class Controleur extends HttpServlet {
                 request.setAttribute("partiePrete", 1);
                 request.getRequestDispatcher("/WEB-INF/AvantPartie/attenteDebutPartie.jsp").forward(request, response);
             } else {
-                quitteAttentePartie(request, response);
+                quittePartie(request, response);
             }
         } else {
             request.getRequestDispatcher("/WEB-INF/AvantPartie/attenteDebutPartie.jsp").forward(request, response);

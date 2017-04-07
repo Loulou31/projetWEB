@@ -124,7 +124,7 @@ public class ControleurPartie extends HttpServlet {
         request.setAttribute("nbLoups", nbLoupsVivants);
         request.getRequestDispatcher("/WEB-INF/Partie/nuit.jsp").forward(request, response);
     }
-    
+
     private void actionRejoindreNuitVoyance(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         /* Création des DAO */
@@ -402,12 +402,15 @@ public class ControleurPartie extends HttpServlet {
                     if (partie.getContamination() == 1) {
                         request.getRequestDispatcher("/WEB-INF/Partie/repaire.jsp").forward(request, response);
                     } else {
+                        partieDAO.passerContamination(idPartie, 1);
                         request.getRequestDispatcher("/WEB-INF/Partie/repaireContamination.jsp").forward(request, response);
                     }
                 } else {
+                    System.out.println(" ");
                     if (partie.getContamination() == 1) {
                     request.getRequestDispatcher("/WEB-INF/Partie/repaireRatifie.jsp").forward(request, response);
                     } else {
+                    partieDAO.passerContamination(idPartie, 1);
                     request.getRequestDispatcher("/WEB-INF/Partie/repaireContaminationRatifie.jsp").forward(request, response);
                     }
                 }
@@ -465,7 +468,7 @@ public class ControleurPartie extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/Partie/nuit.jsp").forward(request, response);
         }
     }
-    
+
     private void actionRejoindreSalleDiscussionVoyance(HttpServletRequest request,
             HttpServletResponse response) throws IOException, ServletException {
         /* Création des DAO */
@@ -613,7 +616,7 @@ public class ControleurPartie extends HttpServlet {
         request.setAttribute("vivants", vivants);
         request.getRequestDispatcher("/WEB-INF/Partie/nuitVoyance.jsp").forward(request, response);
     }
-    
+
     private void goToVoyanceLoup(HttpServletRequest request, HttpServletResponse response,
             int idPartie, VillageoisDAO villageoisDAO)
             throws IOException, ServletException {
@@ -757,8 +760,8 @@ public class ControleurPartie extends HttpServlet {
         request.setAttribute("pouvoir", pouvoir);
         request.getRequestDispatcher("/WEB-INF/Partie/nuitVoyanceReponse.jsp").forward(request, response);
     }
-        
-        public void actionAddChoixVoyantLoup(HttpServletRequest request,
+
+    public void actionAddChoixVoyantLoup(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
@@ -853,7 +856,7 @@ public class ControleurPartie extends HttpServlet {
             // Ajouter un message dans la place du village
             if (partie.estJour()) {
                 messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString(), idPartie);
-            // Ajouter un message dans la salle de discussion spiritisme 
+                // Ajouter un message dans la salle de discussion spiritisme 
             } else if (request.getParameter("spiritisme") != null && request.getParameter("spiritisme").toString().equals("true")) {
                 System.out.println("je rajoute un mess ds spirit");
                 messageDAO.ajouteMessageSpiritisme(pseudo, request.getParameter("contenu").toString(), idPartie);
