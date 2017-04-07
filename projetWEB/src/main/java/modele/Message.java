@@ -26,6 +26,13 @@ public class Message {
         this.contenu = contenu;
         this.idPartie = idPartie;
     }
+    
+     public Message(String expediteur, String contenu, int IdPartie, int date) {
+        this.expediteur = expediteur;
+        this.contenu = contenu;
+        this.idPartie = idPartie;
+        this.date = date;
+    }
         
 
     public String getExpediteur() {
