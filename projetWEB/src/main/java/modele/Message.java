@@ -13,10 +13,10 @@ import java.util.Date;
 public class Message {
     //////////////////////////////////////////////////////////////////////////////////
     
-    private String expediteur; //villageois
+    private String expediteur;
     private String contenu; 
-    private Date date; // long
-    private int idPartie;//non merci
+    private int date; 
+    private int idPartie;//à voir
 
     public int getIdPartie() {
         return idPartie;
@@ -25,8 +25,10 @@ public class Message {
     public Message(String expediteur, String contenu, int IdPartie) {
         this.expediteur = expediteur;
         this.contenu = contenu;
-        this.date = new Date();
         this.idPartie = idPartie;
+        
+        Temps temps = new Temps();
+        this.date = temps.getTempsInt();
     }
         
 
@@ -38,7 +40,7 @@ public class Message {
         return contenu;
     }
 
-    public Date getDate() {
+    public int getDate() {
         return date;
     }
     

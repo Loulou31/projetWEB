@@ -15,16 +15,14 @@ public class Decision {
     
     private int idPartie; // car besoin nb joueurs total
     private int date;
-    private String joueurConcerne; // il faut mettre type villageois pas string
+    private String joueurConcerne;
     private boolean etat; 
-    private HashSet<String> votants; // same
-    private int nbVote ; //à supprimer 
+    private HashSet<String> votants; 
 
     public Decision(String joueurConcerne, HashSet<String> votants) {
         this.joueurConcerne = joueurConcerne;
         this.votants = votants;
         this.etat = false;
-        this.nbVote = 0;
     }
 
     public Decision(String joueurConcerne, HashSet<String> votants, int nbVote, int idPartie) {
@@ -32,7 +30,6 @@ public class Decision {
         this.joueurConcerne = joueurConcerne;
         this.votants = votants;
         this.etat = false;
-        this.nbVote = nbVote;
     }
 
     public int getIdPartie() {
@@ -55,9 +52,6 @@ public class Decision {
         votants.add(votant);
     }
 
-    public void setNbVote(int nbVote) {
-        this.nbVote = nbVote;
-    }
 
     public int getNbVote() {
         return this.votants.size();

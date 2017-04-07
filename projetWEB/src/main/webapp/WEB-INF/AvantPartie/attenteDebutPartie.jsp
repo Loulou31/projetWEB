@@ -40,10 +40,10 @@
         <p>Vous êtes dans la partie : <%=partie.getIdPartie()%></p>
         
         <% 
-            int nbJoueurs = (int) request.getAttribute("nombreJoueurs");
+            int nbJoueurs = partie.getNbJoueurs();
             
             String stringVillageois = "La liste des joueurs présents est : ";
-            List<Villageois> listeVillageois = (List<Villageois>) request.getAttribute("listeVillageois");
+            List<Villageois> listeVillageois = (List<Villageois>) partie.getListVillageoisVivants();
             for (int i = 0; i < listeVillageois.size(); i++){
                 stringVillageois += listeVillageois.get(i).getPseudo() + "\n";
             }
@@ -64,6 +64,11 @@
         <form action="controleur" method="get" align="center">
             <button type="submit" class="button"><span>Quitter la salle d'attente et retourner au menu principal</span></button><br>
             <input type="hidden" name="action" value="quitteAttentePartie"/>
+        </form>
+        <form action="controleur" method="get" align="center">
+            <button type="submit" class="button"><span>Actualiser</span></button><br>
+            <input type="hidden" name="action" value="actualiseAttente"/>
+            <input type="hidden" name="idPartie" value="${partie.idPartie}"/>
         </form>
         
     </body>

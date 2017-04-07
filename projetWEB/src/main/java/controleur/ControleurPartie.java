@@ -31,6 +31,8 @@ public class ControleurPartie extends HttpServlet {
     @Resource(name = "jdbc/loupGarou")
     private DataSource ds;
     private String joueurChoisiSpiritisme;
+    
+    private Partie partie;
 
     /* pages d’erreurs */
     private void invalidParameters(HttpServletRequest request,
@@ -67,6 +69,8 @@ public class ControleurPartie extends HttpServlet {
             } else if (action.equals("addVote")) {
                 actionAddVote(request, response);
             } else if (action.equals("debutPartie")) {
+                PartieDAO partieDAO = new PartieDAO(ds);
+                partie = partieDAO.getPartie(Integer.parseInt(request.getParameter("idPartie")));
                 actionDebutPartie(request, response);
             } else if (action.equals("rejoindreJeu")) {
                 actionRejoindreSalleDiscussion(request, response);

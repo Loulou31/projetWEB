@@ -29,7 +29,7 @@ public class Partie {
     private float proportionLG ; 
 
     
-    private Boolean enCours;
+    private int enCours;//0 non
     
     //pour ne pas recharger toute la partie à chaque fois
     //il faut faire des accès qui modifient que ces 3 champs
@@ -51,7 +51,10 @@ public class Partie {
                   int heureDebut, 
                   float probaPouvoir, 
                   float proportionLG,
-                  int discussionSpirit) {
+                  int discussionSpirit,
+                  int enCours,
+                  List<Villageois> villageois) {
+        
         this.idPartie = idPartie;
         this.nbJoueursMin = nbJoueursMin;
         this.nbJoueursMax = nbJoueursMax;
@@ -61,16 +64,13 @@ public class Partie {
         this.probaPouvoir = probaPouvoir;
         this.proportionLG = proportionLG;
         this.discussionSpiritisme = discussionSpirit; 
-        //this.joueursPresents = new HashSet<Membre>();
+        this.enCours = enCours;
        
-        this.villageoisPresents = new ArrayList<Villageois>();
+        this.villageoisPresents = villageois;
         this.placeVillage = new PlaceVillage(new ArrayList<Decision>(), new ArrayList<Message>());
         this.repaire = new Repaire(new ArrayList<Decision>(), new ArrayList<Message>());
     }
     
-    public void setVillageoisPresents(List<Villageois> villageois){
-        this.villageoisPresents = villageois;
-    }
     
 
     public void setDiscussionSpiritisme(int discussionSpiritisme) {
@@ -140,22 +140,7 @@ public class Partie {
         this.joueursPresents.add(m);
     }*/
     
-    //A SUPPRIMER DES QUE POSSIBLE
-    //devenu useless je pense (Dorian)
-    public Boolean enAttente(PartieDAO partieDAO){
-//        SimpleDateFormat d = new SimpleDateFormat ("dd/MM/yyyy" );
-//        SimpleDateFormat h = new SimpleDateFormat ("hh:mm");
-//        Date currentTime_1 = new Date();
-//        String dateString = d.format(currentTime_1);
-//        String heureString = h.format(currentTime_1);
-//        //A IMPLEMENTER: gestion du temps.
-//        if (partieDAO.getNbJoueurs(idPartie)<nbJoueursMin){
-//            return true;
-//        }else{
-//            return false;
-//        }
-         return false;
-    }
+
     
     public Boolean complet(PartieDAO partieDAO){
         if (partieDAO.getNbJoueurs(idPartie)==nbJoueursMax){
@@ -227,7 +212,7 @@ public class Partie {
     }
     
     //retourne le nombre de joueurs dans la partie
-    public int getNbJoueurs(int id){
+    public int getNbJoueurs(){
         return this.villageoisPresents.size();
     }
     

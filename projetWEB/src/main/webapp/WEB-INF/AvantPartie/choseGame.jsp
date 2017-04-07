@@ -46,7 +46,7 @@
                     <td>${partie.heureDebut}</td>
                     <td>${partie.probaPouvoir}</td>
                     <td>${partie.proportionLG}</td>
-                    <td><a href="controleur?action=getPartie&view=rejoindre&id=${partie.idPartie}">Rejoindre</a></td>
+                    <td><a href="controleur?action=rejoindrePartie&id=${partie.idPartie}">Rejoindre</a></td>
                 </tr>
         </c:forEach>
         </table>
