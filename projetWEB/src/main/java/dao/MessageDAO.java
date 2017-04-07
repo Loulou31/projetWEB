@@ -140,6 +140,7 @@ public class MessageDAO extends AbstractDatabaseDAO {
     
     public void supprimerTousMessages(int idPartie){
         try (Connection conn = getConn()) {
+            System.out.println(idPartie);
             PreparedStatement st = conn.prepareStatement("DELETE * FROM MESSAGE_SALLE_DISCUSSION WHERE idPartie = ?");
             st.setInt(1, idPartie);
             st.executeUpdate();
