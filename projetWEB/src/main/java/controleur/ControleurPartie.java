@@ -657,7 +657,7 @@ public class ControleurPartie extends HttpServlet {
         request.setAttribute("villageoisList", villageoisList);
         PartieDAO partieDAO = new PartieDAO(ds);
         Partie partie = partieDAO.getPartie(idPartie);
-        request.setAttribute("partie", ds);
+        request.setAttribute("partie", partie);
         request.getRequestDispatcher("/WEB-INF/Partie/decisionLoup.jsp").forward(request, response);
     }
 
@@ -761,7 +761,7 @@ public class ControleurPartie extends HttpServlet {
         int idPartie = villageois.getPartie();
         PartieDAO partieDAO = new PartieDAO(ds);
         Partie partie = partieDAO.getPartie(idPartie);
-        request.setAttribute("partie", ds);
+        request.setAttribute("partie", partie);
         request.setAttribute("pseudo", choixVoyant);
         request.setAttribute("role", role);
         request.setAttribute("pouvoir", pouvoir);
@@ -779,7 +779,7 @@ public class ControleurPartie extends HttpServlet {
         int idPartie = villageois.getPartie();
         PartieDAO partieDAO = new PartieDAO(ds);
         Partie partie = partieDAO.getPartie(idPartie);
-        request.setAttribute("partie", ds);
+        request.setAttribute("partie", partie);
         request.setAttribute("pseudo", choixVoyant);
         request.setAttribute("role", role);
         request.setAttribute("pouvoir", pouvoir);
@@ -798,7 +798,7 @@ public class ControleurPartie extends HttpServlet {
         List<Villageois> vivants = villageoisDAO.getListHumainsVivants(idPartie);
         PartieDAO partieDAO = new PartieDAO(ds);
         Partie partie = partieDAO.getPartie(idPartie);
-        request.setAttribute("partie", ds);
+        request.setAttribute("partie", partie);
         request.setAttribute("vivants", vivants);
         request.getRequestDispatcher("/WEB-INF/Partie/decisionContamination.jsp").forward(request, response);
     }
