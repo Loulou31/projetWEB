@@ -257,7 +257,7 @@ public class ControleurPartie extends HttpServlet {
                 System.out.println(spiritisme);
 
                 /* attribution du pouvoir contamination à un loup */
-                if (contamination != 0) {
+              /*  if (contamination != 0) {
                     List<Villageois> loups = villageoisDAO.getListLoupsSansPouvoir(idPartie);
                     if (loups.size() > 0) {
                         System.out.println("apres getListLoupsSansPouvoirs ds actionDebPartie");
@@ -269,7 +269,7 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez de loups pr pouvoir contam");
                     }
-                }
+                }*/
 
                 /* attribution du pouvoir insomnie à un humain */
                 if (insomnie != 0) {
@@ -289,7 +289,7 @@ public class ControleurPartie extends HttpServlet {
                 /* attribution du pouvoir voyance à un villageois */
 
                 if (voyance != 0) {
-                    villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
+                    villageois = villageoisDAO.getListVillageoisSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
                         int valVoyance = generateurAleatoire(-1, villageois.size());
                         while (valVoyance == -1 || valVoyance == villageois.size()) {
@@ -305,7 +305,7 @@ public class ControleurPartie extends HttpServlet {
                 /* attribution du pouvoir spiritisme à un villageois */
 
  /*               if (spiritisme != 0) {
-                    villageois = villageoisDAO.getListHumainsSansPouvoir(idPartie);
+                    villageois = villageoisDAO.getListVillageoisSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
                         int valSpirit = generateurAleatoire(-1, villageois.size());
                         while (valSpirit == -1 || valSpirit == villageois.size()) {
@@ -344,6 +344,8 @@ public class ControleurPartie extends HttpServlet {
         Partie partie = partieDAO.getPartie(idPartie);
         int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
+        List<Villageois> joueurs = villageoisDAO.getListVillageoisVivants(idPartie);
+        request.setAttribute("joueurs", joueurs) ; 
         /* on met à 0 contamination et spiritisme */
         if (partie.estJour()) {
             System.out.println("c'est le jour et je mets le discussioSpririt a false");
