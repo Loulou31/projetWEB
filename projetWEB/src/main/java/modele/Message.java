@@ -11,6 +11,7 @@ import java.util.Date;
  * @author gaunetc
  */
 public class Message {
+    //////////////////////////////////////////////////////////////////////////////////
     
     private String expediteur; //villageois
     private String contenu; 
