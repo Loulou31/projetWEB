@@ -284,9 +284,7 @@ public class ControleurPartie extends HttpServlet {
             } else {
                 request.getRequestDispatcher("/WEB-INF/Partie/joueurMort.jsp").forward(request, response);
             }
-        }
-
-        if (partie.estJour()) {
+        } else if (partie.estJour()) {
             List<Message> messagesVillage = messageDAO.getListeMessagesSalleDiscussion(idPartie);
             request.setAttribute("messages", messagesVillage);
             List<Decision> decisions = decisionDAO.getListDecisionHumains(idPartie);
@@ -319,7 +317,7 @@ public class ControleurPartie extends HttpServlet {
             } else if (villageois.getPouvoir().equals("voyance")) {
                 goToVoyance(request, response, idPartie, villageoisDAO);
             } else if (villageois.getPouvoir().equals("spiritisme")) {
-                if (partie.isDiscussionSpiritisme()==1) {
+                if (partie.isDiscussionSpiritisme() == 1) {
                     List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
                     request.setAttribute("messages", messagesDiscussionSpiritisme);
                     request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response);
@@ -595,14 +593,13 @@ public class ControleurPartie extends HttpServlet {
             // Ajouter un message dans la place du village
             if (partie.estJour()) {
                 messageDAO.ajouteMessageSalleDiscussion(pseudo, request.getParameter("contenu").toString(), idPartie);
-            } else {// Ajouter un message dans la salle de discussion spiritisme 
-                if (request.getParameter("spiritisme").toString().equals("true")) {
-                    System.out.println("je rajoute un mess ds spirit");
-                    messageDAO.ajouteMessageSpiritisme(pseudo, request.getParameter("contenu").toString(), idPartie);
-                    // Ajouter un message dans le repaire
-                } else {
-                    messageDAO.ajouteMessageRepaire(pseudo, request.getParameter("contenu").toString(), idPartie);
-                }
+            } else// Ajouter un message dans la salle de discussion spiritisme 
+            if (request.getParameter("spiritisme").toString().equals("true")) {
+                System.out.println("je rajoute un mess ds spirit");
+                messageDAO.ajouteMessageSpiritisme(pseudo, request.getParameter("contenu").toString(), idPartie);
+                // Ajouter un message dans le repaire
+            } else {
+                messageDAO.ajouteMessageRepaire(pseudo, request.getParameter("contenu").toString(), idPartie);
             }
             actionRejoindreSalleDiscussion(request, response);
         }
