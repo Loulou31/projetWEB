@@ -21,6 +21,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         super(ds);
     }
 
+    //OK
     public List<Villageois> getListVillageois(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
@@ -42,6 +43,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         return result;
     }
 
+    //ca me semble pas approprié... dans partie
     public List<Villageois> getListVillageoisVivants(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
@@ -63,6 +65,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         return result;
     }
     
+    //same story
     public List<Villageois> getListVillageoisMorts(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
@@ -84,6 +87,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         return result;
     }
 
+    //je dis oui
     public Villageois getVillageois(String pseudo) {
         Villageois villageois;
         try (
@@ -103,6 +107,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         return villageois;
     }
 
+    //excellent
     public void addPlayer(String pseudo, int idPartie) {
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("INSERT INTO JOUEUR VALUES  (?, -1, 1, ?, ?) ");
@@ -118,6 +123,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         }
     }
 
+    //oh damn -> go dans partie
     public void MortVillageois(int idPartie, String pseudo) {
         try (Connection conn = getConn()) {
             /* On passe le statut du villageois à mort = 0 */
@@ -133,6 +139,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         }
     }
 
+    //voir l'utilité des deux fonctions qui suivent, mais au bon endroit
     public void supprimerVillageois (String pseudo) {
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("DELETE FROM Joueur WHERE login = ?");
@@ -154,6 +161,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         }
     }
 
+    //bye bye dans partie
     public int nombreJoueursPartie(int idPartie) {
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("SELECT count(*) FROM Joueur WHERE IdPartie = ?");
@@ -166,6 +174,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         }
     }
 
+    //on fait toutes les updates ici
     /* Defini le role (humain ou LG) du joueur en début de partie */
     public void updatePlayerRole(String pseudo, int role) {
         try (Connection conn = getConn()) {
@@ -208,6 +217,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
      * @param idPartie
      * @return
      */
+    //byebye dans partie
     public List<Villageois> getListVillageoisSansPouvoir(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
@@ -233,6 +243,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
      * @param idPartie
      * @return
      */
+    //same avant
     public List<Villageois> getListHumainsSansPouvoir(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
@@ -253,6 +264,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         return result;
     }
 
+    //on a deja cette fonction en haut
     public List<Villageois> getListJoueurs(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
@@ -278,6 +290,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
      * @param idPartie
      * @return
      */
+    //dans partie
     public List<Villageois> getListLoupsSansPouvoir(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {
@@ -304,6 +317,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
      * @param idPartie
      * @return
      */
+    //dans partie
     public List<Villageois> getListHumainsMorts(int idPartie) {
         List<Villageois> result = new ArrayList<Villageois>();
         try (Connection conn = getConn()) {

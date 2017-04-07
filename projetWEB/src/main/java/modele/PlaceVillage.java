@@ -12,10 +12,16 @@ import java.util.ArrayList;
  * @author gaunetc
  */
 public class PlaceVillage extends SalleDiscussion{
+    
+    String nom = "Place du Village";
 
     public PlaceVillage(ArrayList<Decision> decisions, ArrayList<Message> messages) {
         super(decisions, messages);
     }
 
-   
+    
+    public String getNom(){
+        return this.nom;
+    }
+    
 }
