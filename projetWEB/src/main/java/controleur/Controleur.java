@@ -110,12 +110,17 @@ public class Controleur extends HttpServlet {
         //si dernier joueur de partie : on détruit tout
         int idPartie = partieDAO.getIDPartieJoueur(pseudo);
         if (partieDAO.getNbJoueurs(idPartie) == 1) {
-            System.out.println("DERNIER JOUEUR SUPP MESAGES") ; 
-            messageDAO.supprimerTousMessages(idPartie) ; 
-            System.out.println("SUPP VILLAGEOIS") ; 
+            System.out.println("DERNIER JOUEUR") ; 
+            System.out.println("SUPP DERNIER VILLAGEOIS") ; 
             villageoisDAO.supprimerVillageois(pseudo);
             System.out.println("SUPP PARTIE") ; 
             partieDAO.supprimerPartie(idPartie);
+        // Si je suis le 1er à quitter la partie
+        } else if (partieDAO.getNbJoueurs(idPartie) == partieDAO.getNbJoueurs(idPartie)) {
+            System.out.println("SUPP MESSAGES");
+            messageDAO.supprimerTousMessages(idPartie);
+            System.out.println("SUPP 1er VILLAGEOIS");
+            villageoisDAO.supprimerVillageois(pseudo);
         } else {
          villageoisDAO.supprimerVillageois(pseudo);
            
@@ -135,8 +140,7 @@ public class Controleur extends HttpServlet {
         int idPartie = partieDAO.getIDPartieJoueur(pseudo);
         if (partieDAO.getNbJoueurs(idPartie) == 1) {
             partieDAO.supprimerPartie(idPartie);
-        }
-        
+        } 
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         villageoisDAO.supprimerVillageois(pseudo);
         request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
