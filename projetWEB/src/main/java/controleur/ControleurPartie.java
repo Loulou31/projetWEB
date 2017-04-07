@@ -270,8 +270,10 @@ public class ControleurPartie extends HttpServlet {
         int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
         if (partie.estJour()) {
-            System.out.println("c'est le jour et je met le discussioSpririt a false");
+            System.out.println("c'est le jour et je mets le discussioSpririt a false");
+            System.out.println("c'est le jour je mets contamination a false ");
             partieDAO.passerSpiritisme(idPartie, 0);
+            partieDAO.passerContamination(idPartie, 0);
             request.setAttribute("enDiscussion", 0);
         }
         /* On donne les infos à la prochaine page jsp appelée */
@@ -326,9 +328,17 @@ public class ControleurPartie extends HttpServlet {
 
             if (villageois.getPouvoir().equals("contamination")) {
                 if (!partieDAO.decisionHumainRatifie(idPartie)) {
-                    request.getRequestDispatcher("/WEB-INF/Partie/repaireContamination.jsp").forward(request, response);
+                    if (partie.getContamination() == 1) {
+                        request.getRequestDispatcher("/WEB-INF/Partie/repaire.jsp").forward(request, response);
+                    } else {
+                        request.getRequestDispatcher("/WEB-INF/Partie/repaireContamination.jsp").forward(request, response);
+                    }
                 } else {
-                    request.getRequestDispatcher("/WEB-INF/Partie/repaireContaminationRatifie.jsp").forward(request, response);
+                    if (partie.getContamination() == 1) {
+                        request.getRequestDispatcher("/WEB-INF/Partie/repaireRatifie.jsp").forward(request, response);
+                    } else {
+                        request.getRequestDispatcher("/WEB-INF/Partie/repaireContaminationRatifie.jsp").forward(request, response);
+                    }
                 }
             } else if (villageois.getPouvoir().equals("voyance")) {
                 goToVoyance(request, response, idPartie, villageoisDAO);
