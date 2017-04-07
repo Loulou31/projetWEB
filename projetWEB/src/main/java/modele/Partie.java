@@ -37,7 +37,8 @@ public class Partie {
     private PlaceVillage placeVillage;
     private Repaire repaire;
 
-    private boolean discussionSpiritisme; 
+    private int discussionSpiritisme; 
+
 
 
     public Partie(int idPartie, 
@@ -57,14 +58,33 @@ public class Partie {
         this.probaPouvoir = probaPouvoir;
         this.proportionLG = proportionLG;
         //this.joueursPresents = new HashSet<Membre>();
-        this.discussionSpiritisme = false; 
+    }
+    
+    public Partie(int idPartie, 
+                  int nbJoueursMin, 
+                  int nbJoueursMax, 
+                  int dureeJour, 
+                  int dureeNuit, 
+                  int heureDebut, 
+                  float probaPouvoir, 
+                  float proportionLG, int discussionSpirit) {
+        this.idPartie = idPartie;
+        this.nbJoueursMin = nbJoueursMin;
+        this.nbJoueursMax = nbJoueursMax;
+        this.dureeJour = dureeJour;
+        this.dureeNuit = dureeNuit;
+        this.heureDebut = heureDebut;
+        this.probaPouvoir = probaPouvoir;
+        this.proportionLG = proportionLG;
+        this.discussionSpiritisme = discussionSpirit; 
+        //this.joueursPresents = new HashSet<Membre>();
     }
 
-    public void setDiscussionSpiritisme(boolean discussionSpiritisme) {
+    public void setDiscussionSpiritisme(int discussionSpiritisme) {
         this.discussionSpiritisme = discussionSpiritisme;
     }
 
-    public boolean isDiscussionSpiritisme() {
+    public int isDiscussionSpiritisme() {
         return discussionSpiritisme;
     }
 

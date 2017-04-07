@@ -45,7 +45,6 @@
         
         <% Partie partie = (Partie) request.getAttribute("partie");
            String tempsChangement = partie.tempsAvantChangement(1);
-           partie.setDiscussionSpiritisme(true);
         %>
         <p><%=tempsChangement%></p>
     </body>

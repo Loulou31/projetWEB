@@ -15,6 +15,7 @@ import java.util.List;
 import javax.sql.DataSource;
 import modele.Partie;
 import modele.Temps;
+import modele.Villageois;
 
 public class PartieDAO extends AbstractDatabaseDAO {
 
@@ -61,7 +62,21 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
+
     //OK
+    public void passerSpiritisme(int idPartie, int u) {
+        try (
+              Connection conn = getConn();) {
+            PreparedStatement st = conn.prepareStatement("UPDATE Partie set discussionSpiritisme = ? Where idPartie = ?");
+            st.setInt(1, u);
+            st.setInt(2, idPartie);
+            ResultSet rs = st.executeQuery();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD passer spirit" + e.getMessage(), e);
+        }
+    }
+    
+
     public void ajouterPartie(int idPartie,
             int nbJoueursMin,
             int nbJoueursMax,
@@ -72,7 +87,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
             float proportionLG) {
         try (
                 Connection conn = getConn();
-                PreparedStatement st = conn.prepareStatement("INSERT INTO PARTIE (IdPartie, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG, nbJoueursVivants) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");) {
+                PreparedStatement st = conn.prepareStatement("INSERT INTO PARTIE (IdPartie, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG, nbJoueursVivants, discussionSpiritisme) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");) {
             st.setInt(1, idPartie);
             st.setInt(2, nbJoueursMin);
             st.setInt(3, nbJoueursMax);
@@ -103,7 +118,8 @@ public class PartieDAO extends AbstractDatabaseDAO {
                     rs.getInt("DureeNuit"),
                     rs.getInt("HeureDebut"),
                     rs.getFloat("ProbaPouvoir"),
-                    rs.getFloat("ProportionLG"));
+                    rs.getFloat("ProportionLG"), 
+                    rs.getInt("discussionSpiritisme"));
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
