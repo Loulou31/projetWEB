@@ -29,6 +29,14 @@
                 out.print("<h1>Vous ne possedez aucun pouvoir.</h1>");
             }
         %>
+        <p>Liste des villageois vivants : </p>
+        <table>
+            <c:forEach items="${joueurs}" var="joueurs"> 
+                <tr>
+                    <td><B>@${joueurs.pseudo} </B></td>
+                </tr>
+            </c:forEach>
+        </table>
         <li><a href="controleurPartie?action=rejoindreJeu">Rejoindre Salle Discussion</a></li>
     </body>
 </html>

@@ -22,6 +22,14 @@
     <body>
         <h1>Une sieste s'impose ! </h1>
         <p></p>
+        <p>Liste des villageois vivants : </p>
+        <table>
+            <c:forEach items="${joueurs}" var="joueurs"> 
+                <tr>
+                    <td><B>@${joueurs.pseudo} </B></td>
+                </tr>
+            </c:forEach>
+        </table>
         <h2>Mais attention... ${nbLoups} loups-garou rôdent autour du village....</h2>
         <form action="controleurPartie" method="get" align="center">
                 <button type="submit" class="button"><span>Actualiser la page</span></button><br>
