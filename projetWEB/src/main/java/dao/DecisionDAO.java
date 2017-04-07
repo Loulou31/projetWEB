@@ -128,7 +128,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                 st.setString(3, login_expeditaire);
                 Temps temps = new Temps();
                 int date = temps.getTempsInt();
-                st.setInt(5, date);
+                st.setInt(4, date);
                 st.executeUpdate();
                 HashSet<String> votants = new HashSet();
                 Decision decision = new Decision(login_joueur, votants, 0, idPartie);
@@ -178,7 +178,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                 st.setString(3, login_expeditaire);
                 Temps temps = new Temps();
                 int date = temps.getTempsInt();
-                st.setInt(5, date);
+                st.setInt(4, date);
                 st.executeUpdate();
                 HashSet<String> votants = new HashSet();
                 Decision decision = new Decision(login_joueur, votants, 0, idPartie);
