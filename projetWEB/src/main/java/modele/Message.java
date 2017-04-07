@@ -11,10 +11,11 @@ import java.util.Date;
  * @author gaunetc
  */
 public class Message {
-    private String expediteur;
-    private String contenu;
-    private Date date;
-    private int idPartie;
+    
+    private String expediteur; //villageois
+    private String contenu; 
+    private Date date; // long
+    private int idPartie;//non merci
 
     public int getIdPartie() {
         return idPartie;

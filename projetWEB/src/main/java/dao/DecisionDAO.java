@@ -77,6 +77,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         return result;
     }
 
+    //ok c'est un update
     public void ratifieDecisionHumainSiBesoin(int limiteRatifie, int nbVote, String pseudo, int idPartie) {
         System.out.println("dans ratifie");
         if (nbVote >= limiteRatifie) {
