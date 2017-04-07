@@ -45,7 +45,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                     votants.add(rs.getString("votant" + i));
                 }
                 Decision decision
-                        = new Decision(rs.getString("login_joueur_concerne"), votants, nbVote, idPartie);
+                        = new Decision(rs.getString("login_joueur_concerne"), votants, nbVote, idPartie, rs.getInt("date_envoi"));
                 result.add(decision);
             }
         } catch (SQLException e) {
@@ -69,7 +69,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                     votants.add(rs.getString("votant"+i));
                 }
                 Decision decision =
-                    new Decision(rs.getString("login_joueur_concerne"), votants, nbVote, idPartie);
+                    new Decision(rs.getString("login_joueur_concerne"), votants, nbVote, idPartie, rs.getInt("date_envoi"));
                 result.add(decision);
             }
         } catch (SQLException e) {
@@ -250,7 +250,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                 for (int i = 1; i <= nbVote; i++) {
                     votants.add(rs.getString("votant"+i));
                 }
-                decision = new Decision(joueurConcerne, votants);
+                decision = new Decision(joueurConcerne, votants, nbVote, idPartie, rs.getInt("date_envoi"));
                 return decision; 
             }
         } catch (SQLException e) {
@@ -277,7 +277,7 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                 for (int i = 2; i <= nbVote; i++) {
                     votants.add(rs.getString("votant"+i));
                 }
-                decision = new Decision(joueurConcerne, votants);
+                decision = new Decision(joueurConcerne, votants, nbVote, idPartie, rs.getInt("date_envoi"));
                 return decision;
             }
         } catch (SQLException e) {
