@@ -128,4 +128,20 @@ public class MessageDAO extends AbstractDatabaseDAO {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
     }
+    
+    public void supprimerTousMessages(int idPartie){
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("DELETE * FROM MESSAGE_SALLE_DISCUSSION WHERE idPartie = ?");
+            st.setInt(1, idPartie);
+            st.executeUpdate();
+            PreparedStatement st1 = conn.prepareStatement("DELETE * FROM MESSAGE_REPAIRE WHERE idPartie = ?");
+            st1.setInt(1, idPartie);
+            st1.executeUpdate();
+            PreparedStatement st2 = conn.prepareStatement("DELETE * FROM MESSAGE_SPIRITISME WHERE idPartie = ?");
+            st2.setInt(1, idPartie);
+            st2.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
 }
