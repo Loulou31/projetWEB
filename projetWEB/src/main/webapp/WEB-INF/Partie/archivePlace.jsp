@@ -21,7 +21,7 @@
     <body>
         <table id="customers">
             <tr>
-                <th>Message</th>
+                <th>Messages</th>
             </tr>
             <c:forEach items="${archives}" var="archive">
                 <tr>

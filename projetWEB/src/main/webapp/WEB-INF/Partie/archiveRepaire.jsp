@@ -19,11 +19,16 @@
         <title>Archive Repaire</title>
     </head>
     <body>
-        <c:forEach items="${archives}" var="archive">
-                    <tr>
-                        <td>${archive}</td>
-                    </tr>
-        </c:forEach>
+         <table id="customers">
+            <tr>
+                <th>Messages</th>
+            </tr>
+            <c:forEach items="${archives}" var="archive">
+                <tr>
+                    <td>${archive}</td>
+                </tr>
+            </c:forEach>
+        </table>
         <form action="controleurPartie" method="get" align="center">
                 <button type="submit" class="button"><span>Retentez d'être contacté !</span></button><br>
                 <input type="hidden" name="action" value="reloadMessages"/>
