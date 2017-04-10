@@ -59,7 +59,7 @@ public class MessageDAO extends AbstractDatabaseDAO {
             ResultSet rs = st.executeQuery("SELECT * FROM Message_Repaire WHERE idPartie = "+idPartie);
             while (rs.next()) {
                 Message message =
-                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"), idPartie);
+                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"), idPartie, rs.getInt("date_envoi"));
                 result.add(message);
             }
         } catch (SQLException e) {
@@ -78,7 +78,7 @@ public class MessageDAO extends AbstractDatabaseDAO {
             ResultSet rs = st.executeQuery("SELECT * FROM Message_Spiritisme WHERE idPartie = "+idPartie);
             while (rs.next()) {
                 Message message =
-                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"), idPartie);
+                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"), idPartie, rs.getInt("date_envoi"));
                 result.add(message);
             }
         } catch (SQLException e) {

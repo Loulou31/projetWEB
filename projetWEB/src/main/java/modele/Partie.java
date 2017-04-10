@@ -374,8 +374,10 @@ public class Partie{
         int dureeJournee = dureeJour + dureeNuit;
         int journee = tempsPasse / dureeJournee;
         if (tempsPasse - journee * dureeJournee < dureeJour) {
+            System.out.println("jour entité jour="+journee);
             return (journee + 1);
         } else {
+            System.out.println("jour entité="+journee);
             return -(journee + 1);
         }
     }
@@ -384,6 +386,7 @@ public class Partie{
         Temps temps = new Temps();
         int heureActuelle = temps.getTempsInt();
         int tempsPasse = heureActuelle - heureDebut;
+        System.out.println("journée actuelle=:"+tempsPasse/(dureeJour+dureeNuit)+1);
         return (tempsPasse / (dureeJour + dureeNuit) + 1);
     }
 
