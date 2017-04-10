@@ -46,7 +46,7 @@
             </tr>
         </table>
         <p></p>
-        <a href="controleurPartie?action=newDecision">Proposer une décision</a>
+        <a href="controleurPartie?action=newDecisionLoup">Proposer une décision</a>
         <p></p>
         <a href="controleurPartie?action=newDecisionContamination">Transformer un villageois en Loup-Garou</a>
         <h2> Discutez avec les autres loups... </h2>
