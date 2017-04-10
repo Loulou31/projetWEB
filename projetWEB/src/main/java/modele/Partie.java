@@ -373,27 +373,20 @@ public class Partie{
         int tempsPasse = date - heureDebut;
         int dureeJournee = dureeJour + dureeNuit;
         int journee = tempsPasse / dureeJournee;
-        if (tempsPasse - journee * dureeJournee < dureeJour) {
-            System.out.println("jour entité jour="+journee);
-            return (journee + 1);
-        } else {
-            System.out.println("jour entité="+journee);
-            return -(journee + 1);
-        }
+        return (journee + 1);    
     }
 
     public int journeeActuelle() {
         Temps temps = new Temps();
         int heureActuelle = temps.getTempsInt();
         int tempsPasse = heureActuelle - heureDebut;
-        System.out.println("journée actuelle=:"+tempsPasse/(dureeJour+dureeNuit)+1);
         return (tempsPasse / (dureeJour + dureeNuit) + 1);
     }
 
     public ArrayList<Message> messageDuJour(List<Message> m) {
         ArrayList<Message> messages = new ArrayList<Message>();
         for (Message message : m) {
-            if (jourEntite(message.getDate()) == Math.abs(journeeActuelle())) {
+            if (jourEntite(message.getDate()) == journeeActuelle()) {
                 messages.add(message);
             }
         }
@@ -403,7 +396,7 @@ public class Partie{
     public Boolean decisionsCorrompues(List<Decision> d) {
         Boolean b = false;
         for (Decision decision : d) {
-            if (jourEntite(decision.getDate()) != Math.abs(journeeActuelle())) {
+            if (jourEntite(decision.getDate()) != journeeActuelle()) {
                 b = true;
             }
         }
@@ -413,7 +406,7 @@ public class Partie{
     public Boolean decisionsCorrompuesNuit(List<Decision> d) {
         Boolean b = false;
         for (Decision decision : d) {
-            if (jourEntite(decision.getDate()) != Math.abs(journeeActuelle())) {
+            if (jourEntite(decision.getDate()) != journeeActuelle()) {
                 b = true;
             }
         }
