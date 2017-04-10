@@ -18,7 +18,7 @@
         <style>
         html,body,h1,h2,h3,h4,h5,h6 {font-family: "Revalia", cursive;}
         </style>
-        <title>Place du village</title>
+        <title>Spiritisme</title>
     </head>
     <body>
         <h1 align="center">Bienvenue sur la salle de discussions privée</h1>
@@ -34,8 +34,6 @@
             </c:forEach>
         </table>
         <p></p>
-        <% request.setAttribute("enDiscussion", 1);
-        %>
         <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
         <button type="submit" class="button"><span>Poster</span></button><br>
