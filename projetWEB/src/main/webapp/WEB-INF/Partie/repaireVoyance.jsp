@@ -45,7 +45,7 @@
             </tr>
         </table>
         <p></p>
-        <a href="controleurPartie?action=newDecision">Proposer une décision</a>
+        <a href="controleurPartie?action=newDecisionLoup">Proposer une décision</a>
         <p></p>
         <h1>Choisissez le joueur dont vous voulez connaître le rôle et le pouvoir.</h1>
         <h2>Réfléchissez bien... ${nbLoups} loups-garou rôdent autour du village....</h2>
