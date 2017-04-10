@@ -20,6 +20,9 @@
         <title>Choisir une partie</title>
     </head>
     <body>
+        <% if (request.getAttribute("erreurPlein") != null){%>
+            <h1><font color="red">La partie est pleine casse toi bagou</font></h1>
+        <%}%>
         <h1> Choisissez la partie que vous souhaitez ou rejoignez une partie en attente de joueurs ! </h1>
         <form action="controleur" method="get" align="center">
             <button type="submit" class="button"><span>Créer une nouvelle partie</span></button><br>
@@ -47,9 +50,10 @@
                     <td>${partie.heureDebut}</td>
                     <td>${partie.probaPouvoir}</td>
                     <td>${partie.proportionLG}</td>
-                    <td><a href="controleur?action=getPartie&view=rejoindre&id=${partie.idPartie}">Rejoindre</a></td>
+                    <td><a href="controleur?action=rejoindrePartie&id=${partie.idPartie}">Rejoindre</a></td>
                 </tr>
         </c:forEach>
         </table>
+        
     </body>
 </html>

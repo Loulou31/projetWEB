@@ -29,13 +29,11 @@ public class Partie {
     private float proportionLG ; 
 
     
-    private Boolean enCours;
     
     //pour ne pas recharger toute la partie à chaque fois
-    //il faut faire des accès qui modifient que ces 3 champs
+    //il faut faire des accès qui modifient que ce champ
     private List<Villageois> villageoisPresents;
-    private PlaceVillage placeVillage;
-    private Repaire repaire;
+
 
     private int discussionSpiritisme; 
     private int contamination; 
@@ -53,7 +51,8 @@ public class Partie {
                   float probaPouvoir, 
                   float proportionLG,
                   int discussionSpirit, 
-                  int contamination) {
+                  int contamination,
+                  List<Villageois> liste) {
         this.idPartie = idPartie;
         this.nbJoueursMin = nbJoueursMin;
         this.nbJoueursMax = nbJoueursMax;
@@ -66,9 +65,7 @@ public class Partie {
         this.contamination = contamination; 
         //this.joueursPresents = new HashSet<Membre>();
        
-        this.villageoisPresents = new ArrayList<Villageois>();
-        this.placeVillage = new PlaceVillage(new ArrayList<Decision>(), new ArrayList<Message>());
-        this.repaire = new Repaire(new ArrayList<Decision>(), new ArrayList<Message>());
+        this.villageoisPresents = liste;
     }
 
     public int getContamination() {
@@ -125,10 +122,6 @@ public class Partie {
         return proportionLG;
     }
 
-    public Repaire getRepaire() {
-        return repaire;
-    }
-    
 
     
     
@@ -205,7 +198,6 @@ public class Partie {
     //entier à 1 si jour, à 0 si nuit
     //tous les temps sont en secondes
     public String tempsAvantChangement(int jon) {
-        System.out.print("11111111111111111");
         Temps temps = new Temps();
         int heureActuelle = temps.getTempsInt();
         int tempsPasse = heureActuelle - heureDebut;
@@ -214,10 +206,8 @@ public class Partie {
         int heureJournee = tempsPasse - joursPasses * dureeJournee;
 
         int tempsAvant;
-        System.out.print("22222222222");
         if (jon == 1) {
             tempsAvant = dureeJour - heureJournee;
-            System.out.print("33333333333333");
             return "Il reste : " + temps.tempsSecToString(tempsAvant) + "avant la nuit.";
         } else {
             tempsAvant = dureeJournee - heureJournee;
@@ -238,7 +228,7 @@ public class Partie {
     }
     
     //retourne le nombre de joueurs dans la partie
-    public int getNbJoueurs(int id){
+    public int getNbJoueurs(){
         return this.villageoisPresents.size();
     }
     

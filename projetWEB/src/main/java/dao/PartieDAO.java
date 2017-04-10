@@ -24,7 +24,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
     }
 
     //OK
-    public List<Partie> getListeParties() {
+/*    public List<Partie> getListeParties() {
         List<Partie> result = new ArrayList<Partie>();
         try (
                 Connection conn = getConn();
@@ -48,6 +48,69 @@ public class PartieDAO extends AbstractDatabaseDAO {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
         return result;
+    }
+*/
+
+    public List<Partie> getListePartiesNonEnCours() {
+        List<Partie> result = new ArrayList<Partie>();
+        try (Connection conn = getConn(); Statement st = conn.createStatement();) {
+            ResultSet rs = st.executeQuery("SELECT * FROM PARTIE");
+            while (rs.next()) {
+                int idPartie = rs.getInt("IdPartie");
+                VillageoisDAO villageoisDAO = new VillageoisDAO(dataSource);
+                List<Villageois> villageois = villageoisDAO.getListVillageois(idPartie);
+                Temps temps = new Temps();
+                int heureDebut = rs.getInt("HeureDebut");
+                boolean enCours = temps.estApres(heureDebut, temps.getTempsLong());
+                if (enCours) {
+                    Partie partie
+                            = new Partie(idPartie,
+                                    rs.getInt("NbJoueursMin"),
+                                    rs.getInt("NbJoueursMax"),
+                                    rs.getInt("DureeJour"),
+                                    rs.getInt("DureeNuit"),
+                                    heureDebut,
+                                    rs.getFloat("ProbaPouvoir"),
+                                    rs.getFloat("ProportionLG"),
+                                    rs.getInt("discussionSpiritisme"),
+                                    rs.getInt("contamination"),
+                                    villageois);;
+                    result.add(partie);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return result;
+    }
+
+    
+    public Partie getPartie(int id) {
+        Partie partie;
+        try (Connection conn = getConn()) {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM PARTIE WHERE IdPartie = ?");
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            
+            int idPartie = rs.getInt("IdPartie");
+            VillageoisDAO villageoisDAO = new VillageoisDAO(dataSource);
+            List<Villageois> villageois = villageoisDAO.getListVillageois(idPartie);
+            partie = new Partie(rs.getInt("IdPartie"),
+                    rs.getInt("NbJoueursMin"),
+                    rs.getInt("NbJoueursMax"),
+                    rs.getInt("DureeJour"),
+                    rs.getInt("DureeNuit"),
+                    rs.getInt("HeureDebut"),
+                    rs.getFloat("ProbaPouvoir"),
+                    rs.getFloat("ProportionLG"), 
+                    rs.getInt("discussionSpiritisme"),
+                    rs.getInt("contamination"),
+                    villageois);
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+        return partie;
     }
 
 
@@ -125,30 +188,6 @@ public class PartieDAO extends AbstractDatabaseDAO {
         } catch (SQLException e) {
             throw new DAOException("Erreur BD ajouter Partie" + e.getMessage(), e);
         }
-    }
-
-    //OK
-    public Partie getPartie(int id) {
-        Partie partie;
-        try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM PARTIE WHERE IdPartie = ?");
-            st.setInt(1, id);
-            ResultSet rs = st.executeQuery();
-            rs.next();
-            partie = new Partie(rs.getInt("IdPartie"),
-                    rs.getInt("NbJoueursMin"),
-                    rs.getInt("NbJoueursMax"),
-                    rs.getInt("DureeJour"),
-                    rs.getInt("DureeNuit"),
-                    rs.getInt("HeureDebut"),
-                    rs.getFloat("ProbaPouvoir"),
-                    rs.getFloat("ProportionLG"), 
-                    rs.getInt("discussionSpiritisme"), 
-                    rs.getInt("contamination"));
-        } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
-        }
-        return partie;
     }
 
     //à revoir :(
