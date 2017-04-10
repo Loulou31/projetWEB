@@ -368,15 +368,6 @@ public class Partie{
         return result;
     }
 
-    //Sera utilisé pour les message de le place du village pour savoir quels messages doivent être affichés
-    public Boolean dansJournee(Date date) {
-        return true;
-    }
-
-    //Sera utilisé pour les message du repaire pour savoir quels messages doivent être affichés
-    public Boolean dansNuitee(Date date) {
-        return true;
-    }
 
     public int jourEntite(int date) {
         int tempsPasse = date - heureDebut;
@@ -385,7 +376,7 @@ public class Partie{
         if (tempsPasse - journee * dureeJournee < dureeJour) {
             return (journee + 1);
         } else {
-            return -(journee - 1);
+            return -(journee + 1);
         }
     }
 
@@ -451,17 +442,6 @@ public class Partie{
     });
         return new ArrayList<>(m);
     }
-    
-    public ArrayList<Message> triListeArchive(List<Message> m) {
-        Collections.sort(m, new Comparator<Message>() {
-            @Override
-            public int compare(Message m1, Message m2) {
-                return (m1.getDate()-m2.getDate());
-            }
-    });
-        return new ArrayList<>(m);
-    }
-    
     
     
 

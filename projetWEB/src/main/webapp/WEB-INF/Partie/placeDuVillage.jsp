@@ -57,8 +57,8 @@
         </table>
         <a href="controleurPartie?action=newDecision">Proposer une décision</a>
         <p></p>
-        <p>Liste des villageois vivants : </p>
-        <table>
+        <p align="center">Liste des villageois vivants : </p>
+        <table align="center">
             <c:forEach items="${joueurs}" var="joueurs"> 
                 <tr>
                     <td><B>@${joueurs.pseudo} </B></td>

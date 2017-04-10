@@ -511,6 +511,7 @@ public class ControleurPartie extends HttpServlet {
             List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
             //Une fois que les messages contiendront les dates.
             messagesRepaire = partie.messageDuJour(messagesRepaire);
+            messagesRepaire = partie.triListe(messagesRepaire);
             request.setAttribute("messages", messagesRepaire);
             List<Decision> decisions = decisionDAO.getListDecisionLoup(idPartie);
             request.setAttribute("decisions", decisions);
@@ -541,6 +542,7 @@ public class ControleurPartie extends HttpServlet {
                     List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
                     //Une fois que les messages contiendront les dates.
                     messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
+                    messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
                     request.setAttribute("messages", messagesDiscussionSpiritisme);
                     request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response);
                 } else {
@@ -561,12 +563,9 @@ public class ControleurPartie extends HttpServlet {
             List<Message> messagesRepaireInsomnie = messageDAO.getListMessageRepaire(idPartie);
             //Une fois que les messages contiendront les dates.
             messagesRepaireInsomnie = partie.messageDuJour(messagesRepaireInsomnie);
+            messagesRepaireInsomnie = partie.triListe(messagesRepaireInsomnie);
             request.setAttribute("messages", messagesRepaireInsomnie);
-            if (!partieDAO.decisionHumainRatifie(idPartie)) {
-                request.getRequestDispatcher("/WEB-INF/Partie/nuitInsomnie.jsp").forward(request, response);
-            } else {
-                request.getRequestDispatcher("/WEB-INF/Partie/nuitInsomnieRatifie.jsp").forward(request, response);
-            }
+            request.getRequestDispatcher("/WEB-INF/Partie/nuitInsomnie.jsp").forward(request, response);
         } else if (villageois.getPouvoir().equals("spriritisme")) {
             System.out.println("c'est la nuit, j'ai le pouvoir spiritisme");
             // if (request.getAttribute("enDiscussion") != null && request.getAttribute("enDiscussion").equals(1) && partie.estNuit()) {
@@ -575,6 +574,7 @@ public class ControleurPartie extends HttpServlet {
                 List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
                 //Une fois que les messages contiendront les dates.
                 messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
+                messagesDiscussionSpiritisme = partie.triListe(messagesDiscussionSpiritisme);
                 request.setAttribute("messages", messagesDiscussionSpiritisme);
                 request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response);
             } else {
@@ -922,7 +922,7 @@ public class ControleurPartie extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
         }else{
             List<Message> messagesVillage = messageDAO.getListeMessagesSalleDiscussion(idPartie);
-            messagesVillage = partie.triListeArchive(messagesVillage);
+            messagesVillage = partie.triListe(messagesVillage);
             ArrayList<String> archives= partie.messagesArchives(messagesVillage);
             request.setAttribute("archives", archives);
             request.getRequestDispatcher("/WEB-INF/Partie/archivePlace.jsp").forward(request, response);
@@ -951,7 +951,7 @@ public class ControleurPartie extends HttpServlet {
         }else{
             MessageDAO messageDAO = new MessageDAO(ds);
             List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
-            messagesRepaire = partie.triListeArchive(messagesRepaire);
+            messagesRepaire = partie.triListe(messagesRepaire);
             ArrayList<String> archives= partie.messagesArchives(messagesRepaire);
             request.setAttribute("archives", archives);
             request.getRequestDispatcher("/WEB-INF/Partie/archiveRepaire.jsp").forward(request, response);
