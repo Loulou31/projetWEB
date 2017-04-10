@@ -479,6 +479,7 @@ public class ControleurPartie extends HttpServlet {
             List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
             //Une fois que les messages contiendront les dates.
             messagesRepaire = partie.messageDuJour(messagesRepaire);
+            messagesRepaire = partie.triListe(messagesRepaire);
             request.setAttribute("messages", messagesRepaire);
             List<Decision> decisions = decisionDAO.getListDecisionLoup(idPartie);
             request.setAttribute("decisions", decisions);
@@ -528,12 +529,9 @@ public class ControleurPartie extends HttpServlet {
             List<Message> messagesRepaireInsomnie = messageDAO.getListMessageRepaire(idPartie);
             //Une fois que les messages contiendront les dates.
             messagesRepaireInsomnie = partie.messageDuJour(messagesRepaireInsomnie);
+            messagesRepaireInsomnie = partie.triListe(messagesRepaireInsomnie);
             request.setAttribute("messages", messagesRepaireInsomnie);
-            if (!partieDAO.decisionHumainRatifie(idPartie)) {
-                request.getRequestDispatcher("/WEB-INF/Partie/nuitInsomnie.jsp").forward(request, response);
-            } else {
-                request.getRequestDispatcher("/WEB-INF/Partie/nuitInsomnieRatifie.jsp").forward(request, response);
-            }
+            request.getRequestDispatcher("/WEB-INF/Partie/nuitInsomnie.jsp").forward(request, response);
         } else if (villageois.getPouvoir().equals("spriritisme")) {
             System.out.println("c'est la nuit, j'ai le pouvoir spiritisme");
             // if (request.getAttribute("enDiscussion") != null && request.getAttribute("enDiscussion").equals(1) && partie.estNuit()) {
@@ -542,6 +540,7 @@ public class ControleurPartie extends HttpServlet {
                 List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
                 //Une fois que les messages contiendront les dates.
                 messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
+                messagesDiscussionSpiritisme = partie.triListe(messagesDiscussionSpiritisme);
                 request.setAttribute("messages", messagesDiscussionSpiritisme);
                 request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response);
             } else {

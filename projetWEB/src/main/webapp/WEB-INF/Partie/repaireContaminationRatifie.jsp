@@ -21,7 +21,7 @@
     </head>
     <body>
         <h1 align="center">Vous êtes dans le repaire des Loups-Garou</h1>
-        <h2> Vous avez fait votre choix... ${pseudoJoueurElimine} sera dévoré cette nuit !   </h2>
+        <h2> Vous avez fait votre choix...</h2>
         <p></p>
         <a href="controleurPartie?action=newDecisionContamination">Transformer un villageois en Loup-Garou</a>
         <p></p>
