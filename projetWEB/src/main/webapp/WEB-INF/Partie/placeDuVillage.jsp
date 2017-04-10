@@ -56,6 +56,15 @@
             </tr>
         </table>
         <a href="controleurPartie?action=newDecision">Proposer une décision</a>
+        <p></p>
+        <p align="center">Liste des villageois vivants : </p>
+        <table align="center">
+            <c:forEach items="${joueurs}" var="joueurs"> 
+                <tr>
+                    <td><B>@${joueurs.pseudo} </B></td>
+                </tr>
+            </c:forEach>
+        </table>
         <h2> Discutez avec les autres villageois... </h2>
         <table>
             <c:forEach items="${messages}" var="message">

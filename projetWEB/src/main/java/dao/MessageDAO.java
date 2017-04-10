@@ -38,7 +38,7 @@ public class MessageDAO extends AbstractDatabaseDAO {
             ResultSet rs = st.executeQuery("SELECT * FROM Message_Salle_Discussion WHERE idPartie = "+idPartie);
             while (rs.next()) {
                 Message message =
-                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"), rs.getInt("idPartie"));
+                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"), rs.getInt("idPartie"), rs.getInt("date_envoi"));
                 result.add(message);
             }
         } catch (SQLException e) {
@@ -59,7 +59,7 @@ public class MessageDAO extends AbstractDatabaseDAO {
             ResultSet rs = st.executeQuery("SELECT * FROM Message_Repaire WHERE idPartie = "+idPartie);
             while (rs.next()) {
                 Message message =
-                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"), idPartie);
+                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"), idPartie, rs.getInt("date_envoi"));
                 result.add(message);
             }
         } catch (SQLException e) {
@@ -78,7 +78,7 @@ public class MessageDAO extends AbstractDatabaseDAO {
             ResultSet rs = st.executeQuery("SELECT * FROM Message_Spiritisme WHERE idPartie = "+idPartie);
             while (rs.next()) {
                 Message message =
-                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"), idPartie);
+                    new Message(rs.getString("login_expediteur"), rs.getString("contenu"), idPartie, rs.getInt("date_envoi"));
                 result.add(message);
             }
         } catch (SQLException e) {
@@ -140,13 +140,13 @@ public class MessageDAO extends AbstractDatabaseDAO {
     
     public void supprimerTousMessages(int idPartie){
         try (Connection conn = getConn()) {
-            PreparedStatement st = conn.prepareStatement("DELETE * FROM MESSAGE_SALLE_DISCUSSION WHERE idPartie = ?");
+            PreparedStatement st = conn.prepareStatement("DELETE MESSAGE_SALLE_DISCUSSION WHERE idPartie = ?");
             st.setInt(1, idPartie);
             st.executeUpdate();
-            PreparedStatement st1 = conn.prepareStatement("DELETE * FROM MESSAGE_REPAIRE WHERE idPartie = ?");
+            PreparedStatement st1 = conn.prepareStatement("DELETE MESSAGE_REPAIRE WHERE idPartie = ?");
             st1.setInt(1, idPartie);
             st1.executeUpdate();
-            PreparedStatement st2 = conn.prepareStatement("DELETE * FROM MESSAGE_SPIRITISME WHERE idPartie = ?");
+            PreparedStatement st2 = conn.prepareStatement("DELETE MESSAGE_SPIRITISME WHERE idPartie = ?");
             st2.setInt(1, idPartie);
             st2.executeUpdate();
         } catch (SQLException e) {

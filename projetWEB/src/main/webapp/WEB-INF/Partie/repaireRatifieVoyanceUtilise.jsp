@@ -1,7 +1,7 @@
 <%-- 
-    Document   : placeDuVillage
-    Created on : Mar 24, 2017, 6:14:59 PM
-    Author     : gaunetc
+    Document   : repaireRatifieVoyanceUtilise
+    Created on : Apr 7, 2017, 8:16:25 PM
+    Author     : bagouc
 --%>
 
 <%@page import="modele.Partie"%>
@@ -11,21 +11,18 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="css/place.css"/>
+        <link rel="stylesheet" type="text/css" href="css/repaire.css"/>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-        <link href="https://fonts.googleapis.com/css?family=Revalia" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
         <style>
-        html,body,h1,h2,h3,h4,h5,h6 {font-family: "Revalia", cursive;}
+        html,body,h1,h2,h3,h4,h5,h6 {font-family: "Luckiest Guy", cursive;}
         </style>
-        <title>Place du village</title>
+        <title>Repaire</title>
     </head>
     <body>
-        <h1 align="center">Bienvenue sur la place du village !</h1>
-        <p>Vous êtes ${roleJoueurEnCours}. Votre pouvoir est : ${pouvoirJoueurEnCours}.</p>
-        <p> Il y a ${nbJoueurs} villageois vivants. Il y a ${nbLoups} loups-garou qui rodent parmi vous ! Faites attention...</p>
-        <h2> La décision est ratifiée !</h2>
-        <p>Le joueur ${pseudoJoueurElimine} nous a quitté aujourd'hui.... Et c'était un ${roleJoueurElimine} ! </p>
+        <h1 align="center">Vous êtes dans le repaire des Loups-Garou</h1>
+        <h2> Vous avez fait votre choix... ${pseudoJoueurElimine} sera dévoré cette nuit !   </h2>
         <p></p>
         <p>Liste des villageois vivants : </p>
         <table>
@@ -35,25 +32,26 @@
                 </tr>
             </c:forEach>
         </table>
-        <h2>Discutez avec les autres villageois...</h2>
+        <h2> Discutez avec les autres loups... </h2>
+        <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
         <table>
             <c:forEach items="${messages}" var="message">
                     <tr>
-                        <td><B>@${message.expediteur}  :   </B></td><td>  ${message.contenu}</td>
+                        <td><B>@${message.expediteur}  :  </B></td><td>  ${message.contenu}</td>
                     </tr>
             </c:forEach>
         </table>
         <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
         <button type="submit" class="button"><span>Poster</span></button><br>
-        <input type="hidden" name="action" value="ajouterUnMessage" />
+        <input type="hidden" name="action" value="addMessVoyanceLoup" />
         </form>
         <form action="controleurPartie" method="get" align="center">
                 <button type="submit" class="button"><span>Actualiser la page</span></button><br>
-                <input type="hidden" name="action" value="reloadMessages"/>
+                <input type="hidden" name="action" value="reloadVoyanceLoupRatifie"/>
         </form>
-        <% Partie partie = (Partie) request.getAttribute("partie");
-           String tempsChangement = partie.tempsAvantChangement(1);
+         <% Partie partie = (Partie) request.getAttribute("partie");
+           String tempsChangement = partie.tempsAvantChangement(0);
         %>
         <p><%=tempsChangement%></p>
     </body>

@@ -1,7 +1,7 @@
 <%-- 
-    Document   : placeDuVillage
-    Created on : Mar 24, 2017, 6:14:59 PM
-    Author     : gaunetc
+    Document   : discussionSpiritismeLoup
+    Created on : Apr 10, 2017, 5:21:15 PM
+    Author     : bagouc
 --%>
 
 <%@page import="modele.Partie"%>
@@ -18,24 +18,14 @@
         <style>
         html,body,h1,h2,h3,h4,h5,h6 {font-family: "Revalia", cursive;}
         </style>
-        <title>Place du village</title>
+        <title>Spiritisme</title>
     </head>
     <body>
-        <h1 align="center">Bienvenue sur la place du village !</h1>
-        <p>Vous êtes ${roleJoueurEnCours}. Votre pouvoir est : ${pouvoirJoueurEnCours}.</p>
-        <p> Il y a ${nbJoueurs} villageois vivants. Il y a ${nbLoups} loups-garou qui rodent parmi vous ! Faites attention...</p>
-        <h2> La décision est ratifiée !</h2>
-        <p>Le joueur ${pseudoJoueurElimine} nous a quitté aujourd'hui.... Et c'était un ${roleJoueurElimine} ! </p>
+        <h1 align="center">Bienvenue sur la salle de discussions privée</h1>
+        <p></p
+        <p>Un vivant... un mort... Arriverez-vous à obtenir des informations ? </p>
+        <p> Ou bien, saurez-vous gardez vos secrets ? </p>
         <p></p>
-        <p>Liste des villageois vivants : </p>
-        <table>
-            <c:forEach items="${joueurs}" var="joueurs"> 
-                <tr>
-                    <td><B>@${joueurs.pseudo} </B></td>
-                </tr>
-            </c:forEach>
-        </table>
-        <h2>Discutez avec les autres villageois...</h2>
         <table>
             <c:forEach items="${messages}" var="message">
                     <tr>
@@ -43,17 +33,23 @@
                     </tr>
             </c:forEach>
         </table>
+        <p></p>
         <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
         <button type="submit" class="button"><span>Poster</span></button><br>
         <input type="hidden" name="action" value="ajouterUnMessage" />
+        <input type="hidden" name="spiritisme" value="true" />
         </form>
         <form action="controleurPartie" method="get" align="center">
-                <button type="submit" class="button"><span>Actualiser la page</span></button><br>
-                <input type="hidden" name="action" value="reloadMessages"/>
+            <button type="submit" class="button"><span>Actualiser la page</span></button><br>
+            <input type="hidden" name="action" value="reloadMessages"/>
+        </form>
+        <form action="controleurPartie" method="get" align="center">
+            <button type="submit" class="button"><span>Retour au repaire</span></button><br>
+            <input type="hidden" name="action" value="retourRepaire"/>
         </form>
         <% Partie partie = (Partie) request.getAttribute("partie");
-           String tempsChangement = partie.tempsAvantChangement(1);
+           String tempsChangement = partie.tempsAvantChangement(0);
         %>
         <p><%=tempsChangement%></p>
     </body>

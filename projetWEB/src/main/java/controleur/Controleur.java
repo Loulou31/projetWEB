@@ -91,6 +91,59 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
         }
     }
+    
+    private void quittePartie(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        PartieDAO partieDAO = new PartieDAO(ds);
+        MessageDAO messageDAO = new MessageDAO(ds) ; 
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        //si dernier joueur de partie : on détruit tout
+        int idPartie = partieDAO.getIDPartieJoueur(pseudo);
+        if (partieDAO.getNbJoueurs(idPartie) == 1) {
+            System.out.println("DERNIER JOUEUR") ; 
+            System.out.println("SUPP DERNIER VILLAGEOIS") ; 
+            villageoisDAO.supprimerVillageois(pseudo);
+            System.out.println("SUPP PARTIE") ; 
+            partieDAO.supprimerPartie(idPartie);
+        // Si je suis le 1er à quitter la partie
+        } else if (partieDAO.getNbJoueurs(idPartie) == partieDAO.getNbJoueurs(idPartie)) {
+            System.out.println("SUPP MESSAGES");
+            messageDAO.supprimerTousMessages(idPartie);
+            System.out.println("SUPP 1er VILLAGEOIS");
+            villageoisDAO.supprimerVillageois(pseudo);
+        } else {
+         villageoisDAO.supprimerVillageois(pseudo);
+           
+        }
+        request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
+        
+    }
+    
+
+    
+    private void quitteAttentePartie(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        PartieDAO partieDAO = new PartieDAO(ds);
+
+        //si dernier joueur de partie : on détruit tout
+        int idPartie = partieDAO.getIDPartieJoueur(pseudo);
+        Partie partie = partieDAO.getPartie(idPartie);
+
+        if (partie.getNbJoueurs() == 1) {
+            partieDAO.supprimerPartie(idPartie);
+        }
+
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        villageoisDAO.supprimerVillageois(pseudo);
+
+        request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
+    }
 
     private void actionIndex(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
@@ -217,26 +270,7 @@ public class Controleur extends HttpServlet {
     }
     
 
-    private void quitteAttentePartie(HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String pseudo = session.getAttribute("membre").toString();
-        PartieDAO partieDAO = new PartieDAO(ds);
 
-        //si dernier joueur de partie : on détruit tout
-        int idPartie = partieDAO.getIDPartieJoueur(pseudo);
-        Partie partie = partieDAO.getPartie(idPartie);
-
-        if (partie.getNbJoueurs() == 1) {
-            partieDAO.supprimerPartie(idPartie);
-        }
-
-        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
-        villageoisDAO.supprimerVillageois(pseudo);
-
-        request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
-    }
     
     private void actionQuittePartie(HttpServletRequest request,
             HttpServletResponse response)

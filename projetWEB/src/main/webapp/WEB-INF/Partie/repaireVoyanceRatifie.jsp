@@ -1,6 +1,6 @@
 <%-- 
-    Document   : repaireRatifie
-    Created on : Apr 5, 2017, 4:48:43 PM
+    Document   : repaireVoyanceRatifie
+    Created on : Apr 7, 2017, 8:55:22 PM
     Author     : bagouc
 --%>
 
@@ -22,8 +22,16 @@
     </head>
     <body>
         <h1 align="center">Vous êtes dans le repaire des Loups-Garou</h1>
-        <h2> Vous avez fait votre choix... </h2>
+        <h2> Vous avez fait votre choix... ${pseudoJoueurElimine} sera dévoré cette nuit !   </h2>
         <p></p>
+        <p>Liste des villageois vivants : </p>
+        <table>
+            <c:forEach items="${joueurs}" var="joueurs"> 
+                <tr>
+                    <td><B>@${joueurs.pseudo} </B></td>
+                </tr>
+            </c:forEach>
+        </table>
         <h2> Discutez avec les autres loups... </h2>
         <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
         <table>
@@ -33,6 +41,18 @@
                     </tr>
             </c:forEach>
         </table>
+        <h1>Choisissez le joueur dont vous voulez connaître le rôle et le pouvoir.</h1>
+        <h2>Réfléchissez bien... ${nbLoups} loups-garou rôdent autour du village....</h2>
+        <form action="controleurPartie" accept-charset="utf-8">
+        <SELECT name="choixVoyantLoup" size="1">
+                    <c:forEach items="${vivants}" var="vivants"> 
+                        <OPTION><c:out value="${vivants.getPseudo()}" />
+                    </c:forEach>
+         </SELECT>
+        <button type="submit" class="button"><span>Valider la décision</span></button><br>
+        <input type="hidden" name="action" value="addChoixVoyantLoup"/>
+        <input type="hidden" name="choixVoyantLoup" value="choixVoyantLoup"/>
+        </form>
         <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
         <button type="submit" class="button"><span>Poster</span></button><br>
