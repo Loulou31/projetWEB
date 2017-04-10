@@ -62,9 +62,9 @@ input[type=text], input[type=password] {
 
 .button {
   border-radius: 4px;
-  background-color: black;
+  background-color: white;
   border: none;
-  color: #FFFFFF;
+  color: gray;
   text-align: center;
   font-size: 20px;
   padding: 0px;
