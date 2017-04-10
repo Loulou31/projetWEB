@@ -529,7 +529,6 @@ public class ControleurPartie extends HttpServlet {
                     if (partie.getContamination() == 1) {
                         request.getRequestDispatcher("/WEB-INF/Partie/repaire.jsp").forward(request, response);
                     } else {
-                        partieDAO.passerContamination(idPartie, 1);
                         request.getRequestDispatcher("/WEB-INF/Partie/repaireContamination.jsp").forward(request, response);
                     }
                 } else {
@@ -865,8 +864,14 @@ public class ControleurPartie extends HttpServlet {
             HttpServletResponse response)
             throws IOException, ServletException {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        PartieDAO partieDAO = new PartieDAO(ds);
+        HttpSession session = request.getSession();
+        String login = session.getAttribute("membre").toString();
+        Villageois villageois = villageoisDAO.getVillageois(login);
+        int idPartie = villageois.getPartie();
         String pseudo = request.getParameter("decisionContamination");
         villageoisDAO.updatePlayerRole(pseudo, 1);
+        partieDAO.passerContamination(idPartie, 1);
         actionRejoindreSalleDiscussion(request, response);
     }
 
