@@ -176,9 +176,9 @@ public class ControleurPartie extends HttpServlet {
         int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
         List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
-         messagesRepaire = partie.messageDuJour(messagesRepaire);
-         messagesRepaire = partie.triListe(messagesRepaire);
-         request.setAttribute("messages", messagesRepaire);
+        messagesRepaire = partie.messageDuJour(messagesRepaire);
+        messagesRepaire = partie.triListe(messagesRepaire);
+        request.setAttribute("messages", messagesRepaire);
         List<Decision> decisions = decisionDAO.getListDecisionLoup(idPartie);
         request.setAttribute("decisions", decisions);
         request.setAttribute("nbJoueurs", villageoisDAO.getListLoupsVivants(idPartie).size());
@@ -362,7 +362,7 @@ public class ControleurPartie extends HttpServlet {
                 System.out.println(spiritisme);
 
                 /* attribution du pouvoir contamination à un loup */
- /*  if (contamination != 0) {
+                if (contamination != 0) {
                     List<Villageois> loups = villageoisDAO.getListLoupsSansPouvoir(idPartie);
                     if (loups.size() > 0) {
                         System.out.println("apres getListLoupsSansPouvoirs ds actionDebPartie");
@@ -374,9 +374,9 @@ public class ControleurPartie extends HttpServlet {
                     } else {
                         System.out.println("pas assez de loups pr pouvoir contam");
                     }
-                }*/
+                }
 
- /* attribution du pouvoir insomnie à un humain */
+                /* attribution du pouvoir insomnie à un humain */
                 if (insomnie != 0) {
                     List<Villageois> humains = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                     if (humains.size() > 0) {
@@ -655,10 +655,10 @@ public class ControleurPartie extends HttpServlet {
         request.setAttribute("pouvoirJoueurEnCours", villageois.getPouvoir());
         request.setAttribute("nbJoueurs", nbJoueursVivants);
         request.setAttribute("nbLoups", nbLoupsVivants);
-         List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
-         messagesRepaire = partie.messageDuJour(messagesRepaire);
-         messagesRepaire = partie.triListe(messagesRepaire);
-         request.setAttribute("messages", messagesRepaire);
+        List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
+        messagesRepaire = partie.messageDuJour(messagesRepaire);
+        messagesRepaire = partie.triListe(messagesRepaire);
+        request.setAttribute("messages", messagesRepaire);
         if (partieDAO.decisionLoupRatifie(idPartie)) {
             System.out.println("la partie est ratifie, je vais ds repaire Voyance ratifie");
             request.getRequestDispatcher("/WEB-INF/Partie/repaireVoyanceRatifie.jsp").forward(request, response);
