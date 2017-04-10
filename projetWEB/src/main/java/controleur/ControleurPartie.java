@@ -577,7 +577,6 @@ public class ControleurPartie extends HttpServlet {
             if (partie.isDiscussionSpiritisme() == 1) {
                 System.out.println("j'étais deja dans la salle de discussion, il faut que j'y retourne");
                 List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
-                //Une fois que les messages contiendront les dates.
                 messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
                 messagesDiscussionSpiritisme = partie.triListe(messagesDiscussionSpiritisme);
                 request.setAttribute("messages", messagesDiscussionSpiritisme);
@@ -644,8 +643,6 @@ public class ControleurPartie extends HttpServlet {
         Partie partie = partieDAO.getPartie(idPartie);
         int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
-        List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
-        request.setAttribute("messages", messagesRepaire);
         List<Decision> decisions = decisionDAO.getListDecisionLoup(idPartie);
         request.setAttribute("decisions", decisions);
         request.setAttribute("nbJoueurs", villageoisDAO.getListLoupsVivants(idPartie).size());
@@ -656,6 +653,10 @@ public class ControleurPartie extends HttpServlet {
         request.setAttribute("pouvoirJoueurEnCours", villageois.getPouvoir());
         request.setAttribute("nbJoueurs", nbJoueursVivants);
         request.setAttribute("nbLoups", nbLoupsVivants);
+         List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
+         messagesRepaire = partie.messageDuJour(messagesRepaire);
+         messagesRepaire = partie.triListe(messagesRepaire);
+         request.setAttribute("messages", messagesRepaire);
         if (partieDAO.decisionLoupRatifie(idPartie)) {
             System.out.println("la partie est ratifie, je vais ds repaire Voyance ratifie");
             request.getRequestDispatcher("/WEB-INF/Partie/repaireVoyanceRatifie.jsp").forward(request, response);
