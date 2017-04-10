@@ -639,7 +639,7 @@ public class ControleurPartie extends HttpServlet {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
         int idPartie = villageois.getPartie();
-        List<Villageois> villageoisList = villageoisDAO.getListVillageois(idPartie);
+        List<Villageois> villageoisList = villageoisDAO.getListVillageoisVivants(idPartie);
         request.setAttribute("villageoisList", villageoisList);
         PartieDAO partieDAO = new PartieDAO(ds);
         Partie partie = partieDAO.getPartie(idPartie);
@@ -659,7 +659,7 @@ public class ControleurPartie extends HttpServlet {
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
         int idPartie = villageois.getPartie();
-        List<Villageois> villageoisList = villageoisDAO.getListVillageois(idPartie);
+        List<Villageois> villageoisList = villageoisDAO.getListVillageoisVivants(idPartie);
         request.setAttribute("villageoisList", villageoisList);
         PartieDAO partieDAO = new PartieDAO(ds);
         Partie partie = partieDAO.getPartie(idPartie);
