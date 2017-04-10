@@ -41,7 +41,8 @@ public class PartieDAO extends AbstractDatabaseDAO {
                                 rs.getFloat("ProbaPouvoir"),
                                 rs.getFloat("ProportionLG"),
                                 rs.getInt("discussionSpiritisme"), 
-                                rs.getInt("contamination"));;
+                                rs.getInt("contamination"), 
+                                rs.getInt("voyance"));
                 result.add(partie);
             }
         } catch (SQLException e) {
@@ -76,6 +77,18 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
+    public void passerVoyance(int idPartie, int u) {
+        try (
+                Connection conn = getConn();) {
+            PreparedStatement st = conn.prepareStatement("UPDATE Partie set voyance = ? Where idPartie = ?");
+            st.setInt(1, u);
+            st.setInt(2, idPartie);
+            ResultSet rs = st.executeQuery();
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD passer spirit" + e.getMessage(), e);
+        }
+    }
+    
     //OK
     public void passerSpiritisme(int idPartie, int u) {
         try (
@@ -111,7 +124,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
             float proportionLG) {
         try (
                 Connection conn = getConn();
-                PreparedStatement st = conn.prepareStatement("INSERT INTO PARTIE (IdPartie, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG, nbJoueursVivants, discussionSpiritisme, contamination) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)");) {
+                PreparedStatement st = conn.prepareStatement("INSERT INTO PARTIE (IdPartie, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG, nbJoueursVivants, discussionSpiritisme, contamination, voyance) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0)");) {
             st.setInt(1, idPartie);
             st.setInt(2, nbJoueursMin);
             st.setInt(3, nbJoueursMax);
@@ -144,7 +157,8 @@ public class PartieDAO extends AbstractDatabaseDAO {
                     rs.getFloat("ProbaPouvoir"),
                     rs.getFloat("ProportionLG"), 
                     rs.getInt("discussionSpiritisme"), 
-                    rs.getInt("contamination"));
+                    rs.getInt("contamination"), 
+                    rs.getInt("voyance"));
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }

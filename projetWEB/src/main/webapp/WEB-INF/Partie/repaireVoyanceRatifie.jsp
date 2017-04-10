@@ -1,0 +1,70 @@
+<%-- 
+    Document   : repaireVoyanceRatifie
+    Created on : Apr 7, 2017, 8:55:22 PM
+    Author     : bagouc
+--%>
+
+<%@page import="modele.Partie"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/repaire.css"/>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+        <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+        <style>
+        html,body,h1,h2,h3,h4,h5,h6 {font-family: "Luckiest Guy", cursive;}
+        </style>
+        <title>Repaire</title>
+    </head>
+    <body>
+        <h1 align="center">Vous êtes dans le repaire des Loups-Garou</h1>
+        <h2> Vous avez fait votre choix... ${pseudoJoueurElimine} sera dévoré cette nuit !   </h2>
+        <p></p>
+        <p>Liste des villageois vivants : </p>
+        <table>
+            <c:forEach items="${joueurs}" var="joueurs"> 
+                <tr>
+                    <td><B>@${joueurs.pseudo} </B></td>
+                </tr>
+            </c:forEach>
+        </table>
+        <h2> Discutez avec les autres loups... </h2>
+        <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
+        <table>
+            <c:forEach items="${messages}" var="message">
+                    <tr>
+                        <td><B>@${message.expediteur}  :  </B></td><td>  ${message.contenu}</td>
+                    </tr>
+            </c:forEach>
+        </table>
+        <h1>Choisissez le joueur dont vous voulez connaître le rôle et le pouvoir.</h1>
+        <h2>Réfléchissez bien... ${nbLoups} loups-garou rôdent autour du village....</h2>
+        <form action="controleurPartie" accept-charset="utf-8">
+        <SELECT name="choixVoyantLoup" size="1">
+                    <c:forEach items="${vivants}" var="vivants"> 
+                        <OPTION><c:out value="${vivants.getPseudo()}" />
+                    </c:forEach>
+         </SELECT>
+        <button type="submit" class="button"><span>Valider la décision</span></button><br>
+        <input type="hidden" name="action" value="addChoixVoyantLoup"/>
+        <input type="hidden" name="choixVoyantLoup" value="choixVoyantLoup"/>
+        </form>
+        <form action="controleurPartie" method="post" accept-charset="UTF-8">
+            Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
+        <button type="submit" class="button"><span>Poster</span></button><br>
+        <input type="hidden" name="action" value="ajouterUnMessage" />
+        </form>
+        <form action="controleurPartie" method="get" align="center">
+                <button type="submit" class="button"><span>Actualiser la page</span></button><br>
+                <input type="hidden" name="action" value="reloadMessages"/>
+        </form>
+         <% Partie partie = (Partie) request.getAttribute("partie");
+           String tempsChangement = partie.tempsAvantChangement(0);
+        %>
+        <p><%=tempsChangement%></p>
+    </body>
+</html>

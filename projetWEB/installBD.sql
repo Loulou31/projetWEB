@@ -116,7 +116,8 @@ CREATE TABLE PARTIE (
     nbJoueursVivants int, 
     discussionSpiritisme int,
     contamination int,
-    enCours int
+    enCours int, 
+    voyance int
 ) ; 
 
 
