@@ -41,6 +41,7 @@ public class Partie{
 
     private int discussionSpiritisme;
     private int contamination;
+    private int voyance; 
 
     public Partie(int idPartie,
             int nbJoueursMin,
@@ -51,7 +52,8 @@ public class Partie{
             float probaPouvoir,
             float proportionLG,
             int discussionSpirit,
-            int contamination) {
+            int contamination, 
+            int voyance) {
         this.idPartie = idPartie;
         this.nbJoueursMin = nbJoueursMin;
         this.nbJoueursMax = nbJoueursMax;
@@ -62,6 +64,7 @@ public class Partie{
         this.proportionLG = proportionLG;
         this.discussionSpiritisme = discussionSpirit;
         this.contamination = contamination;
+        this.voyance = voyance; 
         //this.joueursPresents = new HashSet<Membre>();
 
         this.villageoisPresents = new ArrayList<Villageois>();
@@ -71,6 +74,10 @@ public class Partie{
 
     public int getContamination() {
         return contamination;
+    }
+
+    public int getVoyance() {
+        return voyance;
     }
 
     public void setContamination(int contamination) {
