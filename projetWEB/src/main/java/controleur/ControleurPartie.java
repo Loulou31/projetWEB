@@ -349,7 +349,7 @@ public class ControleurPartie extends HttpServlet {
                 int spiritisme = computeX(probaPouvoir);
 
                 /* attribution du pouvoir contamination à un loup */
- /*   if (contamination != 0) {
+                if (contamination != 0) {
                     List<Villageois> loups = villageoisDAO.getListLoupsSansPouvoir(idPartie);
                     if (loups.size() > 0) {
                         int valContam = generateurAleatoire(-1, loups.size());
@@ -358,9 +358,9 @@ public class ControleurPartie extends HttpServlet {
                         }
                         villageoisDAO.updatePlayerStatus(loups.get(valContam).getPseudo(), "contamination");
                     }
-                }*/
+                }
 
- /* attribution du pouvoir insomnie à un humain */
+                /* attribution du pouvoir insomnie à un humain */
                 if (insomnie != 0) {
                     List<Villageois> humains = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                     if (humains.size() > 0) {
@@ -374,7 +374,7 @@ public class ControleurPartie extends HttpServlet {
                 }
                 /* attribution du pouvoir voyance à un villageois */
 
- /* if (voyance != 0) {
+                if (voyance != 0) {
                     villageois = villageoisDAO.getListVillageoisSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
                         int valVoyance = generateurAleatoire(-1, villageois.size());
@@ -383,9 +383,9 @@ public class ControleurPartie extends HttpServlet {
                         }
                         villageoisDAO.updatePlayerStatus(villageois.get(valVoyance).getPseudo(), "voyance");
                     }
-                }*/
+                }
 
- /* attribution du pouvoir spiritisme à un villageois */
+                /* attribution du pouvoir spiritisme à un villageois */
                 if (spiritisme != 0) {
                     villageois = villageoisDAO.getListVillageoisSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
@@ -450,13 +450,13 @@ public class ControleurPartie extends HttpServlet {
         request.setAttribute("nbLoups", nbLoupsVivants);
 
         /* On vérifie si la partie n'est pas finie */
-//        if (nbLoupsVivants == 0) {
-//            /* Les loups ont perdu */
-//            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
-//        } else if (nbLoupsVivants == nbJoueursVivants) {
-//            /* Les loups ont gagné */
-//            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
-//        }
+        if (nbLoupsVivants == 0) {
+            /* Les loups ont perdu */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
+        } else if (nbLoupsVivants == nbJoueursVivants) {
+            /* Les loups ont gagné */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
+        }
         // Si je suis mort
         if (villageois.getVivant() == 0) {
             if (villageois.getPseudo().equals(joueurChoisiSpiritisme)) {
@@ -857,15 +857,15 @@ public class ControleurPartie extends HttpServlet {
         List<Villageois> joueurs = villageoisDAO.getListVillageoisVivants(idPartie);
         int nbJoueursVivants = joueurs.size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
-//        if (nbLoupsVivants == 0) {
-//            /* Les loups ont perdu */
-//            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
-//        } else if (nbLoupsVivants == nbJoueursVivants) {
-//            /* Les loups ont gagné */
-//            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
-//        }else{
-        request.getRequestDispatcher("/WEB-INF/Partie/archive.jsp").forward(request, response);
-//        }
+        if (nbLoupsVivants == 0) {
+            /* Les loups ont perdu */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
+        } else if (nbLoupsVivants == nbJoueursVivants) {
+            /* Les loups ont gagné */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/WEB-INF/Partie/archive.jsp").forward(request, response);
+        }
     }
 
     public void actionRejoindreArchivageJour(HttpServletRequest request,
