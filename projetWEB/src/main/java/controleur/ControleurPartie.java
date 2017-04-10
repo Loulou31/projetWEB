@@ -151,7 +151,7 @@ public class ControleurPartie extends HttpServlet {
                 System.out.println("je rejoins la nuit pr voyance utilisee");
                 actionRejoindreNuitLoupVoyanceUtilise(request, response);
             } else {
-                actionRejoindreNuitVoyance(request, response);
+                goToVoyanceLoup(request, response, idPartie, villageoisDAO);
             }
         } else {
             System.out.println("C'est le jour je rejoins la place de village (normalement)");
@@ -229,6 +229,7 @@ public class ControleurPartie extends HttpServlet {
     private void actionRejoindreNuitVoyance(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         /* Création des DAO */
+        System.out.println("debut actionREjoindreNuitVoyance");
         MessageDAO messageDAO = new MessageDAO(ds);
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         PartieDAO partieDAO = new PartieDAO(ds);
@@ -473,15 +474,15 @@ public class ControleurPartie extends HttpServlet {
         request.setAttribute("nbLoups", nbLoupsVivants);
 
         /* On vérifie si la partie n'est pas finie */
-//        if (nbLoupsVivants == 0) {
-//            /* Les loups ont perdu */
-//            System.out.println("La partie est finie");
-//            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
-//        } else if (nbLoupsVivants == nbJoueursVivants) {
-//            /* Les loups ont gagné */
-//            System.out.println("La partie est finieLoup");
-//            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
-//        }
+        if (nbLoupsVivants == 0) {
+            /* Les loups ont perdu */
+            System.out.println("La partie est finie");
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
+        } else if (nbLoupsVivants == nbJoueursVivants) {
+            /* Les loups ont gagné */
+            System.out.println("La partie est finieLoup");
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
+        }
         // Si je suis mort
         if (villageois.getVivant() == 0) {
             if (villageois.getPseudo().equals(joueurChoisiSpiritisme)) {

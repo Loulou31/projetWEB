@@ -45,7 +45,7 @@
             </tr>
         </table>
         <p></p>
-        <a href="controleurPartie?action=newDecision">Proposer une décision</a>
+        <a href="controleurPartie?action=newDecisionLoup">Proposer une décision</a>
         <p></p>
         <p></p>
         <h2> Choisissez le joueur éliminé avec qui vous souhaitez discutez... </h2>
