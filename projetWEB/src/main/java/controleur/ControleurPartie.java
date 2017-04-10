@@ -176,7 +176,9 @@ public class ControleurPartie extends HttpServlet {
         int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
         List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
-        request.setAttribute("messages", messagesRepaire);
+         messagesRepaire = partie.messageDuJour(messagesRepaire);
+         messagesRepaire = partie.triListe(messagesRepaire);
+         request.setAttribute("messages", messagesRepaire);
         List<Decision> decisions = decisionDAO.getListDecisionLoup(idPartie);
         request.setAttribute("decisions", decisions);
         request.setAttribute("nbJoueurs", villageoisDAO.getListLoupsVivants(idPartie).size());
