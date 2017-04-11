@@ -93,6 +93,10 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                ("UPDATE JOUEUR SET statut = 0 WHERE login = ?");
                 st1.setString(1, pseudo);
                 st1.executeUpdate();
+                st = conn.prepareStatement("Update Joueur Set"
+                        + " rolePartie = 0 Where login = ?");
+                st1.setString(1, pseudo);
+                st1.executeUpdate();
                 /* On décrémente le nombre de joueurs vivants de la partie */
                 st = conn.prepareStatement("Update Partie set nbJoueursVivants = nbJoueursVivants - 1 Where IdPartie = ?");
                 st.setInt(1, idPartie);
