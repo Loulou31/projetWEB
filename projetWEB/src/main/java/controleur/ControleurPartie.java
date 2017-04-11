@@ -301,7 +301,46 @@ public class ControleurPartie extends HttpServlet {
         PartieDAO partieDAO = new PartieDAO(ds);
         Partie partie = partieDAO.getPartie(villageois.getPartie());
         partieDAO.passerSpiritisme(villageois.getPartie(), 0);
-        actionRejoindreRepaire(request, response);
+        actionRejoindreRepaireUtilise(request, response);
+    }
+    
+    private void actionRejoindreRepaireUtilise(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+        /* Création des DAO */
+        MessageDAO messageDAO = new MessageDAO(ds);
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        PartieDAO partieDAO = new PartieDAO(ds);
+        /* On récupère le pseudi du joueur connecté, et le villageois correspondant */
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("membre").toString();
+        Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        DecisionDAO decisionDAO = new DecisionDAO(ds);
+
+        /* On récupère l'id Partie et la Partie */
+        int idPartie = villageois.getPartie();
+        Partie partie = partieDAO.getPartie(idPartie);
+        int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
+        int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
+        List<Decision> decisions = decisionDAO.getListDecisionLoup(idPartie);
+        request.setAttribute("decisions", decisions);
+        request.setAttribute("nbJoueurs", villageoisDAO.getListLoupsVivants(idPartie).size());
+        /* On donne les infos à la prochaine page jsp appelée */
+        request.setAttribute("partie", partie);
+        request.setAttribute("pseudoJoueurEnCours", pseudo);
+        request.setAttribute("roleJoueurEnCours", villageois.getRoleString());
+        request.setAttribute("pouvoirJoueurEnCours", villageois.getPouvoir());
+        request.setAttribute("nbJoueurs", nbJoueursVivants);
+        request.setAttribute("nbLoups", nbLoupsVivants);
+        List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
+        messagesRepaire = partie.messageDuJour(messagesRepaire);
+        messagesRepaire = partie.triListe(messagesRepaire);
+        request.setAttribute("messages", messagesRepaire);
+        if (partieDAO.decisionLoupRatifie(idPartie)) {
+            request.getRequestDispatcher("/WEB-INF/Partie/repaireSpiritismeRatifieUtilise.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/WEB-INF/Partie/repaireSpiritismeUtilise.jsp").forward(request, response);
+
+        }
     }
 
     private void actionRejoindreRepaire(HttpServletRequest request,
