@@ -689,14 +689,29 @@ public class ControleurPartie extends HttpServlet {
         }
     }
 
+    
+    /**
+     * @brief Rejoindre la page de voyance pour un humain
+     * @param request
+     * @param response
+     * @param idPartie
+     * @param villageoisDAO
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void goToVoyance(HttpServletRequest request, HttpServletResponse response,
             int idPartie, VillageoisDAO villageoisDAO)
             throws IOException, ServletException {
-        List<Villageois> vivants = villageoisDAO.getListVillageoisVivants(idPartie);
+        // Recupère pseudo du joueur et villageois correspondant
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString();
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        
+        // Recupère liste des villageois vivants
+        List<Villageois> vivants = villageoisDAO.getListVillageoisVivants(idPartie);
+        // Transfert des données
         request.setAttribute("vivants", vivants);
+        // Test si le villageois a été tué entre temps par les loups
         if (villageois.getVivant() == 0) {
             actionRejoindreSalleDiscussion(request, response);
         }
@@ -704,7 +719,7 @@ public class ControleurPartie extends HttpServlet {
     }
 
     /**
-     * @brief Rejoindre la page de nuit pour un loup + voyant
+     * @brief Rejoindre la page de voyance pour un loup + voyant
      * @param request
      * @param response
      * @param idPartie
@@ -718,7 +733,7 @@ public class ControleurPartie extends HttpServlet {
             int idPartie, VillageoisDAO villageoisDAO)
             throws IOException, ServletException {
         List<Villageois> vivants = villageoisDAO.getListVillageoisVivants(idPartie);
-        request.setAttribute("vivants", vivants);
+        
         // Creation DAO
         PartieDAO partieDAO = new PartieDAO(ds);
         MessageDAO messageDAO = new MessageDAO(ds);
@@ -740,8 +755,11 @@ public class ControleurPartie extends HttpServlet {
         
         // Transfert des informations
         request.setAttribute("partie", partie);
-        request.setAttribute("messages", messagesRepaire);
         request.setAttribute("pseudoJoueurEnCours", pseudo);
+        // Liste des villageois vivants
+        request.setAttribute("vivants", vivants); 
+        // Liste des messages du repaire
+        request.setAttribute("messages", messagesRepaire);
         request.setAttribute("decisions", decisions);
         request.setAttribute("nbJoueurs", villageoisDAO.getListLoupsVivants(idPartie).size());
         request.setAttribute("roleJoueurEnCours", villageois.getRoleString());
@@ -991,14 +1009,17 @@ public class ControleurPartie extends HttpServlet {
             HttpServletResponse response)
             throws IOException, ServletException {
         HttpSession session = request.getSession();
+        PartieDAO partieDAO = new PartieDAO(ds);
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        
+        // Recupère partie, et liste des villageois vivants
         String pseudo = session.getAttribute("membre").toString();
-        System.out.println("PSEUDO: " + pseudo);
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
         int idPartie = villageois.getPartie();
         List<Villageois> vivants = villageoisDAO.getListHumainsVivants(idPartie);
-        PartieDAO partieDAO = new PartieDAO(ds);
         Partie partie = partieDAO.getPartie(idPartie);
+        
+        // Transfert d'informations
         request.setAttribute("partie", partie);
         request.setAttribute("vivants", vivants);
         request.getRequestDispatcher("/WEB-INF/Partie/decisionContamination.jsp").forward(request, response);
@@ -1014,13 +1035,16 @@ public class ControleurPartie extends HttpServlet {
     public void actionAddDecisionContamination(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
+        // Creation DAO et rérupère villageois
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         PartieDAO partieDAO = new PartieDAO(ds);
         HttpSession session = request.getSession();
         String login = session.getAttribute("membre").toString();
         Villageois villageois = villageoisDAO.getVillageois(login);
         int idPartie = villageois.getPartie();
+        // Récupère le résultat de la décision
         String pseudo = request.getParameter("decisionContamination");
+        // Mise à jour du rôle du joueur contaminé
         villageoisDAO.updatePlayerRole(pseudo, 1);
         partieDAO.passerContamination(idPartie, 1);
         actionRejoindreSalleDiscussion(request, response);
@@ -1036,23 +1060,32 @@ public class ControleurPartie extends HttpServlet {
     public void actionAddDecisionSpiritisme(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
-        HttpSession session = request.getSession();
+        // Creation DAO
         MessageDAO messageDAO = new MessageDAO(ds);
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        PartieDAO partieDAO = new PartieDAO(ds);
+        // Recupère villageois associe au joueur
+        HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString();
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        
         int idPartie = villageois.getPartie();
-        PartieDAO partieDAO = new PartieDAO(ds);
         Partie partie = partieDAO.getPartie(villageois.getPartie());
-        request.setAttribute("partie", partie);
+        // Mise à jour du joueur appelé 
         joueurChoisiSpiritisme = request.getParameter("decisionSpiritisme");
         partieDAO.passerSpiritisme(villageois.getPartie(), 1);
-        request.setAttribute("view", villageois.getRoleString());
+        // Recupère messages 
         List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
         messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
+        
+        // Transfert des informations
+        request.setAttribute("partie", partie);
+        request.setAttribute("view", villageois.getRoleString());
         request.setAttribute("messages", messagesDiscussionSpiritisme);
+        // Le joueur est un loup
         if (villageois.getRole() == 1) {
             request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritismeLoup.jsp").forward(request, response);
+        // Le joueur est un humain
         } else {
             request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritisme.jsp").forward(request, response);
         }
@@ -1072,20 +1105,26 @@ public class ControleurPartie extends HttpServlet {
     public void actionRejoindreArchivage(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
+        
+        // Recupère villageois associe au joueur
         HttpSession session = request.getSession();
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         String pseudo = session.getAttribute("membre").toString();
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
+        
+        // Partie 
         int idPartie = villageois.getPartie();
         List<Villageois> joueurs = villageoisDAO.getListVillageoisVivants(idPartie);
         int nbJoueursVivants = joueurs.size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
+        
+        // Defaite des loups
         if (nbLoupsVivants == 0) {
-            /* Les loups ont perdu */
             request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
+        // Victoire des loups
         } else if (nbLoupsVivants == nbJoueursVivants) {
-            /* Les loups ont gagné */
             request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
+        // Partie non terminee, accès aux archives
         } else {
             request.getRequestDispatcher("/WEB-INF/Partie/archive.jsp").forward(request, response);
         }
