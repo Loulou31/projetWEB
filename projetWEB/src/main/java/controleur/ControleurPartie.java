@@ -506,7 +506,7 @@ public class ControleurPartie extends HttpServlet {
                 }
 
                 /* attribution du pouvoir insomnie à un humain */
-              /*  if (insomnie != 0) {
+               if (insomnie != 0) {
                     List<Villageois> humains = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                     if (humains.size() > 0) {
                         int valInsomn = generateurAleatoire(-1, humains.size());
@@ -516,9 +516,9 @@ public class ControleurPartie extends HttpServlet {
                         villageoisDAO.updatePlayerStatus(humains.get(valInsomn).getPseudo(), "insomnie");
                     } else {
                     }
-                }*/
+                }
+               
                 /* attribution du pouvoir voyance à un villageois */
-
                 if (voyance != 0) {
                     villageois = villageoisDAO.getListVillageoisSansPouvoir(idPartie);
                     if (villageois.size() > 0) {
