@@ -105,6 +105,10 @@ public class ControleurPartie extends HttpServlet {
                 actionRejoindreSalleDiscussionVoyanceLoup(request, response);
             } else if (action.equals("retourRepaire")) {
                 actionRetourRepaire(request, response);
+            } else if (action.equals("reloadMessagesSpiritisme")) {
+                actionAddDecisionSpiritisme(request, response);
+            } else if (action.equals("ajouterMessagesSpiritisme")) {
+                actionAddMessageSpiritismeLoup(request, response);
             } else {
                 System.out.println("PROBLEME : " + action);
                 invalidParameters(request, response);
@@ -127,7 +131,7 @@ public class ControleurPartie extends HttpServlet {
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
         int idPartie = villageois.getPartie();
         Partie partie = partieDAO.getPartie(idPartie);
-        
+
         if (!partie.estJour()) {
             if (request.getParameter("contenu").toString().equals("")) {
                 request.getRequestDispatcher("/WEB-INF/Partie/messageVide.jsp").forward(request, response);

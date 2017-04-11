@@ -37,12 +37,12 @@
         <form action="controleurPartie" method="post" accept-charset="UTF-8">
             Ecrire un message : <input type="text" name="contenu" placeholder="Entrez votre message..."/>
         <button type="submit" class="button"><span>Poster</span></button><br>
-        <input type="hidden" name="action" value="ajouterUnMessage" />
+        <input type="hidden" name="action" value="ajouterMessageSpiritisme" />
         <input type="hidden" name="spiritisme" value="true" />
         </form>
         <form action="controleurPartie" method="get" align="center">
             <button type="submit" class="button"><span>Actualiser la page</span></button><br>
-            <input type="hidden" name="action" value="reloadMessages"/>
+            <input type="hidden" name="action" value="reloadMessagesSpiritisme"/>
         </form>
         <form action="controleurPartie" method="get" align="center">
             <button type="submit" class="button"><span>Retour au repaire</span></button><br>
