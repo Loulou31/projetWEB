@@ -512,7 +512,9 @@ public class ControleurPartie extends HttpServlet {
         }
         // Si je suis mort
         if (villageois.getVivant() == 0) {
+            System.out.println("joueur choisi: "+joueurChoisiSpiritisme);
             if (villageois.getPseudo().equals(joueurChoisiSpiritisme)) {
+                System.out.println("je vais rejoindre le joueur qui veut me parler");
                 List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
                 messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
                 request.setAttribute("messages", messagesDiscussionSpiritisme);
