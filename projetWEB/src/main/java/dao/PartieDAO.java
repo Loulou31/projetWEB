@@ -23,7 +23,6 @@ public class PartieDAO extends AbstractDatabaseDAO {
         super(ds);
     }
 
-    //OK
     public List<Partie> getListeParties() {
         List<Partie> result = new ArrayList<Partie>();
         try (
@@ -51,12 +50,10 @@ public class PartieDAO extends AbstractDatabaseDAO {
         return result;
     }
 
-
-    //à tuer bye bye, casse toi
     public int getNbJoueursVivants(int id) {
         try (Connection conn = this.getConn()) {
             PreparedStatement st = conn.prepareStatement
-                    ("SELECT * FROM PARTIE WHERE IdPartie = " + id) ; 
+                    ("SELECT * FROM PARTIE WHERE IdPartie = "+ id +" and statut = 1") ; 
             ResultSet rs = st.executeQuery();
             rs.next();
             return rs.getInt("nbJoueursVivants");
@@ -89,7 +86,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
     
-    //OK
+
     public void passerSpiritisme(int idPartie, int u) {
         try (
                 Connection conn = getConn();) {
@@ -140,7 +137,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
-    //OK
+
     public Partie getPartie(int id) {
         Partie partie;
         try (Connection conn = getConn()) {
@@ -165,7 +162,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         return partie;
     }
 
-    //à revoir :(
+
     //return -1 s'il n'y a pas de partie à retourner
     public int getIDPartieJoueur(String login) {
         ResultSet rs;
@@ -182,7 +179,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
-    //OK
+
     public void supprimerPartie(int id) {
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("DELETE FROM Partie WHERE IdPartie = ?");
@@ -193,7 +190,6 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
-    //à tuer bye bye c'est triste
     public int getNbJoueurs(int id) {
         ResultSet rs;
         int nbJoueurs = 0;
@@ -210,8 +206,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
     
-    
-    //pas le choix je pense
+
     public int getIdDispo() {
         ResultSet rs;
         try (Connection conn = getConn()) {
@@ -231,7 +226,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
     }
 
     
-    //bye bye dans place village et pareil pour les autres
+
     public Boolean decisionHumainRatifie(int idPartie){
         //A partir de l'id d'une partie: retourne si oui ou non la partie contient une décision ratifiée
         ResultSet rs;
