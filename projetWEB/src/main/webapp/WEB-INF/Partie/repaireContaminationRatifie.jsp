@@ -23,7 +23,10 @@
         <h1 align="center">Vous êtes dans le repaire des Loups-Garou</h1>
         <h2> Vous avez fait votre choix...</h2>
         <p></p>
-        <a href="controleurPartie?action=newDecisionContamination">Transformer un villageois en Loup-Garou</a>
+         <form action="controleurPartie" method="get" align="center">
+                <button type="submit" class="button"><span>Transformer un villageois en Loup-Garou</span></button><br>
+                <input type="hidden" name="action" value="newDecisionContamination"/>
+        </form>
         <p></p>
         <h2> Discutez avec les autres loups... </h2>
         <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>

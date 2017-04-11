@@ -46,9 +46,15 @@
             </tr>
         </table>
         <p></p>
-        <a href="controleurPartie?action=newDecisionLoup">Proposer une décision</a>
+        <form action="controleurPartie" method="get" align="center">
+                <button type="submit" class="button"><span>Proposer une décision</span></button><br>
+                <input type="hidden" name="action" value="newDecisionLoup"/>
+        </form>
         <p></p>
-        <a href="controleurPartie?action=newDecisionContamination">Transformer un villageois en Loup-Garou</a>
+        <form action="controleurPartie" method="get" align="center">
+                <button type="submit" class="button"><span>Transformer un villageois en Loup-Garou</span></button><br>
+                <input type="hidden" name="action" value="newDecisionContamination"/>
+        </form>
         <h2> Discutez avec les autres loups... </h2>
         <p> Mais faites attention aux oreilles indiscrètes qui pourraient vous écouter....</p>
         <table>

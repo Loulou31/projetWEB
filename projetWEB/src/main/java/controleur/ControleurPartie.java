@@ -571,6 +571,8 @@ public class ControleurPartie extends HttpServlet {
                 System.out.println("j'ai le pouvoir spiristime");
                 if (partie.isDiscussionSpiritisme() == 1) {
                     actionRejoindreRepaire(request, response);
+                } else if (partieDAO.decisionLoupRatifie(idPartie)){
+                    request.getRequestDispatcher("/WEB-INF/Partie/repaireSpiritismeRatifie.jsp").forward(request, response);
                 } else {
                     System.out.println("c'est la premiere fois que je l'utilise");
                     List<Villageois> morts = villageoisDAO.getListVillageoisMorts(idPartie);
