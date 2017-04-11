@@ -494,19 +494,19 @@ public class ControleurPartie extends HttpServlet {
                 int spiritisme = computeX(probaPouvoir);
 
                 /* attribution du pouvoir contamination à un loup */
-//                if (contamination != 0) {
-//                    List<Villageois> loups = villageoisDAO.getListLoupsSansPouvoir(idPartie);
-//                    if (loups.size() > 0) {
-//                        int valContam = generateurAleatoire(-1, loups.size());
-//                        while (valContam == -1 || valContam == loups.size()) {
-//                            valContam = generateurAleatoire(-1, loups.size());
-//                        }
-//                        villageoisDAO.updatePlayerStatus(loups.get(valContam).getPseudo(), "contamination");
-//                    }
-//                }
+                if (contamination != 0) {
+                    List<Villageois> loups = villageoisDAO.getListLoupsSansPouvoir(idPartie);
+                    if (loups.size() > 0) {
+                        int valContam = generateurAleatoire(-1, loups.size());
+                        while (valContam == -1 || valContam == loups.size()) {
+                            valContam = generateurAleatoire(-1, loups.size());
+                        }
+                        villageoisDAO.updatePlayerStatus(loups.get(valContam).getPseudo(), "contamination");
+                    }
+                }
 
                 /* attribution du pouvoir insomnie à un humain */
-                if (insomnie != 0) {
+              /*  if (insomnie != 0) {
                     List<Villageois> humains = villageoisDAO.getListHumainsSansPouvoir(idPartie);
                     if (humains.size() > 0) {
                         int valInsomn = generateurAleatoire(-1, humains.size());
@@ -516,7 +516,7 @@ public class ControleurPartie extends HttpServlet {
                         villageoisDAO.updatePlayerStatus(humains.get(valInsomn).getPseudo(), "insomnie");
                     } else {
                     }
-                }
+                }*/
                 /* attribution du pouvoir voyance à un villageois */
                 
                 if (voyance != 0) {
