@@ -35,8 +35,16 @@ public class Controleur extends HttpServlet {
     }
 
     /**
-     * Actions possibles en GET : afficher (correspond à l’absence du param),
-     * getOuvrage.
+     * Actions possibles en GET : 
+     * - Inscription
+     * - Connexion
+     * - Deconnexion
+     * - Jouer (choseGame)
+     * - Rejoindre une partie 
+     * - Créer une partie (newGame)
+     * - Quitter l'attente d'une partie
+     * - Quitter une partie
+     * - Actualiser l'attente d'une partie
      */
     public void doGet(HttpServletRequest request,
             HttpServletResponse response)
@@ -44,10 +52,15 @@ public class Controleur extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         PartieDAO partieDAO = new PartieDAO(ds);
-        System.out.println("ACTION : " + action) ; 
         try {
             if (action == null || action.equals("accueil")) {
                 actionAccueil(request, response);
+            } else if (action.equals("inscription")) {
+                request.getRequestDispatcher("/WEB-INF/AvantPartie/connexion.jsp").forward(request, response);
+            } else if (action.equals("connexion")) {
+                actionLogin(request, response);
+            } else if (action.equals("deconnexion")) {
+                actionDeconnexion(request, response);
             } else if (action.equals("index")) {
                 actionIndex(request, response);
             } else if (action.equals("choseGame")) {
@@ -56,12 +69,6 @@ public class Controleur extends HttpServlet {
                 actionNewGame(request, response);
             } else if (action.equals("getPartie")) {
                 actionGetPartie(request, response, partieDAO);
-            } else if (action.equals("connexion")) {
-                actionLogin(request, response);
-            } else if (action.equals("inscription")) {
-                request.getRequestDispatcher("/WEB-INF/AvantPartie/connexion.jsp").forward(request, response);
-            } else if (action.equals("deconnexion")) {
-                actionDeconnexion(request, response);
             } else if (action.equals("debutPartie")) {
                 request.getRequestDispatcher("controleurPartie").forward(request, response);
             } else if (action.equals("quitteAttentePartie")){
@@ -328,7 +335,6 @@ public class Controleur extends HttpServlet {
                 request.setAttribute("partiePrete", 1);
                 request.getRequestDispatcher("/WEB-INF/AvantPartie/attenteDebutPartie.jsp").forward(request, response);
             } else {
-                System.out.println("pb Action Wait game");
                 quitteAttentePartie(request, response);
             }
         } else {
