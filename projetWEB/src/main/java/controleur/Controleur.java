@@ -251,9 +251,8 @@ public class Controleur extends HttpServlet {
 
         Temps temps = new Temps();
         Partie partie = (Partie) request.getAttribute("partie");
-
         int intDeb = partie.getHeureDebut();
-        int nombreJoueurs = (int) request.getAttribute("nombreJoueurs");
+        int nombreJoueurs = partie.getNbJoueurs(partie.getIdPartie());
         int nombreJoueursMin = partie.getNbJoueursMin();
 
 
