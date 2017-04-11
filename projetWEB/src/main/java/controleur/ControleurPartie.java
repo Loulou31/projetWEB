@@ -59,54 +59,62 @@ public class ControleurPartie extends HttpServlet {
         try {
             if (action == null && action2 == null) {
                 request.getRequestDispatcher("controleur").forward(request, response);
-            } else if (action.equals("newDecisionLoup")) {
-                actionNewDecisionLoup(request, response);
-            } else if (action.equals("newDecision")) {
-                actionNewDecision(request, response);
-            } else if (action.equals("addDecision")) {
-                actionAddDecision(request, response);
-            } else if (action.equals("addVote")) {
-                actionAddVote(request, response);
-            } else if (action.equals("debutPartie")) {
-                actionDebutPartie(request, response);
+            // Choix et début de partie
             } else if (action.equals("choseGame")) {
                 actionRejoindreSalleDiscussion(request, response);
-            } else if (action.equals("addChoixVoyant")) {
-                actionAddChoixVoyant(request, response);
-            } else if (action.equals("addChoixVoyantLoup")) {
-                actionAddChoixVoyantLoup(request, response);
+            } else if (action.equals("debutPartie")) {
+                actionDebutPartie(request, response);
+            // Nouvelles decisions
+            } else if (action.equals("newDecision")) {
+                actionNewDecision(request, response);
+            } else if (action.equals("newDecisionLoup")) {
+                actionNewDecisionLoup(request, response);
             } else if (action.equals("newDecisionContamination")) {
                 actionChoseVillageoisTransformer(request, response);
             } else if (action.equals("addDecisionContamination")) {
                 actionAddDecisionContamination(request, response);
+            // Ajout de decisions ou choix pour les pouvoirs
+            } else if (action.equals("addDecision")) {
+                actionAddDecision(request, response);
             } else if (action.equals("addDecisionSpiritisme")) {
                 actionAddDecisionSpiritisme(request, response);
-            } else if (action.equals("reloadMessages")) {
-                actionRejoindreSalleDiscussion(request, response);
+            } else if (action.equals("addVote")) {
+                actionAddVote(request, response);
+            } else if (action.equals("addChoixVoyant")) {
+                actionAddChoixVoyant(request, response);
+            } else if (action.equals("addChoixVoyantLoup")) {
+                actionAddChoixVoyantLoup(request, response);
+            // Actions relatives aux pouvoirs
             } else if (action.equals("rejoindreNuitHumain")) {
                 actionRejoindreNuit(request, response);
             } else if (action.equals("rejoindreNuitLoup")) {
                 actionRejoindreRepaire(request, response);
             } else if (action.equals("rejoindreNuitVoyance")) {
                 actionRejoindreNuitVoyance(request, response);
+            } else if (action.equals("rejoindreNuitLoupVoyanceUtilise")) {
+                actionRejoindreNuitLoupVoyanceUtilise(request, response);
+            } else if (action.equals("retourRepaire")) {
+                actionRetourRepaire(request, response);
+            // Racraichir la page pour les messages
+            } else if (action.equals("reloadMessages")) {
+                actionRejoindreSalleDiscussion(request, response);
+            // Reactualiser pour certains pouvoirs
             } else if (action.equals("reloadVoyance")) {
                 actionRejoindreSalleDiscussionVoyance(request, response);
+            } else if (action.equals("reloadVoyanceLoup")) {
+                actionRejoindreSalleDiscussionVoyanceLoup(request, response);
+            } else if (action.equals("reloadVoyanceLoupRatifie")) {
+                actionRejoindreSalleDiscussionVoyanceLoup(request, response);
+            } else if (action.equals("reloadMessagesSpiritisme")) {
+                actionAddDecisionSpiritisme(request, response);
+            // Archivage de messages
             } else if (action.equals("archivage")) {
                 actionRejoindreArchivage(request, response);
             } else if (action.equals("archivageJour")) {
                 actionRejoindreArchivageJour(request, response);
             } else if (action.equals("archivageNuit")) {
                 actionRejoindreArchivageNuit(request, response);
-            } else if (action.equals("rejoindreNuitLoupVoyanceUtilise")) {
-                actionRejoindreNuitLoupVoyanceUtilise(request, response);
-            } else if (action.equals("reloadVoyanceLoup")) {
-                actionRejoindreSalleDiscussionVoyanceLoup(request, response);
-            } else if (action.equals("reloadVoyanceLoupRatifie")) {
-                actionRejoindreSalleDiscussionVoyanceLoup(request, response);
-            } else if (action.equals("retourRepaire")) {
-                actionRetourRepaire(request, response);
-            } else if (action.equals("reloadMessagesSpiritisme")) {
-                actionAddDecisionSpiritisme(request, response);
+            // Messages pour pouvoir spiritisme
             } else if (action.equals("ajouterMessagesSpiritisme")) {
                 actionAddMessageSpiritismeLoup(request, response);
             } else {
