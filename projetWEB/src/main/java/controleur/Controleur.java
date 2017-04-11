@@ -6,6 +6,7 @@ import static java.lang.Math.ceil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Resource;
@@ -182,7 +183,19 @@ public class Controleur extends HttpServlet {
     private void actionChoseGame(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException {
+        Temps temps = new Temps(); 
         List<Partie> parties = partieDAO.getListeParties();
+        Iterator<Partie> i = parties.iterator() ; 
+        while (i.hasNext()){
+            Partie p = i.next() ; 
+            int id = p.getIdPartie() ; 
+            int nbJoueurs = partieDAO.getNbJoueurs(id) ; 
+            if (p.complet(partieDAO)){
+                parties.remove(p) ; 
+            } else if (nbJoueurs >= p.getNbJoueursMin() && p.getHeureDebut() >= temps.getTempsInt()){
+               parties.remove(p) ; 
+            }
+        }
         request.setAttribute("parties", parties);
         HttpSession session = request.getSession();
         MembreDAO membreDAO = new MembreDAO(ds);
@@ -190,13 +203,8 @@ public class Controleur extends HttpServlet {
         if (membreDAO.memberHasPartie(pseudo)) {
             VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
             Villageois villageois = villageoisDAO.getVillageois(pseudo);
-            Partie partie = partieDAO.getPartie(villageois.getPartie());
-            if (partie.enAttente(partieDAO)) {
-                actionWaitGame(request, response);
-            } else {
-                request.setAttribute("action", "rejoindreJeu");
-                request.getRequestDispatcher("controleurPartie").forward(request, response);
-            }
+            request.setAttribute("action", "rejoindreJeu");
+            request.getRequestDispatcher("controleurPartie").forward(request, response);
         } else {
             request.getRequestDispatcher("/WEB-INF/AvantPartie/choseGame.jsp").forward(request, response);
         }
