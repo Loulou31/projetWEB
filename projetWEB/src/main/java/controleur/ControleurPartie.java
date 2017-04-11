@@ -189,6 +189,7 @@ public class ControleurPartie extends HttpServlet {
                 List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
                 messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
                 messagesDiscussionSpiritisme = partie.triListe(messagesDiscussionSpiritisme);
+                request.setAttribute("messages", messagesDiscussionSpiritisme);
                 request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritismeLoup.jsp").forward(request, response);
             }
         } else {
