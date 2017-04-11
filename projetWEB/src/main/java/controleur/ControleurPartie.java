@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controleur;
 
 import dao.*;
 import java.io.IOException;
-import java.io.PrintWriter;
 import static java.lang.Math.ceil;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,12 +59,12 @@ public class ControleurPartie extends HttpServlet {
         try {
             if (action == null && action2 == null) {
                 request.getRequestDispatcher("controleur").forward(request, response);
-                // Choix et début de partie
+            // Choix et début de partie
             } else if (action.equals("choseGame")) {
                 actionRejoindreSalleDiscussion(request, response);
             } else if (action.equals("debutPartie")) {
                 actionDebutPartie(request, response);
-                // Nouvelles decisions
+            // Nouvelles decisions
             } else if (action.equals("newDecision")) {
                 actionNewDecision(request, response);
             } else if (action.equals("newDecisionLoup")) {
@@ -79,7 +73,7 @@ public class ControleurPartie extends HttpServlet {
                 actionChoseVillageoisTransformer(request, response);
             } else if (action.equals("addDecisionContamination")) {
                 actionAddDecisionContamination(request, response);
-                // Ajout de decisions ou choix pour les pouvoirs
+            // Ajout de decisions ou choix pour les pouvoirs
             } else if (action.equals("addDecision")) {
                 actionAddDecision(request, response);
             } else if (action.equals("addDecisionSpiritisme")) {
@@ -90,7 +84,7 @@ public class ControleurPartie extends HttpServlet {
                 actionAddChoixVoyant(request, response);
             } else if (action.equals("addChoixVoyantLoup")) {
                 actionAddChoixVoyantLoup(request, response);
-                // Actions relatives aux pouvoirs
+            // Actions relatives aux pouvoirs
             } else if (action.equals("rejoindreNuitHumain")) {
                 actionRejoindreNuit(request, response);
             } else if (action.equals("rejoindreNuitLoup")) {
@@ -100,11 +94,11 @@ public class ControleurPartie extends HttpServlet {
             } else if (action.equals("rejoindreNuitLoupVoyanceUtilise")) {
                 actionRejoindreNuitLoupVoyanceUtilise(request, response);
             } else if (action.equals("retourRepaire")) {
-                actionRetourRepaire(request, response);
-                // Racraichir la page pour les messages
+                actionRejoindreRepaireUtilise(request, response);
+            // Rafraichir la page pour les messages
             } else if (action.equals("reloadMessages")) {
                 actionRejoindreSalleDiscussion(request, response);
-                // Reactualiser pour certains pouvoirs
+            // Reactualiser pour certains pouvoirs
             } else if (action.equals("reloadVoyance")) {
                 actionRejoindreSalleDiscussionVoyance(request, response);
             } else if (action.equals("reloadVoyanceLoup")) {
@@ -113,14 +107,14 @@ public class ControleurPartie extends HttpServlet {
                 actionRejoindreSalleDiscussionVoyanceLoup(request, response);
             } else if (action.equals("reloadMessagesSpiritisme")) {
                 actionAddDecisionSpiritisme(request, response);
-                // Archivage de messages
+            // Archivage de messages
             } else if (action.equals("archivage")) {
                 actionRejoindreArchivage(request, response);
             } else if (action.equals("archivageJour")) {
                 actionRejoindreArchivageJour(request, response);
             } else if (action.equals("archivageNuit")) {
                 actionRejoindreArchivageNuit(request, response);
-                // Messages pour pouvoir spiritisme
+            // Messages pour pouvoir spiritisme
             } else {
                 System.out.println("PROBLEME : " + action);
                 invalidParameters(request, response);
@@ -290,14 +284,12 @@ public class ControleurPartie extends HttpServlet {
     private void actionRejoindreNuit(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         // Creation DAO
-        MessageDAO messageDAO = new MessageDAO(ds);
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         PartieDAO partieDAO = new PartieDAO(ds);
         // Recupere pseudo joueur et villageois associe
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString();
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
-        DecisionDAO decisionDAO = new DecisionDAO(ds);
         // id Partie
         int idPartie = villageois.getPartie();
         Partie partie = partieDAO.getPartie(idPartie);
@@ -310,63 +302,55 @@ public class ControleurPartie extends HttpServlet {
         request.setAttribute("pouvoirJoueurEnCours", villageois.getPouvoir());
         request.setAttribute("nbJoueurs", nbJoueursVivants);
         request.setAttribute("nbLoups", nbLoupsVivants);
+        
+        // Redirige sur une page de nuit simple
         request.getRequestDispatcher("/WEB-INF/Partie/nuit.jsp").forward(request, response);
     }
 
+    /**
+     * @brief Retourne sur la page de nuit après que le pouvoir de voyance ait
+     * été utilisé
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void actionRejoindreNuitVoyance(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         // Creation DAO
         MessageDAO messageDAO = new MessageDAO(ds);
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         PartieDAO partieDAO = new PartieDAO(ds);
-        /* On récupère le pseudo du joueur connecté, et le villageois correspondant */
+        // Récupère le pseudo du joueur connecté, et le villageois correspondant 
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString();
         Villageois villageois = villageoisDAO.getVillageois(pseudo);
-        DecisionDAO decisionDAO = new DecisionDAO(ds);
-        /* On récupère l'id Partie et la Partie */
+        // Partie
         int idPartie = villageois.getPartie();
         Partie partie = partieDAO.getPartie(idPartie);
         int nbJoueursVivants = villageoisDAO.getListVillageoisVivants(idPartie).size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
-        /* On donne les infos à la prochaine page jsp appelée */
+        // Messages pour archives
+        messageDAO.getListMessageRepaire(idPartie);
+        List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
+        messagesRepaire = partie.messageDuJour(messagesRepaire);
+        messagesRepaire = partie.triListe(messagesRepaire);
+        // Transfert d'informations
         request.setAttribute("partie", partie);
         request.setAttribute("pseudoJoueurEnCours", pseudo);
         request.setAttribute("roleJoueurEnCours", villageois.getRoleString());
         request.setAttribute("pouvoirJoueurEnCours", villageois.getPouvoir());
         request.setAttribute("nbJoueurs", nbJoueursVivants);
         request.setAttribute("nbLoups", nbLoupsVivants);
-        messageDAO.getListMessageRepaire(idPartie);
-        List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
-        messagesRepaire = partie.messageDuJour(messagesRepaire);
-        messagesRepaire = partie.triListe(messagesRepaire);
         request.setAttribute("messages", messagesRepaire);
+        
+        // Rejoint la page JSP, plus de possibilité d'utiliser la voyance sur la nuit
         request.getRequestDispatcher("/WEB-INF/Partie/nuitVoyanceUtilise.jsp").forward(request, response);
-    }
-
-    /**
-     * @brief Retourne au repaire, après utilisation d'un pouvoir
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void actionRetourRepaire(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        MessageDAO messageDAO = new MessageDAO(ds);
-        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
-        String pseudo = session.getAttribute("membre").toString();
-        Villageois villageois = villageoisDAO.getVillageois(pseudo);
-        int idPartie = villageois.getPartie();
-        PartieDAO partieDAO = new PartieDAO(ds);
-        Partie partie = partieDAO.getPartie(villageois.getPartie());
-        actionRejoindreRepaireUtilise(request, response);
     }
 
     
     /**
-     * @brief 
+     * @brief Retourne au repaire après avoir utilisé un pouvoir
      * @param request
      * @param response
      * @throws ServletException
