@@ -63,7 +63,7 @@ public class MembreDAO extends AbstractDatabaseDAO{
     }
     
     //on va dire que c'est bon
-    public boolean memberHasPartie(String pseudo){
+    public boolean membreEnJeu(String pseudo){
         ResultSet rs ; 
         try(Connection conn = getConn()){
             PreparedStatement st = conn.prepareStatement

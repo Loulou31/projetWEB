@@ -80,18 +80,6 @@ public class Partie{
         return voyance;
     }
 
-    public void setContamination(int contamination) {
-        this.contamination = contamination;
-    }
-
-    public void setVillageoisPresents(List<Villageois> villageois) {
-        this.villageoisPresents = villageois;
-    }
-
-    public void setDiscussionSpiritisme(int discussionSpiritisme) {
-        this.discussionSpiritisme = discussionSpiritisme;
-    }
-
     public int isDiscussionSpiritisme() {
         return discussionSpiritisme;
     }
@@ -130,40 +118,6 @@ public class Partie{
 
     public Repaire getRepaire() {
         return repaire;
-    }
-
-    /*public int getNombreJoueursPresents(){
-        return this.joueursPresents.size();
-    }
-    
-    
-    public String getListeJoueursPresents(){
-        String s = "La liste des membres actuellement en attente sont : \n";
-        Iterator<Membre> it = this.joueursPresents.iterator();
-        while (it.hasNext()) {
-            s += it.next().getPseudo() + "\n";
-        }
-        return s;
-    }
-    
-    public void ajoutMembre(Membre m){
-        this.joueursPresents.add(m);
-    }*/
-    //A SUPPRIMER DES QUE POSSIBLE
-    //devenu useless je pense (Dorian)
-    public Boolean enAttente(PartieDAO partieDAO) {
-//        SimpleDateFormat d = new SimpleDateFormat ("dd/MM/yyyy" );
-//        SimpleDateFormat h = new SimpleDateFormat ("hh:mm");
-//        Date currentTime_1 = new Date();
-//        String dateString = d.format(currentTime_1);
-//        String heureString = h.format(currentTime_1);
-//        //A IMPLEMENTER: gestion du temps.
-//        if (partieDAO.getNbJoueurs(idPartie)<nbJoueursMin){
-//            return true;
-//        }else{
-//            return false;
-//        }
-        return false;
     }
 
     public Boolean complet(PartieDAO partieDAO) {
