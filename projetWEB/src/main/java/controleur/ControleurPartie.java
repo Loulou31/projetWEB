@@ -572,6 +572,8 @@ public class ControleurPartie extends HttpServlet {
                 if (partie.isDiscussionSpiritisme() == 1) {
                     actionRejoindreRepaire(request, response);
                 } else if (partieDAO.decisionLoupRatifie(idPartie)){
+                    List<Villageois> morts = villageoisDAO.getListVillageoisMorts(idPartie);
+                    request.setAttribute("morts", morts);
                     request.getRequestDispatcher("/WEB-INF/Partie/repaireSpiritismeRatifie.jsp").forward(request, response);
                 } else {
                     System.out.println("c'est la premiere fois que je l'utilise");
