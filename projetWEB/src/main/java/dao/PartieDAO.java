@@ -23,6 +23,10 @@ public class PartieDAO extends AbstractDatabaseDAO {
         super(ds);
     }
 
+    /**
+     * @brief Retourne la liste des parties de l'application
+     * @return liste des parties
+     */
     public List<Partie> getListeParties() {
         List<Partie> result = new ArrayList<Partie>();
         try (
@@ -50,18 +54,14 @@ public class PartieDAO extends AbstractDatabaseDAO {
         return result;
     }
 
-    public int getNbJoueursVivants(int id) {
-        try (Connection conn = this.getConn()) {
-            PreparedStatement st = conn.prepareStatement
-                    ("SELECT * FROM PARTIE WHERE IdPartie = "+ id) ; 
-            ResultSet rs = st.executeQuery();
-            rs.next();
-            return rs.getInt("nbJoueursVivants");
-        } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
-        }
-    }
     
+    
+    
+    /**
+     * @brief Passe le pouvoir de contamination à utilisé pour la nuit en cours
+     * @param idPartie
+     * @param u 
+     */
     public void passerContamination(int idPartie, int u) {
         try (
                 Connection conn = getConn();) {
@@ -74,6 +74,11 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
+    /**
+     * @brief Passe le pouvoir de voyance à utilisé pour la nuit en cours
+     * @param idPartie
+     * @param u 
+     */
     public void passerVoyance(int idPartie, int u) {
         try (
                 Connection conn = getConn();) {
@@ -87,6 +92,11 @@ public class PartieDAO extends AbstractDatabaseDAO {
     }
     
 
+    /**
+     * @brief Passe le pouvoir de spiritisme à utilisé pour la nuit en cours
+     * @param idPartie
+     * @param u 
+     */
     public void passerSpiritisme(int idPartie, int u) {
         try (
                 Connection conn = getConn();) {
@@ -99,6 +109,11 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
+    /**
+     * @brief Actualise le paramètre enCours de la partie si elle a commencé ou non
+     * @param idPartie
+     * @param b 
+     */
     public void updateEnCours(int idPartie, boolean b) {
         try (
                 Connection conn = getConn();) {
@@ -111,6 +126,17 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
+    /**
+     * @brief Ajoute une partie à la base de données
+     * @param idPartie
+     * @param nbJoueursMin
+     * @param nbJoueursMax
+     * @param dureeJour
+     * @param dureeNuit
+     * @param heureDebut
+     * @param probaPouvoir
+     * @param proportionLG 
+     */
     public void ajouterPartie(int idPartie,
             int nbJoueursMin,
             int nbJoueursMax,
@@ -121,7 +147,8 @@ public class PartieDAO extends AbstractDatabaseDAO {
             float proportionLG) {
         try (
                 Connection conn = getConn();
-                PreparedStatement st = conn.prepareStatement("INSERT INTO PARTIE (IdPartie, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG, nbJoueursVivants, discussionSpiritisme, contamination, voyance) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0)");) {
+                PreparedStatement st = conn.prepareStatement
+            ("INSERT INTO PARTIE (IdPartie, NbJoueursMin, NbJoueursMax, DureeJour, DureeNuit, HeureDebut, ProbaPouvoir, ProportionLG, nbJoueursVivants, discussionSpiritisme, contamination, voyance) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0)");) {
             st.setInt(1, idPartie);
             st.setInt(2, nbJoueursMin);
             st.setInt(3, nbJoueursMax);
@@ -138,6 +165,11 @@ public class PartieDAO extends AbstractDatabaseDAO {
     }
 
 
+    /**
+     * @brief Récupère une partie à partir de son id
+     * @param id
+     * @return 
+     */
     public Partie getPartie(int id) {
         Partie partie;
         try (Connection conn = getConn()) {
@@ -163,7 +195,11 @@ public class PartieDAO extends AbstractDatabaseDAO {
     }
 
 
-    //return -1 s'il n'y a pas de partie à retourner
+    /**
+     * @brief Retourne l'id d'une partie associée à un joueur
+     * @param login
+     * @return l'id de la partie, ou -1 si le joueur n'a pas de partie
+     */
     public int getIDPartieJoueur(String login) {
         ResultSet rs;
         try (Connection conn = getConn()) {
@@ -180,6 +216,10 @@ public class PartieDAO extends AbstractDatabaseDAO {
     }
 
 
+    /**
+     * @brief Supprime une partie de la base de données
+     * @param id 
+     */
     public void supprimerPartie(int id) {
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("DELETE FROM Partie WHERE IdPartie = ?");
@@ -190,6 +230,11 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
+    /**
+     * @brief Retourne le nombre de joueurs d'une partie
+     * @param id
+     * @return nombre de joueurs
+     */
     public int getNbJoueurs(int id) {
         ResultSet rs;
         int nbJoueurs = 0;
@@ -206,7 +251,29 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
     
+    
+    /**
+     * @brief Retourne le nombre de villageois vivants pour la partie donnée
+     * @param id
+     * @return nombre joueurs vivants
+     */
+    public int getNbJoueursVivants(int id) {
+        try (Connection conn = this.getConn()) {
+            PreparedStatement st = conn.prepareStatement
+                    ("SELECT * FROM PARTIE WHERE IdPartie = "+ id) ; 
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            return rs.getInt("nbJoueursVivants");
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+    
 
+    /**
+     * @brief retourne un numéro d'identification disponible pour créer une partie
+     * @return id
+     */
     public int getIdDispo() {
         ResultSet rs;
         try (Connection conn = getConn()) {
@@ -226,7 +293,11 @@ public class PartieDAO extends AbstractDatabaseDAO {
     }
 
     
-
+    /**
+     * @brief Vérifie si une décision est ratifiée sur la place du village
+     * @param idPartie
+     * @return true si la décision est ratifiée, false sinon
+     */
     public Boolean decisionHumainRatifie(int idPartie){
         //A partir de l'id d'une partie: retourne si oui ou non la partie contient une décision ratifiée
         ResultSet rs;
@@ -241,6 +312,12 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
     
+    /**
+     * @brief Donne le pseudo du joueur désigné par la décision ratifiée 
+     * sur la place du village
+     * @param idPartie
+     * @return pseudo du joueur désigné
+     */
     public String pseudoDecisionHumainRatifie(int idPartie){
         ResultSet rs;
         try (Connection conn = getConn()) {
@@ -255,6 +332,11 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
     
+    /**
+     * @brief Vérifie si une décision est ratifiée dans le repaire
+     * @param idPartie
+     * @return true si la décision est ratifiée, false sinon
+     */
     public Boolean decisionLoupRatifie(int idPartie){
         //A partir de l'id d'une partie: retourne si oui ou non la partie contient une décision ratifiée
         ResultSet rs;
@@ -268,6 +350,12 @@ public class PartieDAO extends AbstractDatabaseDAO {
         }
     }
 
+    /**
+     * @brief Donne le pseudo du joueur désigné par la décision ratifiée 
+     * sur la place du village
+     * @param idPartie
+     * @return pseudo du joueur désigné
+     */
     public String pseudoDecisionLoupRatifie(int idPartie) {
         ResultSet rs;
         try (Connection conn = getConn()) {
