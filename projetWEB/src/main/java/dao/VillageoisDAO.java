@@ -123,8 +123,7 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         }
     }
 
-    //oh damn -> go dans partie
-    public void MortVillageois(int idPartie, String pseudo) {
+    public void mortVillageois(int idPartie, String pseudo) {
         try (Connection conn = getConn()) {
             /* On passe le statut du villageois à mort = 0 */
             PreparedStatement st = conn.prepareStatement("Update Joueur set Statut = 0 Where login = ?"); 
@@ -139,7 +138,6 @@ public class VillageoisDAO extends AbstractDatabaseDAO {
         }
     }
 
-    //voir l'utilité des deux fonctions qui suivent, mais au bon endroit
     public void supprimerVillageois (String pseudo) {
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("DELETE FROM Joueur WHERE login = ?");

@@ -53,7 +53,7 @@ public class PartieDAO extends AbstractDatabaseDAO {
     public int getNbJoueursVivants(int id) {
         try (Connection conn = this.getConn()) {
             PreparedStatement st = conn.prepareStatement
-                    ("SELECT * FROM PARTIE WHERE IdPartie = "+ id +" and statut = 1") ; 
+                    ("SELECT * FROM PARTIE WHERE IdPartie = "+ id) ; 
             ResultSet rs = st.executeQuery();
             rs.next();
             return rs.getInt("nbJoueursVivants");
