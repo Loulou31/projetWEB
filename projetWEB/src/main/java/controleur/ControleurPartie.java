@@ -300,8 +300,7 @@ public class ControleurPartie extends HttpServlet {
         int idPartie = villageois.getPartie();
         PartieDAO partieDAO = new PartieDAO(ds);
         Partie partie = partieDAO.getPartie(villageois.getPartie());
-        partieDAO.passerSpiritisme(villageois.getPartie(), 0);
-        actionRejoindreRepaire(request, response);
+        actionRejoindreRepaireUtilise(request, response);
     }
 
     private void actionRejoindreRepaire(HttpServletRequest request,
