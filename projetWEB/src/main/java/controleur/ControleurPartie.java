@@ -809,6 +809,8 @@ public class ControleurPartie extends HttpServlet {
             } else {
                 System.out.println("dans voteAddLoup");
                 int nbVoteActuel = decisionDAO.getDecisionLoup(joueurConcerne, idPartie).getNbVote();
+                System.out.println("limite : "+limiteRatifieLoup);
+                System.out.println("nbVoteActuel : "+nbVoteActuel);
                 decisionDAO.ratifieDecisionLoupSiBesoin(limiteRatifieLoup, nbVoteActuel, joueurConcerne, idPartie);
             }
         }
