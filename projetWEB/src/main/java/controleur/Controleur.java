@@ -116,6 +116,10 @@ public class Controleur extends HttpServlet {
             System.out.println("DERNIER JOUEUR") ; 
             System.out.println("SUPP DERNIER VILLAGEOIS") ; 
             villageoisDAO.supprimerVillageois(pseudo);
+            /* Supprimer les décisions */
+            DecisionDAO decisionDAO = new DecisionDAO(ds); 
+            decisionDAO.supprimerToutesDecisionsJour(idPartie);
+            decisionDAO.supprimerToutesDecisionsNuit(idPartie);
             System.out.println("SUPP PARTIE") ; 
             partieDAO.supprimerPartie(idPartie);
         // Si je suis le 1er à quitter la partie

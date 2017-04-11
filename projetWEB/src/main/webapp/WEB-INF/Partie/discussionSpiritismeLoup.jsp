@@ -27,7 +27,7 @@
         <p> Ou bien, saurez-vous gardez vos secrets ? </p>
         <p></p>
         <table>
-            <c:forEach items="${messages}" var="message">
+            <c:forEach items="${messagesDiscussionSpiritisme}" var="message">
                     <tr>
                         <td><B>@${message.expediteur}  :   </B></td><td>  ${message.contenu}</td>
                     </tr>
@@ -48,9 +48,5 @@
             <button type="submit" class="button"><span>Retour au repaire</span></button><br>
             <input type="hidden" name="action" value="retourRepaire"/>
         </form>
-        <% Partie partie = (Partie) request.getAttribute("partie");
-           String tempsChangement = partie.tempsAvantChangement(0);
-        %>
-        <p><%=tempsChangement%></p>
     </body>
 </html>

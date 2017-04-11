@@ -189,7 +189,7 @@ public class ControleurPartie extends HttpServlet {
                 List<Message> messagesDiscussionSpiritisme = messageDAO.getListMessageSpiritisme(idPartie);
                 messagesDiscussionSpiritisme = partie.messageDuJour(messagesDiscussionSpiritisme);
                 messagesDiscussionSpiritisme = partie.triListe(messagesDiscussionSpiritisme);
-                request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritismeLoup").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/Partie/discussionSpiritismeLoup.jsp").forward(request, response);
             }
         } else {
             actionRejoindreSalleDiscussion(request, response);
@@ -624,6 +624,7 @@ public class ControleurPartie extends HttpServlet {
             partieDAO.passerContamination(idPartie, 0);
             request.setAttribute("enDiscussion", 0);
             partie = partieDAO.getPartie(idPartie);
+            joueurChoisiSpiritisme = null;
             if (partie.decisionsCorrompues(decisionDAO.getListDecisionHumains(idPartie))) {
                 decisionDAO.supprimerToutesDecisionsJour(idPartie);
             }
