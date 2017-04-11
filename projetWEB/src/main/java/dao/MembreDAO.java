@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import java.sql.Connection;
@@ -22,8 +17,13 @@ public class MembreDAO extends AbstractDatabaseDAO{
         super(ds);
     }
     
+    /**
+     * @brief Vérifie si les paramètres de connexion sont corrects
+     * @param pseudo
+     * @param mdp
+     * @return true si l'identifiant et le mot de passe sont corrects, false sinon
+     */
     public Boolean idCorrectConnexion(String pseudo, String mdp){
-        /*Renvoie true si le login et le password sont corrects, false sinon*/
         try (Connection conn = this.getConn()) {
             PreparedStatement s = conn.prepareStatement(
                     " Select login,password From Membre Where login = ? and password = ?");
@@ -36,6 +36,11 @@ public class MembreDAO extends AbstractDatabaseDAO{
         }
     }
     
+    /**
+     * @brief Vérifie si le pseudo d'inscription est déjà utilisé ou non
+     * @param pseudo
+     * @return true si le pseudo n'est pas utilisé, false sinon
+     */
     public Boolean idCorrectInscription(String pseudo){
         /*Renvoie true si le login et le password sont corrects, false sinon*/
         try (Connection conn = this.getConn()) {
@@ -49,6 +54,11 @@ public class MembreDAO extends AbstractDatabaseDAO{
         }
     }
     
+    /**
+     * @brief Ajoute un nouveau membre à la base de données
+     * @param pseudo
+     * @param password 
+     */
     public void ajouterMembre(String pseudo, String password){
         /* Ajoute un membre à la BD */
         try (Connection conn = getConn()) {	     
@@ -62,7 +72,11 @@ public class MembreDAO extends AbstractDatabaseDAO{
         }
     }
     
-    //on va dire que c'est bon
+    /**
+     * @brief Vérifie si un joueur a une partie ou non
+     * @param pseudo
+     * @return true si le joueur a une partie, false sinon
+     */
     public boolean memberHasPartie(String pseudo){
         ResultSet rs ; 
         try(Connection conn = getConn()){

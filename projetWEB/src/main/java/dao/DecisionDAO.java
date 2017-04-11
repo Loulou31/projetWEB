@@ -1,37 +1,33 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import javax.sql.DataSource;
 import modele.Decision;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
-import javax.annotation.Resource;
 import modele.Temps;
 
 /**
  *
  * @author gaunetc
  */
+
 public class DecisionDAO extends AbstractDatabaseDAO{
     
     public DecisionDAO(DataSource ds) {
         super(ds);
     }
     
-    
+    /**
+     * @brief Renvoie la liste des décisions de la place du village
+     * @param idPartie
+     * @return liste des décisions sur la place du village
+     */
     public List<Decision> getListDecisionHumains(int idPartie){
-        //Renvoie la liste des decision pour les humainsList<Message> result = new ArrayList<Message>();
         List<Decision> result = new ArrayList<Decision>();
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement
@@ -54,8 +50,13 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         return result;
     }
 
+    
+    /**
+     * @brief Renvoie la liste des décisions du repaire
+     * @param idPartie
+     * @return liste des décisions du repaire
+     */
     public List<Decision> getListDecisionLoup(int idPartie) {
-        //Renvoie la liste des decision pour les loups List<Message> result = new ArrayList<Message>();
         List<Decision> result = new ArrayList<Decision>();
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement
@@ -78,7 +79,14 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         return result;
     }
 
-    //ok c'est un update
+    /**
+     * @brief Ratifie une décision si besoin (s'il y a la majorité absolue des
+     * votes). Valable uniquement pour les décisions de la place du village.
+     * @param limiteRatifie
+     * @param nbVote
+     * @param pseudo
+     * @param idPartie 
+     */
     public void ratifieDecisionHumainSiBesoin(int limiteRatifie, int nbVote, String pseudo, int idPartie) {
         System.out.println("dans ratifie");
         if (nbVote >= limiteRatifie) {
@@ -103,6 +111,14 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         }
     }
 
+    /**
+     * @brief Ratifie une décision si besoin (s'il y a la majorité absolue des
+     * votes). Valable uniquement pour les décisions du repaire.
+     * @param limiteRatifie
+     * @param nbVote
+     * @param pseudo
+     * @param idPartie 
+     */
     public void ratifieDecisionLoupSiBesoin(int limiteRatifie, int nbVote, String pseudo, int idPartie) {
         if (nbVote >= limiteRatifie) {
             try (Connection conn = getConn()) {
@@ -125,12 +141,19 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         }
     }
 
+    /**
+     * @brief Ajoute une décision faite sur la place du village
+     * @param login_joueur
+     * @param idPartie
+     * @param login_expeditaire 
+     */
     public void ajouteDecisionHumain(String login_joueur, int idPartie, String login_expeditaire) {
 
         /* on vérifie que une decision n'est pas en cours sur le joueur concerné */
         if (!decisionCorrecteHumain(login_joueur, idPartie)) {
             try (Connection conn = getConn()) {
-                PreparedStatement st = conn.prepareStatement("INSERT INTO Decision_Humain (login_joueur_concerne, id_partie, login_expeditaire, ratifie, date_envoi, nbreVote) VALUES (?, ?, ?, 0, ?, 0)");
+                PreparedStatement st = conn.prepareStatement
+            ("INSERT INTO Decision_Humain (login_joueur_concerne, id_partie, login_expeditaire, ratifie, date_envoi, nbreVote) VALUES (?, ?, ?, 0, ?, 0)");
                 st.setString(1, login_joueur);
                 st.setInt(2, idPartie);
                 st.setString(3, login_expeditaire);
@@ -147,40 +170,18 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         }
     }
 
-    public Boolean decisionCorrecteHumain(String pseudo, int idPartie){
-        /*Renvoie true si la decision existe, false sinon*/
-        try (Connection conn = this.getConn()) {
-            PreparedStatement s = conn.prepareStatement(
-                    " Select login_joueur_concerne From Decision_Humain Where login_joueur_concerne = ? and id_partie = ?");
-            s.setString(1, pseudo);
-            s.setInt(2, idPartie);
-            ResultSet r = s.executeQuery();
-            return (r.next());
-        } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
-        }
-    }
-    
-    public Boolean decisionCorrecteLoup(String pseudo, int idPartie){
-        /*Renvoie true si la decision existe, false sinon*/
-        try (Connection conn = this.getConn()) {
-            PreparedStatement s = conn.prepareStatement(
-                    " Select login_joueur_concerne From Decision_Loup Where login_joueur_concerne = ? and id_partie = ?");
-            s.setString(1, pseudo);
-            s.setInt(2, idPartie);
-            ResultSet r = s.executeQuery();
-            return (r.next());
-        } catch (SQLException e) {
-            throw new DAOException("Erreur BD " + e.getMessage(), e);
-        }
-    }
-
+    /**
+     * @brief Ajoute une décision faite dans le repaire
+     * @param login_joueur
+     * @param idPartie
+     * @param login_expeditaire 
+     */
     public void ajouteDecisionLoup(String login_joueur, int idPartie, String login_expeditaire) {
         /* on vérifie que une decision n'est pas en cours sur le joueur concerné */
         if (!decisionCorrecteLoup(login_joueur, idPartie)) {
-            System.out.println("je vais ajouter la dec");
             try (Connection conn = getConn()) {
-                PreparedStatement st = conn.prepareStatement("INSERT INTO Decision_Loup (login_joueur_concerne, id_partie, login_expeditaire, ratifie, date_envoi, nbreVote) VALUES (?, ?, ?, 0, ?, 0)");
+                PreparedStatement st = conn.prepareStatement
+            ("INSERT INTO Decision_Loup (login_joueur_concerne, id_partie, login_expeditaire, ratifie, date_envoi, nbreVote) VALUES (?, ?, ?, 0, ?, 0)");
                 st.setString(1, login_joueur);
                 st.setInt(2, idPartie);
                 st.setString(3, login_expeditaire);
@@ -197,6 +198,54 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         }
     }
     
+    /**
+     * @brief Vérifie si une déicsion a déjà été faite ou non, sur la place 
+     * @param pseudo
+     * @param idPartie
+     * @return true si la décision existe, false sinon
+     */
+    public Boolean decisionCorrecteHumain(String pseudo, int idPartie){
+        /*Renvoie true si la decision existe, false sinon*/
+        try (Connection conn = this.getConn()) {
+            PreparedStatement s = conn.prepareStatement(
+                    " Select login_joueur_concerne From Decision_Humain Where login_joueur_concerne = ? and id_partie = ?");
+            s.setString(1, pseudo);
+            s.setInt(2, idPartie);
+            ResultSet r = s.executeQuery();
+            return (r.next());
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+    
+     /**
+     * @brief Vérifie si une déicsion a déjà été faite ou non, dans le repaire
+     * @param pseudo
+     * @param idPartie
+     * @return true si la décision existe, false sinon
+     */
+    public Boolean decisionCorrecteLoup(String pseudo, int idPartie){
+        /*Renvoie true si la decision existe, false sinon*/
+        try (Connection conn = this.getConn()) {
+            PreparedStatement s = conn.prepareStatement(
+                    " Select login_joueur_concerne From Decision_Loup Where login_joueur_concerne = ? and id_partie = ?");
+            s.setString(1, pseudo);
+            s.setInt(2, idPartie);
+            ResultSet r = s.executeQuery();
+            return (r.next());
+        } catch (SQLException e) {
+            throw new DAOException("Erreur BD " + e.getMessage(), e);
+        }
+    }
+
+    
+    /**
+     * @brief Ajoute un vote pour une décision sur la place du village
+     * @param decision
+     * @param votant
+     * @param idPartie
+     * @return true si le joueur peut voter, false s'il a déjà voté
+     */
     public boolean ajouteVoteHumain(Decision decision, String votant, int idPartie) {
         try (Connection conn = getConn()) {
             /* On vérifie que la personne n'a pas déjà voté pour cette décision */
@@ -220,6 +269,13 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         }
     }
 
+    /**
+     * @brief Ajoute un vote pour une décision dans le repaire
+     * @param decision
+     * @param votant
+     * @param idPartie
+     * @return true si le joueur peut voter, false s'il a déjà voté
+     */
     public boolean ajouteVoteLoup(Decision decision, String votant, int idPartie) {
         try (Connection conn = getConn()) {
             /* On vérifie que la personne n'a pas déjà voté pour cette décision */
@@ -244,6 +300,12 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         }
     }
 
+    /**
+     * @brief Récupère une décision de la place du village
+     * @param joueurConcerne
+     * @param idPartie
+     * @return décision
+     */
     public Decision getDecisionHumain(String joueurConcerne, int idPartie) {
         Decision decision = null;
         try (Connection conn = getConn()) {	     
@@ -270,6 +332,13 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         return decision;
     }
 
+    
+     /**
+     * @brief Récupère une décision du repaire
+     * @param joueurConcerne
+     * @param idPartie
+     * @return décision
+     */
     public Decision getDecisionLoup(String joueurConcerne, int idPartie) {
         Decision decision = null;
         try (Connection conn = getConn()) {	     
@@ -292,9 +361,14 @@ public class DecisionDAO extends AbstractDatabaseDAO{
             throw new DAOException("Erreur BD " + e.getMessage(), e);
         }
         return decision ; 
-   }
+    }
     
-     public void supprimerToutesDecisionsJour(int idPartie){
+    
+    /**
+     * @brief Supprime toutes les décisions sur la place du village
+     * @param idPartie 
+     */
+    public void supprimerToutesDecisionsJour(int idPartie){
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("DELETE FROM DECISION_HUMAIN WHERE id_Partie = ?");
             st.setInt(1, idPartie);
@@ -304,7 +378,11 @@ public class DecisionDAO extends AbstractDatabaseDAO{
         }
     }
      
-      public void supprimerToutesDecisionsNuit(int idPartie){
+    /**
+     * @brief Supprime toutes les décisions dans le repaire
+     * @param idPartie 
+     */
+    public void supprimerToutesDecisionsNuit(int idPartie){
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("DELETE FROM DECISION_LOUP WHERE id_Partie = ?");
             st.setInt(1, idPartie);

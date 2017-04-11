@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import java.sql.Connection;
@@ -27,7 +22,9 @@ public class MessageDAO extends AbstractDatabaseDAO {
     }
     
     /**
-     * Renvoie la liste des messages de la table Message_Salle_Discussion.
+     * @brief Renvoie la liste des messages de la place du village
+     * @param idPartie
+     * @return liste des messages de la place
      */
     public List<Message> getListeMessagesSalleDiscussion(int idPartie) {
         List<Message> result = new ArrayList<Message>();
@@ -48,7 +45,9 @@ public class MessageDAO extends AbstractDatabaseDAO {
     }
     
      /**
-     * Renvoie la liste des messages de la table Message_Repaire.
+     * @brief Renvoie la liste des messages du repaire
+     * @param idPartie
+     * @return liste des messages du repaire
      */
     public List<Message> getListMessageRepaire(int idPartie) {
         List<Message> result = new ArrayList<Message>();
@@ -68,7 +67,11 @@ public class MessageDAO extends AbstractDatabaseDAO {
 	return result;
     }
     
-    
+    /**
+     * @brief Renvoie la liste des messages des discussions de spiritisme
+     * @param idPartie
+     * @return liste des messages du spiritisme
+     */
     public List<Message> getListMessageSpiritisme(int idPartie) {
         List<Message> result = new ArrayList<Message>();
         try (
@@ -88,7 +91,10 @@ public class MessageDAO extends AbstractDatabaseDAO {
     }
     
     /**
-     * Ajoute un message dans la tale MessageSalleDiscussion
+     * @brief Ajoute un message sur la place du village
+     * @param expediteur
+     * @param contenu
+     * @param idPartie 
      */
     public void ajouteMessageSalleDiscussion (String expediteur, String contenu, int idPartie) {
         try (Connection conn = getConn()) {	
@@ -106,7 +112,10 @@ public class MessageDAO extends AbstractDatabaseDAO {
     }
 
     /**
-     * Ajoute un message dans la tale MessageRepaire
+     * @brief Ajoute un message dans le repaire
+     * @param expediteur
+     * @param contenu
+     * @param idPartie 
      */
     public void ajouteMessageRepaire(String expediteur, String contenu, int idPartie) {
         try (Connection conn = getConn()) {
@@ -123,6 +132,12 @@ public class MessageDAO extends AbstractDatabaseDAO {
         }
     }
     
+    /**
+     * @brief Ajoute un message sur la page de discussion spiritisme
+     * @param expediteur
+     * @param contenu
+     * @param idPartie 
+     */
     public void ajouteMessageSpiritisme(String expediteur, String contenu, int idPartie) {
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("INSERT INTO Message_Spiritisme VALUES (?, ?, ?, ?)");
@@ -138,6 +153,10 @@ public class MessageDAO extends AbstractDatabaseDAO {
         }
     }
     
+    /**
+     * @brief Supprime tous les messages (place du village, repaire et spiritisme)
+     * @param idPartie 
+     */
     public void supprimerTousMessages(int idPartie){
         try (Connection conn = getConn()) {
             PreparedStatement st = conn.prepareStatement("DELETE MESSAGE_SALLE_DISCUSSION WHERE idPartie = ?");
