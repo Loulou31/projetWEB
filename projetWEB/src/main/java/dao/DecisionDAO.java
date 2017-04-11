@@ -88,17 +88,21 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                         + " ratifie = 1 Where login_joueur_concerne = ? and id_partie = ?");
                 st.setString(1, pseudo);
                 st.setInt(2, idPartie);
-                st.executeQuery();
+                st.executeUpdate();
                 PreparedStatement st1 = conn.prepareStatement
-                        ("UPDATE JOUEUR SET statut = 0 WHERE login = ?") ;
-                st1.setString(1, pseudo) ; 
-                st1.executeQuery() ; 
+               ("UPDATE JOUEUR SET statut = 0 WHERE login = ?");
+                st1.setString(1, pseudo);
+                st1.executeUpdate();
+                /* On décrémente le nombre de joueurs vivants de la partie */
+                st = conn.prepareStatement("Update Partie set nbJoueursVivants = nbJoueursVivants - 1 Where IdPartie = ?");
+                st.setInt(1, idPartie);
+                st.executeUpdate();
             } catch (SQLException e) {
                 throw new DAOException("Erreur BD dans ratifie" + e.getMessage(), e);
             }
         }
     }
-    
+
     public void ratifieDecisionLoupSiBesoin(int limiteRatifie, int nbVote, String pseudo, int idPartie) {
         if (nbVote >= limiteRatifie) {
             try (Connection conn = getConn()) {
@@ -111,6 +115,10 @@ public class DecisionDAO extends AbstractDatabaseDAO{
                         ("UPDATE JOUEUR SET statut = 0 WHERE login = ?") ;
                 st1.setString(1, pseudo) ; 
                 st1.executeQuery() ; 
+                /* On décrémente le nombre de joueurs vivants de la partie */
+                st = conn.prepareStatement("Update Partie set nbJoueursVivants = nbJoueursVivants - 1 Where IdPartie = ?");
+                st.setInt(1, idPartie);
+                st.executeUpdate();
             } catch (SQLException e) {
                 throw new DAOException("Erreur BD " + e.getMessage(), e);
             }
