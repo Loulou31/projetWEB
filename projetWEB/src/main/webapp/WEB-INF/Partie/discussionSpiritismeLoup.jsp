@@ -48,9 +48,5 @@
             <button type="submit" class="button"><span>Retour au repaire</span></button><br>
             <input type="hidden" name="action" value="retourRepaire"/>
         </form>
-        <% Partie partie = (Partie) request.getAttribute("partie");
-           String tempsChangement = partie.tempsAvantChangement(0);
-        %>
-        <p><%=tempsChangement%></p>
     </body>
 </html>
