@@ -250,17 +250,23 @@ public class Controleur extends HttpServlet {
             throws IOException, ServletException {
 
         Temps temps = new Temps();
+//        PartieDAO partieDAO = new PartieDAO(ds);
+//        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+//        HttpSession session = request.getSession();
+//        Villageois villageois = villageoisDAO.getVillageois(session.getAttribute("membre").toString());
         Partie partie = (Partie) request.getAttribute("partie");
+//        Partie partie = partieDAO.getPartie(villageois.getPartie());
         int intDeb = partie.getHeureDebut();
-        int nombreJoueurs = partie.getNbJoueurs(partie.getIdPartie());
+//        int nombreJoueurs = partie.getNbJoueurs(partie.getIdPartie());
+        int nombreJoueurs = (int)request.getAttribute("nombreJoueurs");
         int nombreJoueursMin = partie.getNbJoueursMin();
-
-
+        
         if (!temps.estApres(intDeb, temps.getTempsLong())) {
             if (nombreJoueursMin <= nombreJoueurs) {
                 request.setAttribute("partiePrete", 1);
                 request.getRequestDispatcher("/WEB-INF/AvantPartie/attenteDebutPartie.jsp").forward(request, response);
             } else {
+                System.out.println("pb Action Wait game");
                 quitteAttentePartie(request, response);
             }
         } else {
