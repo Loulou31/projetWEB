@@ -2,14 +2,9 @@ package controleur;
 
 import dao.*;
 import java.io.*;
-import static java.lang.Math.ceil;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import javax.annotation.Resource;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -102,6 +97,14 @@ public class Controleur extends HttpServlet {
         }
     }
     
+    /**
+     * @brief Quitte une partie et supprime les tables correspondantes dans 
+     * la base de données
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void quittePartie(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
@@ -110,37 +113,40 @@ public class Controleur extends HttpServlet {
         PartieDAO partieDAO = new PartieDAO(ds);
         MessageDAO messageDAO = new MessageDAO(ds) ; 
         VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
+        
         //si dernier joueur de partie : on détruit tout
         int idPartie = partieDAO.getIDPartieJoueur(pseudo);
         if (partieDAO.getNbJoueurs(idPartie) == 1) {
-            System.out.println("DERNIER JOUEUR") ; 
-            System.out.println("SUPP DERNIER VILLAGEOIS") ; 
             villageoisDAO.supprimerVillageois(pseudo);
-            /* Supprimer les décisions */
+            // Supression des décisions
             DecisionDAO decisionDAO = new DecisionDAO(ds); 
             decisionDAO.supprimerToutesDecisionsJour(idPartie);
             decisionDAO.supprimerToutesDecisionsNuit(idPartie);
-            System.out.println("SUPP PARTIE") ; 
             partieDAO.supprimerPartie(idPartie);
         // Si je suis le 1er à quitter la partie
         } else if (partieDAO.getNbJoueurs(idPartie) == partieDAO.getNbJoueurs(idPartie)) {
-            System.out.println("SUPP MESSAGES");
             messageDAO.supprimerTousMessages(idPartie);
-            System.out.println("SUPP 1er VILLAGEOIS");
             villageoisDAO.supprimerVillageois(pseudo);
         } else {
          villageoisDAO.supprimerVillageois(pseudo);
-           
         }
         request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
-        
     }
     
+    
+    /**
+     * @brief Quitte l'attente d'une partie s'il n'y a pas assez de joueurs
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void quitteAttentePartie(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute("membre").toString();
+        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         PartieDAO partieDAO = new PartieDAO(ds);
 
         //si dernier joueur de partie : on détruit tout
@@ -148,17 +154,31 @@ public class Controleur extends HttpServlet {
         if (partieDAO.getNbJoueurs(idPartie) == 1) {
             partieDAO.supprimerPartie(idPartie);
         } 
-        VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
         villageoisDAO.supprimerVillageois(pseudo);
+        // Retour à la page intermédiaire
         request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
     }
     
 
+    /**
+     * @brief Permet de rejoindre la page intermédiaire
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void actionIndex(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
     }
 
+    /**
+     * @brief Permet de se connecter
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void actionLogin(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -168,6 +188,13 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
     }
 
+    /**
+     * @brief Permet de se déconnecter
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void actionDeconnexion(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -175,6 +202,14 @@ public class Controleur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/AvantPartie/logout.jsp").forward(request, response);
     }
 
+    /**
+     * @brief Rejoint une partie
+     * @param request
+     * @param response
+     * @param partieDAO
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void actionGetPartie(HttpServletRequest request,
             HttpServletResponse response,
             PartieDAO partieDAO) throws ServletException, IOException {
@@ -186,13 +221,23 @@ public class Controleur extends HttpServlet {
         }
     }
 
+    /**
+     * @brief Afficher la liste des parties
+     * @param request
+     * @param response
+     * @param partieDAO
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionChoseGame(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException {
         Temps temps = new Temps(); 
+        // Récupérer toutes les parties, même celles en cours ou terminées
         List<Partie> parties = partieDAO.getListeParties();
         ArrayList<Partie> partiesAffiche = new ArrayList() ; 
         Iterator<Partie> i = parties.iterator() ; 
+        // Afficher seulement les parties accessibles
         while (i.hasNext()){
             Partie p = i.next() ; 
             int id = p.getIdPartie() ; 
@@ -205,27 +250,39 @@ public class Controleur extends HttpServlet {
         HttpSession session = request.getSession();
         MembreDAO membreDAO = new MembreDAO(ds);
         String pseudo = session.getAttribute("membre").toString();
+        // Si joueur a déjà une partie, il est redirigé directement sur son jeu
         if (membreDAO.memberHasPartie(pseudo)) {
-            System.out.println("J'AI DEJA UNE PARTIE") ; 
-            VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
             String action = "rejoindreJeu" ; 
-            System.out.println("ACTION DEJA PARTIE "+action);
             request.setAttribute("action", action);
-            System.out.println("ACTION DEJA PARTIE "+request.getParameter("action"));
             request.getRequestDispatcher("/controleurPartie").forward(request, response);
+        // Sinon il choisi une partie
         } else {
             request.getRequestDispatcher("/WEB-INF/AvantPartie/choseGame.jsp").forward(request, response);
         }
     }
 
        
-
+    /**
+     * @brief Redirige vers la page pour créer une partie
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionNewGame(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
         request.getRequestDispatcher("/WEB-INF/AvantPartie/newPartie.jsp").forward(request, response);
     }
 
+    /**
+     * @brief Ajoute un joueur à une partie
+     * @param request
+     * @param response
+     * @param partieDAO
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionAddPlayer(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException {
@@ -245,7 +302,8 @@ public class Controleur extends HttpServlet {
 
         List<Villageois> listeVillageois = villageoisDAO.getListVillageois(idPartie);
         request.setAttribute("listeVillageois", listeVillageois);
-
+        
+        // Redirection vers la salle d'attente
         actionWaitGame(request, response);
     }
 
@@ -279,6 +337,13 @@ public class Controleur extends HttpServlet {
     }
 
 
+    /**
+     * @brief Actualise la salle d'attente
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionActualiseAttente(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
@@ -295,13 +360,17 @@ public class Controleur extends HttpServlet {
     
 
     /**
-     * Actions possibles en POST 
+     * Actions possibles en POST :
+     * - Inscription
+     * - Connexion
+     * - Ajouter une partie après création
      */
     public void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
+        
         if (action == null) {
             invalidParameters(request, response);
             return;
@@ -322,6 +391,14 @@ public class Controleur extends HttpServlet {
         }
     }
 
+    /**
+     * @brief Connexion
+     * @param request
+     * @param response
+     * @param membreDAO
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionConnexionMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
@@ -331,13 +408,21 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("/WEB-INF/AvantPartie/failLogin.jsp").forward(request, response);
-
         }
     }
 
+    /**
+     * @brief Ajout d'un membre après inscription
+     * @param request
+     * @param response
+     * @param membreDAO
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionAjoutMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
+        // Vérification de l'unicité du login
         if (membreDAO.idCorrectInscription(request.getParameter("login"))) {
             membreDAO.ajouterMembre(request.getParameter("login"), request.getParameter("password"));
             request.getRequestDispatcher("/WEB-INF/AvantPartie/connexion.jsp").forward(request, response);
@@ -346,6 +431,14 @@ public class Controleur extends HttpServlet {
         }
     }
 
+    /**
+     * @brief Ajout d'une partie après création
+     * @param request
+     * @param response
+     * @param partieDAO
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionAddGame(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException {
@@ -371,14 +464,14 @@ public class Controleur extends HttpServlet {
 
             actionWaitGame(request, response);
         
-        //après on vérifie que le nombre de joueurs minimum est plus petit que le nombre de j max
+        // Vérifie que nbJoueursMin <= nbJoueursMax
         } else if (Integer.parseInt(request.getParameter("JMin")) > Integer.parseInt(request.getParameter("JMax"))) {
             request.setAttribute("erreurNbJoueurs", 1);
             request.getRequestDispatcher("/WEB-INF/AvantPartie/newPartie.jsp").forward(request, response);
         } else if (!temps.estApres(heureDeb, temps.getTempsLong())) {
             request.setAttribute("erreurHeure", 1);
             request.getRequestDispatcher("/WEB-INF/AvantPartie/newPartie.jsp").forward(request, response);
-
+        // Création de la partie avec les paramètres rentrés par l'utilisateur
         } else {
 
             int idPartie = partieDAO.getIdDispo();
@@ -403,7 +496,8 @@ public class Controleur extends HttpServlet {
 
             List<Villageois> listeVillageois = villageoisDAO.getListVillageois(idPartie);
             request.setAttribute("listeVillageois", listeVillageois);
-
+            
+            // Rejoindre la salle d'attente
             actionWaitGame(request, response);
         }
     }
