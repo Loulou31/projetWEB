@@ -165,7 +165,7 @@ public class ControleurPartie extends HttpServlet {
             if (request.getParameter("contenu").toString().equals("")) {
                 request.getRequestDispatcher("/WEB-INF/Partie/messageVide.jsp").forward(request, response);
             } else {
-                messageDAO.ajouteMessageRepaire(pseudo, request.getParameter("contenu").toString(), idPartie);
+                messageDAO.ajouteMessageSpiritisme(pseudo, request.getParameter("contenu").toString(), idPartie);
                 actionAddDecisionSpiritisme(request, response);
             }
         } else {
@@ -1021,7 +1021,7 @@ public class ControleurPartie extends HttpServlet {
             } else if (action.equals("addMessVoyanceLoup")) {
                 System.out.println("dans controleur action message loup");
                 actionAddMessageVoyanceLoup(request, response);
-            }else if (action.equals("ajouterMessagesSpiritisme")) {
+            }else if (action.equals("ajouterMessageSpiritisme")) {
                 actionAddMessageSpiritismeLoup(request, response);
             } else {
                 invalidParameters(request, response);
