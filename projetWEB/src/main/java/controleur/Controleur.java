@@ -6,6 +6,7 @@ import static java.lang.Math.ceil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -95,7 +96,6 @@ public class Controleur extends HttpServlet {
         if(session.getAttribute("membre") == null)
             request.getRequestDispatcher("/WEB-INF/AvantPartie/connexion.jsp").forward(request, response);
         else{
-//            response.setIntHeader("Refresh",1);
             request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
         }
     }
@@ -185,26 +185,28 @@ public class Controleur extends HttpServlet {
             throws IOException, ServletException {
         Temps temps = new Temps(); 
         List<Partie> parties = partieDAO.getListeParties();
+        ArrayList<Partie> partiesAffiche = new ArrayList() ; 
         Iterator<Partie> i = parties.iterator() ; 
         while (i.hasNext()){
             Partie p = i.next() ; 
             int id = p.getIdPartie() ; 
             int nbJoueurs = partieDAO.getNbJoueurs(id) ; 
-            if (p.complet(partieDAO)){
-                parties.remove(p) ; 
-            } else if (nbJoueurs >= p.getNbJoueursMin() && p.getHeureDebut() >= temps.getTempsInt()){
-               parties.remove(p) ; 
+            if (!p.complet(partieDAO) || !(nbJoueurs >= p.getNbJoueursMin() && p.getHeureDebut() >= temps.getTempsInt())){
+                partiesAffiche.add(p) ; 
             }
         }
-        request.setAttribute("parties", parties);
+        request.setAttribute("parties", partiesAffiche);
         HttpSession session = request.getSession();
         MembreDAO membreDAO = new MembreDAO(ds);
         String pseudo = session.getAttribute("membre").toString();
         if (membreDAO.memberHasPartie(pseudo)) {
+            System.out.println("J'AI DEJA UNE PARTIE") ; 
             VillageoisDAO villageoisDAO = new VillageoisDAO(ds);
-            Villageois villageois = villageoisDAO.getVillageois(pseudo);
-            request.setAttribute("action", "rejoindreJeu");
-            request.getRequestDispatcher("controleurPartie").forward(request, response);
+            String action = "rejoindreJeu" ; 
+            System.out.println("ACTION DEJA PARTIE "+action);
+            request.setAttribute("action", action);
+            System.out.println("ACTION DEJA PARTIE "+request.getParameter("action"));
+            request.getRequestDispatcher("/controleurPartie").forward(request, response);
         } else {
             request.getRequestDispatcher("/WEB-INF/AvantPartie/choseGame.jsp").forward(request, response);
         }
@@ -218,7 +220,6 @@ public class Controleur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/AvantPartie/newPartie.jsp").forward(request, response);
     }
 
-    //cretateur = 1 si arrivée ici par la voie créateur, 0 sinon
     private void actionAddPlayer(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException {
