@@ -1244,19 +1244,19 @@ public class ControleurPartie extends HttpServlet {
         List<Villageois> joueurs = villageoisDAO.getListVillageoisVivants(idPartie);
         int nbJoueursVivants = joueurs.size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
-//        if (nbLoupsVivants == 0) {
-//            /* Les loups ont perdu */
-//            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
-//        } else if (nbLoupsVivants == nbJoueursVivants) {
-//            /* Les loups ont gagné */
-//            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
-//        }else{
+        if (nbLoupsVivants == 0) {
+            /* Les loups ont perdu */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
+        } else if (nbLoupsVivants == nbJoueursVivants) {
+            /* Les loups ont gagné */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
+        }else{
         List<Message> messagesVillage = messageDAO.getListeMessagesSalleDiscussion(idPartie);
         messagesVillage = partie.triListe(messagesVillage);
         ArrayList<String> archives = partie.messagesArchives(messagesVillage);
         request.setAttribute("archives", archives);
         request.getRequestDispatcher("/WEB-INF/Partie/archivePlace.jsp").forward(request, response);
-//        }
+       }
     }
 
     /**
@@ -1279,20 +1279,20 @@ public class ControleurPartie extends HttpServlet {
         List<Villageois> joueurs = villageoisDAO.getListVillageoisVivants(idPartie);
         int nbJoueursVivants = joueurs.size();
         int nbLoupsVivants = villageoisDAO.getListLoupsVivants(idPartie).size();
-//        if (nbLoupsVivants == 0) {
-//            /* Les loups ont perdu */
-//            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
-//        } else if (nbLoupsVivants == nbJoueursVivants) {
-//            /* Les loups ont gagné */
-//            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
-//        }else{
+        if (nbLoupsVivants == 0) {
+            /* Les loups ont perdu */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsPerdent.jsp").forward(request, response);
+        } else if (nbLoupsVivants == nbJoueursVivants) {
+            /* Les loups ont gagné */
+            request.getRequestDispatcher("/WEB-INF/Partie/loupsGagnent.jsp").forward(request, response);
+        }else{
         MessageDAO messageDAO = new MessageDAO(ds);
         List<Message> messagesRepaire = messageDAO.getListMessageRepaire(idPartie);
         messagesRepaire = partie.triListe(messagesRepaire);
         ArrayList<String> archives = partie.messagesArchives(messagesRepaire);
         request.setAttribute("archives", archives);
         request.getRequestDispatcher("/WEB-INF/Partie/archiveRepaire.jsp").forward(request, response);
-//        }
+        }
     }
 
     /**
