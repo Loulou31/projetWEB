@@ -76,6 +76,8 @@ public class Controleur extends HttpServlet {
             } else if (action.equals("rejoindreJeu")) {
                 request.setAttribute("action", action);
                 request.getRequestDispatcher("/controleurPartie").forward(request, response);
+            } else if (action.equals("actualiseAttente")){
+                actionActualiseAttente(request, response) ;
             } else {
                 invalidParameters(request, response);
             }
@@ -268,6 +270,17 @@ public class Controleur extends HttpServlet {
     }
 
 
+    private void actionActualiseAttente(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        
+        
+        int idPartie = Integer.parseInt(request.getParameter("idPartie"));
+        PartieDAO partieDAO = new PartieDAO(ds);
+        request.setAttribute("partie", partieDAO.getPartie(idPartie));
+
+        actionWaitGame(request, response);
+    }
    
 
     

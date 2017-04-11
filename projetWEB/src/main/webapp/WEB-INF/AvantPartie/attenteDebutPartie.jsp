@@ -62,6 +62,11 @@
         <%}%>
         <p></p>
         <form action="controleur" method="get" align="center">
+            <button type="submit" class="button"><span>Actualiser</span></button><br>
+            <input type="hidden" name="action" value="actualiseAttente"/>
+            <input type="hidden" name="idPartie" value="${partie.idPartie}"/>
+        </form>
+        <form action="controleur" method="get" align="center">
             <button type="submit" class="button"><span>Quitter la salle d'attente et retourner au menu principal</span></button><br>
             <input type="hidden" name="action" value="quitteAttentePartie"/>
         </form>
