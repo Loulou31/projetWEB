@@ -115,8 +115,6 @@ public class ControleurPartie extends HttpServlet {
             } else if (action.equals("archivageNuit")) {
                 actionRejoindreArchivageNuit(request, response);
             // Messages pour pouvoir spiritisme
-            } else if (action.equals("ajouterMessagesSpiritisme")) {
-                actionAddMessageSpiritismeLoup(request, response);
             } else {
                 System.out.println("PROBLEME : " + action);
                 invalidParameters(request, response);
@@ -1023,6 +1021,10 @@ public class ControleurPartie extends HttpServlet {
             } else if (action.equals("addMessVoyanceLoup")) {
                 System.out.println("dans controleur action message loup");
                 actionAddMessageVoyanceLoup(request, response);
+            }else if (action.equals("ajouterMessagesSpiritisme")) {
+                actionAddMessageSpiritismeLoup(request, response);
+            } else {
+                invalidParameters(request, response);
             }
 
         } catch (DAOException e) {
