@@ -33,8 +33,16 @@ public class Controleur extends HttpServlet {
     }
 
     /**
-     * Actions possibles en GET : afficher (correspond à l’absence du param),
-     * getOuvrage.
+     * Actions possibles en GET : 
+     * - Inscription
+     * - Connexion
+     * - Deconnexion
+     * - Jouer (choseGame)
+     * - Rejoindre une partie 
+     * - Créer une partie (newGame)
+     * - Quitter l'attente d'une partie
+     * - Quitter une partie
+     * - Actualiser l'attente d'une partie
      */
     public void doGet(HttpServletRequest request,
             HttpServletResponse response)
@@ -91,7 +99,15 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
         }
     }
-    
+
+    /**
+     * @brief Quitte une partie et supprime les tables correspondantes dans 
+     * la base de données
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */    
     private void quittePartie(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
@@ -103,27 +119,30 @@ public class Controleur extends HttpServlet {
         //si dernier joueur de partie : on détruit tout
         int idPartie = partieDAO.getIDPartieJoueur(pseudo);
         if (partieDAO.getNbJoueurs(idPartie) == 1) {
-            System.out.println("DERNIER JOUEUR") ; 
-            System.out.println("SUPP DERNIER VILLAGEOIS") ; 
             villageoisDAO.supprimerVillageois(pseudo);
-            System.out.println("SUPP PARTIE") ; 
+            /* Supprimer les décisions */
+            DecisionDAO decisionDAO = new DecisionDAO(ds); 
+            decisionDAO.supprimerToutesDecisionsJour(idPartie);
+            decisionDAO.supprimerToutesDecisionsNuit(idPartie);
             partieDAO.supprimerPartie(idPartie);
         // Si je suis le 1er à quitter la partie
         } else if (partieDAO.getNbJoueurs(idPartie) == partieDAO.getNbJoueurs(idPartie)) {
-            System.out.println("SUPP MESSAGES");
             messageDAO.supprimerTousMessages(idPartie);
-            System.out.println("SUPP 1er VILLAGEOIS");
             villageoisDAO.supprimerVillageois(pseudo);
         } else {
          villageoisDAO.supprimerVillageois(pseudo);
            
         }
-        request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
-        
+        request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);    
     }
     
-
-    
+    /**
+     * @brief Quitte l'attente d'une partie s'il n'y a pas assez de joueurs
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */    
     private void quitteAttentePartie(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
@@ -146,11 +165,25 @@ public class Controleur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
     }
 
+    /**
+     * @brief Permet de rejoindre la page intermédiaire
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void actionIndex(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
     }
 
+    /**
+     * @brief Permet de se connecter
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void actionLogin(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -161,6 +194,13 @@ public class Controleur extends HttpServlet {
         }
     }
 
+    /**
+     * @brief Permet de se déconnecter
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void actionDeconnexion(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -168,6 +208,14 @@ public class Controleur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/AvantPartie/logout.jsp").forward(request, response);
     }
 
+    /**
+     * @brief Afficher la liste des parties
+     * @param request
+     * @param response
+     * @param partieDAO
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionChoseGame(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException {
@@ -194,12 +242,27 @@ public class Controleur extends HttpServlet {
         }
     }
 
+    /**
+     * @brief Redirige vers la page pour créer une partie
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionNewGame(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
         request.getRequestDispatcher("/WEB-INF/AvantPartie/newPartie.jsp").forward(request, response);
     }
 
+    /**
+     * @brief Rejoindre Une Partie
+     * @param request
+     * @param response
+     * @param partieDAO
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionRejoindrePartie(HttpServletRequest request,
             HttpServletResponse response,
             PartieDAO partieDAO) throws ServletException, IOException {
@@ -221,7 +284,14 @@ public class Controleur extends HttpServlet {
 
     }
 
-    //cretateur = 1 si arrivée ici par la voie créateur, 0 sinon
+    /**
+     * @brief Ajoute un joueur à une partie
+     * @param request
+     * @param response
+     * @param partieDAO
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionAddPlayer(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO, int idPartie)
             throws IOException, ServletException {
@@ -236,6 +306,13 @@ public class Controleur extends HttpServlet {
         actionWaitGame(request, response);
     }
 
+    /**
+     * @brief Actualise la salle d'attente
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionWaitGame(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
@@ -264,7 +341,13 @@ public class Controleur extends HttpServlet {
         }
     }
 
-    
+    /**
+     * @brief Actualise la salle d'attente lorqu'on vient d'appuyer sur le bouton actualiser. Permet de recharger le nombre de la partie dans la requete
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException 
+     */    
     private void actionActualiseAttente(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
@@ -279,7 +362,14 @@ public class Controleur extends HttpServlet {
     
 
 
-    
+    /**
+     * @brief Quitte une partie et supprime les tables correspondantes dans 
+     * la base de données
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */    
     private void actionQuittePartie(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
@@ -304,9 +394,12 @@ public class Controleur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/AvantPartie/index.jsp").forward(request, response);
         
     }
-
+    
     /**
-     * Actions possibles en POST
+     * Actions possibles en POST :
+     * - Inscription
+     * - Connexion
+     * - Ajouter une partie après création
      */
     public void doPost(HttpServletRequest request,
             HttpServletResponse response)
@@ -333,6 +426,14 @@ public class Controleur extends HttpServlet {
         }
     }
 
+    /**
+     * @brief Connexion
+     * @param request
+     * @param response
+     * @param membreDAO
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionConnexionMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
@@ -346,6 +447,14 @@ public class Controleur extends HttpServlet {
         }
     }
 
+    /**
+     * @brief Ajout d'un membre après inscription
+     * @param request
+     * @param response
+     * @param membreDAO
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionAjoutMembre(HttpServletRequest request,
             HttpServletResponse response, MembreDAO membreDAO)
             throws IOException, ServletException {
@@ -358,7 +467,14 @@ public class Controleur extends HttpServlet {
     }
 
 
-    //finalement on ne gère pas le f5
+    /**
+     * @brief Ajout d'une partie après création
+     * @param request
+     * @param response
+     * @param partieDAO
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void actionAddGame(HttpServletRequest request,
             HttpServletResponse response, PartieDAO partieDAO)
             throws IOException, ServletException {
