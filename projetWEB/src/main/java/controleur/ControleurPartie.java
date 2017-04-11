@@ -579,6 +579,7 @@ public class ControleurPartie extends HttpServlet {
             partieDAO.passerContamination(idPartie, 0);
             request.setAttribute("enDiscussion", 0);
             partie = partieDAO.getPartie(idPartie);
+            joueurChoisiSpiritisme = null;
             if (partie.decisionsCorrompues(decisionDAO.getListDecisionHumains(idPartie))) {
                 decisionDAO.supprimerToutesDecisionsJour(idPartie);
             }
