@@ -27,26 +27,30 @@ public class PartieDAO extends AbstractDatabaseDAO {
      * @brief Retourne la liste des parties de l'application
      * @return liste des parties
      */
-    public List<Partie> getListeParties() {
+    public List<Partie> getListePartiesNonEnCours() {
         List<Partie> result = new ArrayList<Partie>();
         try (
                 Connection conn = getConn();
                 Statement st = conn.createStatement();) {
             ResultSet rs = st.executeQuery("SELECT * FROM PARTIE");
+            Temps temps = new Temps();
             while (rs.next()) {
-                Partie partie
-                        = new Partie(rs.getInt("IdPartie"),
-                                rs.getInt("NbJoueursMin"),
-                                rs.getInt("NbJoueursMax"),
-                                rs.getInt("DureeJour"),
-                                rs.getInt("DureeNuit"),
-                                rs.getInt("HeureDebut"),
-                                rs.getFloat("ProbaPouvoir"),
-                                rs.getFloat("ProportionLG"),
-                                rs.getInt("discussionSpiritisme"), 
-                                rs.getInt("contamination"), 
-                                rs.getInt("voyance"));
-                result.add(partie);
+                if (temps.estApres(rs.getInt("HeureDebut"), temps.getTempsLong())) {
+                    Partie partie
+                            = new Partie(rs.getInt("IdPartie"),
+                                    rs.getInt("NbJoueursMin"),
+                                    rs.getInt("NbJoueursMax"),
+                                    rs.getInt("DureeJour"),
+                                    rs.getInt("DureeNuit"),
+                                    rs.getInt("HeureDebut"),
+                                    rs.getFloat("ProbaPouvoir"),
+                                    rs.getFloat("ProportionLG"),
+                                    rs.getInt("discussionSpiritisme"),
+                                    rs.getInt("contamination"),
+                                    rs.getInt("voyance"));
+
+                    result.add(partie);
+                }
             }
         } catch (SQLException e) {
             throw new DAOException("Erreur BD " + e.getMessage(), e);

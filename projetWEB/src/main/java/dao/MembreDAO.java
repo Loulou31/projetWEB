@@ -77,7 +77,7 @@ public class MembreDAO extends AbstractDatabaseDAO{
      * @param pseudo
      * @return true si le joueur a une partie, false sinon
      */
-    public boolean memberHasPartie(String pseudo){
+    public boolean membreEnJeu(String pseudo){
         ResultSet rs ; 
         try(Connection conn = getConn()){
             PreparedStatement st = conn.prepareStatement
