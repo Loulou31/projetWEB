@@ -1,4 +1,4 @@
-/**8888888
+/**
  * Author:  nicolasl
  * Created: Mar 20, 2017
  */
@@ -119,19 +119,3 @@ CREATE TABLE PARTIE (
     enCours int, 
     voyance int
 ) ; 
-
-
-
-
-
-/*INSERT INTO DECISION_HUMAIN VALUES (1, 321, 'bagouc', 'loulou', 0, SYSDATE, 1 , null, null , null , null , null ,
- null , null , null , null , null , null , null , null );
-*/
-
-/*
-SELECT * FROM MESSAGE_SALLE_DISCUSSION;
-SELECT * FROM MESSAGE_REPAIRE;
-SELECT * FROM DECISION_HUMAIN; 
-SELECT * FROM PARTIE; 
-*/
-SELECT * FROM JOUEUR;
