@@ -755,8 +755,11 @@ public class ControleurPartie extends HttpServlet {
             decisionDAO.ajouteDecisionLoup(request.getParameter("decision"), idPartie, pseudoJoueur);
             /* On vérifie si la décision doit etre ratifié */
             int nbJoueurs = villageoisDAO.getListLoupsVivants(idPartie).size();
+            System.out.println("nbLoupVivants : "+nbJoueurs); 
             int limiteRatifie = (nbJoueurs / 2) + 1;
+            System.out.println("limite :" +limiteRatifie);
             int nbVoteActuel = decisionDAO.getDecisionLoup(request.getParameter("decision"), idPartie).getNbVote();
+            System.out.println("nbVoteActuel : "+nbVoteActuel);
             decisionDAO.ratifieDecisionLoupSiBesoin(limiteRatifie, nbVoteActuel, request.getParameter("decision"), idPartie);
         }
 
